@@ -90,6 +90,8 @@ document.addEventListener("DOMContentLoaded", () => {
     recordingBar: document.getElementById("recordingBar"),
     recordingTimer: document.getElementById("recordingTimer"),
     recordingTranscriptPreview: document.getElementById("recordingTranscriptPreview"),
+    filePreviewTranscriptBox: document.getElementById("filePreviewTranscriptBox"),
+    filePreviewTranscriptText: document.getElementById("filePreviewTranscriptText"),
     stopRecordBtn: document.getElementById("stopRecordBtn"),
     cancelRecordBtn: document.getElementById("cancelRecordBtn"),
 
@@ -435,9 +437,16 @@ document.addEventListener("DOMContentLoaded", () => {
           </div>
         `;
       } else if (msg.attachment.type === "audio" && msg.attachment.dataUrl) {
+        const transcriptBadge = msg.attachment.transcript ? `
+          <div class="msg-audio-transcript">
+            <span class="msg-transcript-badge">🎙️ Transkripsi Suara:</span>
+            <p class="msg-transcript-body">"${escapeHTML(msg.attachment.transcript)}"</p>
+          </div>
+        ` : "";
         attachmentHTML = `
           <div class="msg-attachment">
             <audio controls src="${msg.attachment.dataUrl}" class="msg-attachment-audio"></audio>
+            ${transcriptBadge}
           </div>
         `;
       } else if (msg.attachment.type === "document") {
@@ -602,7 +611,7 @@ document.addEventListener("DOMContentLoaded", () => {
           }
           liveSpeechTranscript = full.trim();
           if (DOM.recordingTranscriptPreview) {
-            DOM.recordingTranscriptPreview.textContent = liveSpeechTranscript ? `"${liveSpeechTranscript}"` : "(Bicara sekarang...)";
+            DOM.recordingTranscriptPreview.textContent = liveSpeechTranscript ? `🗣️ "${liveSpeechTranscript}"` : "🗣️ (Bicara sekarang...)";
           }
         };
 
@@ -630,7 +639,7 @@ document.addEventListener("DOMContentLoaded", () => {
       liveSpeechTranscript = "";
 
       if (DOM.recordingTranscriptPreview) {
-        DOM.recordingTranscriptPreview.textContent = "(Bicara sekarang...)";
+        DOM.recordingTranscriptPreview.textContent = "🗣️ (Bicara sekarang...)";
       }
 
       if (!speechRecognizer) {
@@ -819,6 +828,14 @@ document.addEventListener("DOMContentLoaded", () => {
       if (DOM.filePreviewIcon) DOM.filePreviewIcon.textContent = icon;
       if (DOM.filePreviewName) DOM.filePreviewName.textContent = file.name;
       if (DOM.filePreviewMeta) DOM.filePreviewMeta.textContent = metaText;
+      if (DOM.filePreviewTranscriptBox && DOM.filePreviewTranscriptText) {
+        if (type === "audio" && extra.transcript) {
+          DOM.filePreviewTranscriptText.textContent = `"${extra.transcript}"`;
+          DOM.filePreviewTranscriptBox.style.display = "flex";
+        } else {
+          DOM.filePreviewTranscriptBox.style.display = "none";
+        }
+      }
       if (DOM.attachedFilePreview) DOM.attachedFilePreview.style.display = "flex";
 
       if (DOM.attachImageBtn) DOM.attachImageBtn.classList.toggle("active", type === "image");
@@ -844,6 +861,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (DOM.imageInput) DOM.imageInput.value = "";
     if (DOM.audioInput) DOM.audioInput.value = "";
     if (DOM.docInput) DOM.docInput.value = "";
+    if (DOM.filePreviewTranscriptBox) DOM.filePreviewTranscriptBox.style.display = "none";
     if (DOM.attachedFilePreview) DOM.attachedFilePreview.style.display = "none";
     if (DOM.attachImageBtn) DOM.attachImageBtn.classList.remove("active");
     if (DOM.recordVoiceBtn) DOM.recordVoiceBtn.classList.remove("active");

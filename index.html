@@ -162,13 +162,13 @@
               </span>
             </div>
 
-            <!-- Live Voice Recording Bar (dengan live speech-to-text preview) -->
+            <!-- Live Voice Recording Bar (dengan live speech-to-text preview yang jelas dan kontras) -->
             <div id="recordingBar" class="recording-bar" style="display: none;">
               <div class="rec-indicator">
                 <span class="rec-dot"></span>
                 <span class="rec-label">Merekam Suara:</span>
                 <span id="recordingTimer" class="rec-timer">00:00</span>
-                <span id="recordingTranscriptPreview" class="rec-transcript-preview" style="font-size: 0.78rem; color: var(--text-secondary); max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-left: 6px; font-style: italic;">(Bicara sekarang...)</span>
+                <span id="recordingTranscriptPreview" class="rec-transcript-preview" title="Transkripsi Suara Langsung">🗣️ (Bicara sekarang...)</span>
               </div>
               <div class="rec-actions">
                 <button type="button" id="cancelRecordBtn" class="rec-btn cancel" title="Batal Rekam">
@@ -182,13 +182,17 @@
               </div>
             </div>
 
-            <!-- Attached File Preview Card -->
+            <!-- Attached File Preview Card (dengan transkrip suara yang terbaca jelas) -->
             <div id="attachedFilePreview" class="attached-file-preview" style="display: none;">
               <div class="file-preview-content">
                 <span class="file-preview-icon" id="filePreviewIcon">🖼️</span>
                 <div class="file-preview-details">
                   <span class="file-preview-name" id="filePreviewName">berkas</span>
                   <span class="file-preview-meta" id="filePreviewMeta">Lampiran</span>
+                  <div id="filePreviewTranscriptBox" class="file-preview-transcript-box" style="display: none;">
+                    <span class="transcript-tag">🗣️ Ucapan:</span>
+                    <span id="filePreviewTranscriptText" class="transcript-text"></span>
+                  </div>
                 </div>
               </div>
               <button type="button" id="removeFileBtn" class="remove-file-btn" title="Hapus lampiran">

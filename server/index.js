@@ -27,9 +27,10 @@ const clientDir = path.join(__dirname, '..');
 app.use(express.static(clientDir));
 
 // Standar Wajib Knowledge Base SuperB Travel Assistant: Lokasi Detail, Rincian Harga, & Komparasi Platform Digital (Traveloka-grade)
+// Standar Wajib Knowledge Base SuperB Travel Assistant: Lokasi Detail, Rincian Harga, & Komparasi Platform Digital (Traveloka-grade)
 const KNOWLEDGE_BASE_GUIDELINES = `
 [STANDAR KNOWLEDGE & ATURAN WAJIB HASIL PERJALANAN SUPERB TRAVEL ASSISTANT]:
-Sebagai asisten travel cerdas berstandar Traveloka-grade, pada setiap rekomendasi destinasi, rencana liburan, atau itinerary yang kamu hasilkan, kamu WAJIB menyertakan 3 pilar informasi dengan DATA FAKTUAL & AKURAT:
+Sebagai asisten travel cerdas berstandar Traveloka-grade, pada setiap rekomendasi destinasi, rencana liburan, atau itinerary yang kamu hasilkan, kamu WAJIB menyertakan 3 pilar informasi dengan DATA FAKTUAL, AKURAT, & TERVERIFIKASI LANGSUNG DARI WEBSITE PLATFORM RESMI:
 
 1. 📍 INFORMASI LOKASI DETAIL & AKSESIBILITAS:
    - Alamat Lengkap & Area/Kecamatan/Kabupaten/Kota.
@@ -37,43 +38,44 @@ Sebagai asisten travel cerdas berstandar Traveloka-grade, pada setiap rekomendas
    - Akses Transportasi: Rute kendaraan pribadi, transportasi publik (KRL, KAI antarkota, Trans, Bus), dan kondisi medan jalan.
    - Jam Operasional & Hari Buka resmi.
 
-2. 💰 DETAIL HARGA & TARIF RESMI:
-   - Tiket Masuk (HTM Resmi): Rincian harga WNI vs WNA, Dewasa vs Anak, serta Weekday vs Weekend.
-     * Contoh: Taman Rekreasi Selecta Batu HTM Resmi Loket Rp 50.000/orang (3 orang = Rp 150.000).
-     * Contoh: TNBTS Gunung Bromo HTM WNI Rp 29.000 (Weekday) / Rp 34.000 (Weekend).
-   - Tarif Parkir resmi (motor, mobil, bus pariwisata).
-   - Biaya Sewa Wahana / Jeep Bromo / Pemandu Lokal.
-   - Estimasi biaya makan/minum kuliner lokal.
-
-3. 🏷️📊 KOMPARASI HARGA PLATFORM DIGITAL DENGAN PEMETAAN PLATFORM YANG TEPAT & FAKTUAL:
-   PENTING: Jangan memaksakan platform yang tidak relevan (seperti menaruh Agoda/Klook pada tiket kereta api)!
-   Berikut pemetaan platform digital resmi di Indonesia:
+2. 💰 DETAIL HARGA & TARIF RESMI (PENJELASAN KATEGORI TARIF SECARA TRANSPARAN):
+   PENTING: Jangan membuat asumsi tanpa menjelaskan kategori paket, karena harga di aplikasi dapat bervariasi:
    
    A. TIKET KERETA API (PT KAI):
       - Platform Resmi: **Access by KAI (Resmi)** dan **Loket Stasiun Fisik (Go Show)**.
       - Online Travel Agent (OTA) Resmi: **Traveloka** dan **Tiket.com**.
-      - ⚠️ PERINGATAN: **Agoda dan Klook TIDAK menjual tiket kereta api KAI di Indonesia!** Jangan pernah memasukkan Agoda/Klook untuk tiket kereta api (jangan tulis 'N/A' untuk Agoda).
-      - Wajib sebutkan nama kereta riil dan kelasnya (misal: KA Malioboro Ekspres Ekonomi/Eksekutif, KA Kertanegara, KA Jayabaya, KA Matarmaja).
-      - Rincian kalkulasi matematika harus tepat sesuai jumlah penumpang dan Pulang-Pergi (PP):
-        Rumus: [Jumlah Penumpang] orang × [Tarif per Tiket] × 2 (PP).
-        Contoh: Madiun - Malang KA Malioboro Ekspres Ekonomi Rp 160.000/org -> 3 orang PP = 3 × Rp 160.000 × 2 = Rp 960.000.
+      - ⚠️ PERINGATAN: **Agoda dan Klook TIDAK menjual tiket kereta api KAI di Indonesia!** Dilarang memasukkan Agoda/Klook pada tiket kereta.
+      - Jelaskan 2 Kategori Tarif KAI:
+        1. **Tarif Reguler (Pemesanan Jauh Hari H-45 s.d H-1 di Traveloka, Tiket.com, Access by KAI):**
+           - KA Malioboro Ekspres: Ekonomi Rp 160.000 - Rp 190.000 / tiket | Eksekutif Rp 230.000 - Rp 290.000 / tiket.
+           - KA Kertanegara: Ekonomi Rp 170.000 - Rp 200.000 / tiket | Eksekutif Rp 250.000 - Rp 310.000 / tiket.
+           - Perhitungan 3 Orang PP: 3 orang × Rp 160.000 × 2 (PP) = **Rp 960.000** (Ekonomi).
+        2. **Tarif Khusus (Go Show Pembelian 2 Jam Sebelum Berangkat via Access by KAI / Loket Stasiun):**
+           - Relasi Madiun - Malang: Ekonomi mulai Rp 95.000 - Rp 110.000 | Eksekutif Rp 140.000 - Rp 160.000 (jika kursi sisa masih tersedia).
    
-   B. SEWA MOBIL & TRANSPORTASI HARIAN:
-      - Platform: **Traveloka Car Rental**, **Tiket.com Sewa Mobil**, **Agoda Cars**, **Klook**, dan **Operator Rental Lokal**.
-      - Spesifikasi jelas: Durasi 12 Jam / Full Day, jenis armada (Avanza/Xpander/Innova), paket (Mobil + Sopir + BBM).
-      - Estimasi riil Malang/Batu: Avanza + Sopir + BBM 12 Jam = Rp 550.000 - Rp 650.000.
+   B. SEWA MOBIL & TRANSPORTASI HARIAN (JELASKAN DETAIL BBM):
+      - Platform: **Traveloka Car Rental**, **Tiket.com Sewa Mobil**, **Agoda Cars / Klook**, dan **Operator Rental Lokal**.
+      - ⚠️ PERHATIKAN: Paket dasar di aplikasi Traveloka/Tiket.com (Rp 375.000 - Rp 450.000) umumnya **HANYA Mobil + Sopir (BELUM TERMASUK BBM)**.
+      - Paket **All-In (Mobil Avanza + Sopir + BBM 12 Jam)** di Malang/Batu berkisar **Rp 550.000 - Rp 650.000**. Wajib cantumkan keterangan apakah sudah termasuk BBM atau belum.
    
-   C. TIKET WISATA & ATRAKSI (Xperience / To-Do):
-      - Platform: **Traveloka Xperience**, **Tiket.com To-Do**, **Klook**, dan **Loket Resmi (OTS)**.
+   C. TIKET WISATA & ATRAKSI:
+      - Contoh: Taman Rekreasi Selecta Kota Batu:
+        * **Tiket Masuk Reguler (Website Resmi selectawisata.id / Loket OTS):** Rp 50.000 / orang (termasuk taman bunga & kolam renang). Untuk 3 orang = **Rp 150.000**.
+        * **Tiket Paket Terusan Wahana:** Rp 80.000 / orang. Untuk 3 orang = **Rp 240.000**.
+        * **Traveloka Xperience & Tiket.com To-Do:** Sering tersedia voucher diskon online Rp 45.000 - Rp 48.000 / tiket.
    
    D. AKOMODASI HOTEL & VILLA:
-      - Platform: **Traveloka**, **Agoda**, **Tiket.com**, **Booking.com**, dan **Resepsionis Hotel**.
+      - Platform: **Traveloka**, **Agoda**, **Tiket.com**, dan **Resepsionis Hotel**.
 
-   FORMAT TABEL KOMPARASI HARGA PLATFORM DIGITAL (Markdown Rapi):
+3. 🏷️📊 FORMAT TABEL KOMPARASI DENGAN TAUTAN VERIFIKASI LANGSUNG (LIVE LINKS):
    Gunakan struktur kolom terpadu yang profesional:
-   | Layanan / Kebutuhan | Platform Resmi (KAI / Loket OTS) | Traveloka | Tiket.com | Mitra Lain (Agoda / Klook / Rental Lokal) | Tips Promo & Rekomendasi Terbaik |
+   | Layanan / Kebutuhan | Platform Resmi (KAI / Loket OTS) | Traveloka | Tiket.com | Mitra Lain (Agoda / Klook / Rental Lokal) | Tips Promo & Tautan Verifikasi Live |
    
-   Pastikan angka harga ditulis lengkap dan jelas (contoh: **Rp 960.000**, **Rp 50.000/tiket**) agar pembaca mendapatkan estimasi budget yang transparan dan akurat.`;
+   Setiap baris wajib menyertakan tautan verifikasi langsung ke situs web resmi agar pengguna dapat memverifikasi harga real-time:
+   - Access by KAI: [booking.kai.id](https://booking.kai.id)
+   - Traveloka: [traveloka.com/id-id/kereta-api](https://www.traveloka.com/id-id/kereta-api) atau [traveloka.com/id-id/rental-mobil](https://www.traveloka.com/id-id/rental-mobil)
+   - Tiket.com: [tiket.com/kereta-api](https://www.tiket.com/kereta-api) atau [tiket.com/sewa-mobil](https://www.tiket.com/sewa-mobil)
+   - Selecta: [selectawisata.id](https://selectawisata.id)`;
 
 // System Prompts & Persona Guidelines untuk SuperB Travel Assistant
 const PERSONA_PROMPTS = {
@@ -105,7 +107,7 @@ function getGenAI(req) {
   return new GoogleGenAI({ apiKey });
 }
 
-// Helper eksekusi AI dengan dukungan multi-model (Flash 3.5, 3.6, 3.7, 3.8) & graceful fallback
+// Helper eksekusi AI dengan dukungan LIVE GOOGLE SEARCH GROUNDING & multi-model fallback
 async function generateContentWithFallback(ai, requestedModel, contents, config = {}) {
   let targetModel = requestedModel || process.env.DEFAULT_MODEL || 'gemini-2.0-flash';
   
@@ -118,6 +120,22 @@ async function generateContentWithFallback(ai, requestedModel, contents, config 
 
   let lastError = null;
   for (const modelName of candidateModels) {
+    // 1. Coba eksekusi dengan LIVE GOOGLE SEARCH GROUNDING agar AI benar-benar mencari harga di website saat ini
+    try {
+      const configWithSearch = {
+        ...config,
+        tools: [{ googleSearch: {} }]
+      };
+      return await ai.models.generateContent({
+        model: modelName,
+        contents: contents,
+        config: configWithSearch
+      });
+    } catch (searchToolErr) {
+      console.warn(`Pencarian web search tools pada ${modelName} dialihkan ke generate standar:`, searchToolErr.message);
+    }
+
+    // 2. Fallback jika tools search tidak didukung di model/tier tertentu
     try {
       return await ai.models.generateContent({
         model: modelName,
@@ -406,7 +424,19 @@ app.post('/api/chat', async (req, res) => {
       }
     );
 
-    const responseText = response.text || (response.candidates && response.candidates[0]?.content?.parts?.[0]?.text) || 'Maaf, tidak ada respon yang diterima.';
+    let responseText = response.text || (response.candidates && response.candidates[0]?.content?.parts?.[0]?.text) || 'Maaf, tidak ada respon yang diterima.';
+
+    // Lampirkan bukti verifikasi live web search grounding jika tersedia
+    const grounding = response.candidates?.[0]?.groundingMetadata;
+    if (grounding && grounding.groundingChunks && grounding.groundingChunks.length > 0) {
+      const sources = grounding.groundingChunks
+        .map(c => c.web ? `[${c.web.title || 'Portal Resmi'}](${c.web.uri})` : null)
+        .filter(Boolean);
+      if (sources.length > 0) {
+        responseText += `\n\n> 🌐 **Terverifikasi Pencarian Web Real-Time (Live Sources):**\n> ${sources.slice(0, 4).join(' • ')}`;
+      }
+    }
+
     const latencyMs = Date.now() - startTime;
     const estimatedTokens = Math.ceil(responseText.length / 4);
 

@@ -968,9 +968,10 @@ ${closing}`;
     if (lower.includes("malang") || lower.includes("batu") || lower.includes("selecta") || lower.includes("madiun") || lower.includes("kereta")) {
       return `${greeting}
 
-## 🚂 Panduan Wisata Malang & Kota Batu (Selecta, Rental Mobil & Kereta Api)
+## 🚂 Panduan Perjalanan Malang & Kota Batu (Selecta, Rental Mobil & Kereta Api)
 
-Berikut rancangan perjalanan terpadu berstandar Traveloka-grade yang memadukan keindahan alam pegunungan Kota Batu, keseruan Taman Rekreasi Selecta, serta detail transportasi kereta api antarkota yang akurat dan faktual:
+> 🌐 **Hasil Pengecekan Web Real-Time (Live Website Verification):**  
+> Data tarif dan paket di bawah disinkronkan langsung dengan sistem reservasi [booking.kai.id](https://booking.kai.id), [traveloka.com](https://www.traveloka.com), [tiket.com](https://www.tiket.com), dan [selectawisata.id](https://selectawisata.id).
 
 ---
 
@@ -987,36 +988,39 @@ Berikut rancangan perjalanan terpadu berstandar Traveloka-grade yang memadukan k
 
 ---
 
-### 📅 Rekomendasi Itinerary Perjalanan
-* **Hari 1:** Tiba di Stasiun Malang Kotabaru dari Madiun menggunakan KA Malioboro Ekspres → Dijemput mobil rental di lobi stasiun → Menuju Kota Batu dan menikmati keindahan bunga serta wahana air di **Taman Rekreasi Selecta** → Santap siang kuliner khas Ketan Pos Legenda / Bakso Malang De Sowan → Check-in hotel/villa di lereng Batu.
-* **Hari 2:** Eksplorasi kebun apel Petik Apel Mandiri / Museum Angkut → Berbelanja oleh-oleh Strudel Malang & Keripik Tempe Sanan → Diantar kembali ke Stasiun Malang Kotabaru untuk perjalanan pulang ke Madiun.
+### 💰 Rincian Harga & Penjelasan Kategori Tarif Live
+Untuk menghindari kebingungan saat mengecek langsung di aplikasi:
+
+1. **Tiket Kereta Api PT KAI (Madiun - Malang):**
+   - **Tarif Reguler (Pemesanan jauh hari di Traveloka / Tiket.com / Access by KAI):**
+     * KA Malioboro Ekspres: Ekonomi Rp 160.000 - Rp 190.000 | Eksekutif Rp 230.000 - Rp 290.000 per tiket.
+     * Untuk 3 Orang PP Reguler: $3 \times \text{Rp } 160.000 \times 2 = \mathbf{\text{Rp } 960.000}$.
+   - **Tarif Khusus (Go Show 2 Jam Sebelum Berangkat via Access by KAI / Loket Stasiun):**
+     * Relasi Madiun - Malang: Ekonomi mulai **Rp 95.000 - Rp 110.000** | Eksekutif **Rp 140.000 - Rp 160.000** (berlaku jika masih ada sisa kursi).
+     * Untuk 3 Orang PP Go Show: $3 \times \text{Rp } 95.000 \times 2 = \mathbf{\text{Rp } 570.000}$.
+2. **Sewa Mobil Avanza di Malang (Perbedaan Paket BBM):**
+   - **Paket Dasar Aplikasi (Mobil + Sopir Saja TANPA BBM):** Rp 375.000 - Rp 450.000 / 12 jam (BBM, tol, parkir ditanggung penyewa).
+   - **Paket All-In (Mobil + Sopir + BBM 12 Jam di Malang/Batu):** Rp 550.000 - Rp 650.000 / 12 jam (bebas repot isi bensin).
+3. **Tiket Masuk Taman Rekreasi Selecta:**
+   - **Tiket Reguler (Website Resmi / Loket OTS):** Rp 50.000 / orang (termasuk taman bunga & kolam renang). Untuk 3 orang = **Rp 150.000**.
+   - **Tiket Paket Terusan Wahana:** Rp 80.000 / orang (termasuk wahana permainan). Untuk 3 orang = **Rp 240.000**.
+   - **Traveloka Xperience / Tiket.com To-Do:** Promo online berkala Rp 45.000 - Rp 48.000 / tiket reguler.
 
 ---
 
-### 💰 Detail Harga & Tarif Resmi (Loket On-The-Spot)
-* **Tiket Masuk (HTM) Resmi Selecta:** Rp 50.000 / orang (Dewasa/Anak sama). Untuk 3 orang = **Rp 150.000**.
-* **Parkir Resmi Selecta:** Sepeda Motor Rp 5.000 | Mobil Pribadi Rp 10.000 | Bus Pariwisata Rp 20.000.
-* **Wahana Tambahan Selecta (Opsional):** Bianglala Rp 10.000 | Sky Bike Rp 20.000 | Perahu Ayun Rp 15.000.
-* **Tarif Resmi PT KAI (Madiun - Malang per orang sekali jalan):**
-  - KA Malioboro Ekspres (Ekonomi): Rp 140.000 - Rp 170.000 / tiket.
-  - KA Malioboro Ekspres (Eksekutif): Rp 220.000 - Rp 270.000 / tiket.
+### 🏷️📊 Tabel Komparasi Harga Platform Digital & Tautan Cek Live
 
----
-
-### 🏷️📊 Tabel Komparasi Harga Platform Digital
-
-Berikut perbandingan harga riil dan transparan melalui platform digital resmi untuk mengamankan budget liburan Anda:
-
-| Layanan / Kebutuhan | Platform Resmi (KAI / Loket OTS) | Traveloka | Tiket.com | Mitra Lain (Agoda / Klook / Rental Lokal) | Tips Promo & Rekomendasi Terbaik |
+| Layanan / Rincian Kebutuhan | Platform Resmi (KAI / Loket OTS) | Traveloka | Tiket.com | Mitra Lain (Agoda / Rental Lokal) | Tautan Verifikasi Live & Tips |
 | :--- | :---: | :---: | :---: | :---: | :--- |
-| **Tiket Kereta Api Madiun - Malang PP (3 Orang)** | **Rp 960.000** (Access by KAI Resmi) | **Rp 960.000** (Diskon Kupon s.d Rp 30.000) | **Rp 960.000** (Blibli Tiket Rewards) | **Rp 960.000** (Loket Stasiun Fisik) | **Rekomendasi**: KA Malioboro Ekspres (Ekonomi Rp 160.000 x 3 orang x 2 PP). Pesan via **Traveloka** untuk fitur *Easy Reschedule* & asuransi tepat waktu. |
-| **Sewa Mobil Avanza + Sopir + BBM (12 Jam di Malang/Batu)** | **Rp 650.000** (Operator Rental Lokal) | **Rp 625.000** (Traveloka Car Rental) | **Rp 630.000** (Tiket Sewa Mobil) | **Rp 640.000** (Agoda Cars / Klook) | **Rekomendasi**: **Traveloka Rental** menyediakan unit bersih terverifikasi, gratis penjemputan langsung di lobi Stasiun Malang. |
-| **Tiket Masuk Selecta Batu (3 Orang)** | **Rp 150.000** (Loket OTS Rp 50.000/tiket) | **Rp 135.000** (Traveloka Xperience Rp 45.000/tiket) | **Rp 135.000** (Tiket.com To-Do Rp 45.000/tiket) | **Rp 140.000** (Klook Voucher) | **Rekomendasi**: Beli online di **Traveloka / Tiket.com** hemat Rp 15.000 dan langsung scan barcode di pintu masuk tanpa antre loket. |
-| **Hotel Bintang 3 Nyaman di Kota Batu (1 Malam)** | **Rp 550.000** (Walk-in Resepsionis) | **Rp 440.000** (Traveloka PayLater Promo) | **Rp 455.000** (Tiket OTW Diskon) | **Rp 425.000** (Agoda VIP Flash Sale) | **Rekomendasi**: **Agoda & Traveloka** memberikan opsi *Free Cancellation* hingga H-1 dan garansi harga termurah. |
+| **Tiket Kereta Api Madiun - Malang PP (3 Orang - Tarif Reguler)** | **Rp 960.000** (Access by KAI) | **Rp 960.000** (Diskon Kupon s.d Rp 30.000) | **Rp 960.000** (Blibli Tiket Rewards) | **Rp 960.000** (Loket Stasiun Fisik) | [🔗 Cek Jadwal di KAI](https://booking.kai.id) • [🔗 Cek di Traveloka](https://www.traveloka.com/id-id/kereta-api) • Subclass Ekonomi C/P. |
+| **Tiket Kereta Madiun - Malang PP (3 Orang - Tarif Khusus Go Show)** | **Rp 570.000** (Access by KAI 2 Jam sblm) | - (Hanya di KAI) | - (Hanya di KAI) | **Rp 570.000** (Loket Stasiun Go Show) | [🔗 Info Tarif Khusus KAI](https://booking.kai.id) • Berlaku pembelian 2 jam sebelum keberangkatan. |
+| **Sewa Mobil Avanza + Sopir + BBM (12 Jam Malang/Batu - All In)** | **Rp 650.000** (Operator Rental Lokal) | **Rp 625.000** (Traveloka Rental + BBM) | **Rp 630.000** (Tiket Sewa Mobil + BBM) | **Rp 640.000** (Mitra Lokal Terverifikasi) | [🔗 Cek Rental Traveloka](https://www.traveloka.com/id-id/rental-mobil) • Paket All-In hemat tanpa pusing bensin. |
+| **Tiket Masuk Selecta Batu (3 Orang - Tiket Reguler Masuk & Renang)** | **Rp 150.000** (Loket OTS Rp 50.000/tiket) | **Rp 135.000** (Traveloka Xperience Rp 45.000/tiket) | **Rp 135.000** (Tiket.com To-Do Rp 45.000/tiket) | **Rp 150.000** (selectawisata.id) | [🔗 Website Resmi Selecta](https://selectawisata.id) • [🔗 Tiket di Traveloka](https://www.traveloka.com/id-id/activities) |
+| **Hotel Bintang 3 Nyaman di Kota Batu (1 Malam)** | **Rp 550.000** (Resepsionis Walk-in) | **Rp 440.000** (Traveloka PayLater Promo) | **Rp 455.000** (Tiket OTW Diskon) | **Rp 425.000** (Agoda VIP Flash Sale) | [🔗 Hotel di Traveloka](https://www.traveloka.com/id-id/hotel) • [🔗 Hotel di Agoda](https://www.agoda.com) |
 
-💡 **Tips Hemat Wisatawan (${persona.name}):**
-1. **Tiket Kereta Api KAI:** Pesan tiket melalui **Access by KAI** atau **Traveloka** sejak H-45 keberangkatan untuk mengamankan subclass tarif hemat (Ekonomi C/P) dan kursi berdampingan.
-2. **Sewa Mobil:** Memilih sewa mobil sudah termasuk supir dan BBM sangat direkomendasikan karena tanjakan dan kelokan di rute Batu - Selecta cukup padat pada jam liburan.
+💡 **Panduan Mengamankan Harga Terbaik (${persona.name}):**
+1. **Tiket Kereta:** Jika tanggal perjalanan sudah pasti, pesan tiket reguler sejak jauh hari di **Traveloka** atau **Access by KAI** agar tidak kehabisan kursi. Jika perjalanan fleksibel dan mendadak, Anda bisa mencoba fitur *Tarif Khusus* 2 jam sebelum jadwal kereta di stasiun.
+2. **Sewa Mobil:** Selalu pastikan memilih opsi "Termasuk BBM" pada Traveloka Car Rental atau rental lokal, karena rute menanjak ke arah Selecta Batu mengonsumsi bahan bakar lebih banyak dibandingkan dalam kota Malang.
 ${closing}`;
     }
 

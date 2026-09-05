@@ -1409,6 +1409,35 @@ body {
   color: #881337;
 }
 
+/* Transkripsi Rekaman Suara Langsung - Kontras Tinggi & Terbaca Jelas */
+.rec-transcript-preview {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: #FFFFFF !important;
+  background: rgba(15, 23, 42, 0.75);
+  border: 1px solid rgba(244, 63, 94, 0.5);
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  margin-left: 8px;
+  max-width: 480px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  letter-spacing: 0.01em;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  transition: all 0.2s ease;
+}
+
+[data-theme="light"] .rec-transcript-preview {
+  color: #9F1239 !important;
+  background: #FFE4E6;
+  border: 1.5px solid #FDA4AF;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(225, 29, 72, 0.12);
+}
+
 .rec-actions {
   display: flex;
   align-items: center;
@@ -1453,6 +1482,50 @@ body {
   transform: translateY(-1px);
 }
 
+/* Transkripsi Suara pada Kartu Lampiran Sebelum Dikirim */
+.file-preview-transcript-box {
+  margin-top: 5px;
+  padding: 5px 10px;
+  background: rgba(1, 148, 243, 0.12);
+  border-left: 3px solid var(--accent-cyan);
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 520px;
+}
+
+[data-theme="light"] .file-preview-transcript-box {
+  background: #E8F5FD;
+  border-left-color: #0064D2;
+}
+
+.transcript-tag {
+  font-weight: 700;
+  color: var(--accent-cyan);
+  white-space: nowrap;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+[data-theme="light"] .transcript-tag {
+  color: #0064D2;
+}
+
+.transcript-text {
+  color: var(--text-primary);
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+[data-theme="light"] .transcript-text {
+  color: #031838;
+}
+
 /* Chat Message Attachment Preview */
 .msg-attachment {
   margin-bottom: 8px;
@@ -1470,9 +1543,76 @@ body {
 
 .msg-attachment-audio {
   width: 100%;
-  max-width: 300px;
+  max-width: 340px;
   display: block;
   border-radius: var(--radius-md);
+}
+
+/* Transkrip Suara di dalam Bubble Chat */
+.msg-audio-transcript {
+  margin-top: 8px;
+  padding: 8px 12px;
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: var(--radius-md);
+  border-left: 3px solid var(--accent-cyan);
+  max-width: 480px;
+}
+
+.message-row.user .msg-audio-transcript {
+  background: rgba(255, 255, 255, 0.15);
+  border-left: 3px solid #93C5FD;
+}
+
+[data-theme="light"] .msg-audio-transcript {
+  background: #F1F6FB;
+  border-left-color: #0064D2;
+}
+
+[data-theme="light"] .message-row.user .msg-audio-transcript {
+  background: rgba(255, 255, 255, 0.25);
+  border-left-color: #FFFFFF;
+}
+
+.msg-transcript-badge {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--accent-cyan);
+  margin-bottom: 3px;
+}
+
+.message-row.user .msg-transcript-badge {
+  color: #BFDBFE;
+}
+
+[data-theme="light"] .msg-transcript-badge {
+  color: #0064D2;
+}
+
+[data-theme="light"] .message-row.user .msg-transcript-badge {
+  color: #EFF6FF;
+}
+
+.msg-transcript-body {
+  font-size: 0.88rem;
+  font-style: italic;
+  line-height: 1.5;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.message-row.user .msg-transcript-body {
+  color: #FFFFFF;
+}
+
+[data-theme="light"] .msg-transcript-body {
+  color: #031838;
+}
+
+[data-theme="light"] .message-row.user .msg-transcript-body {
+  color: #FFFFFF;
 }
 
 .msg-attachment-doc {
