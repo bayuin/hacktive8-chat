@@ -1,6 +1,6 @@
 /**
- * DevPulse AI - API Integration Module
- * Connects to Google Gemini API (v1beta) and provides high-fidelity Mock Engine
+ * WanderWise AI - Travel API Service & Interactive Mock Engine
+ * Connects to Google Gemini API (v1beta) and provides high-fidelity Travel Itinerary Mock Engine
  */
 
 class AIService {
@@ -37,18 +37,10 @@ class AIService {
 
   /**
    * Send chat request to Gemini API or fallback Mock
-   * @param {Object} options
-   * @param {Array} options.messages - [{role: 'user'|'assistant', content: string}]
-   * @param {string} options.persona - persona key
-   * @param {string} options.tone - tone key
-   * @param {number} options.temperature - float 0.0 - 1.0
-   * @param {number} options.memoryTurns - integer max turns
-   * @param {Function} options.onChunk - callback(chunkText, accumulatedText)
-   * @returns {Promise<Object>} { text, latencyMs, tokens, model }
    */
   async generateResponse({
     messages,
-    persona = "fullstack",
+    persona = "backpacker",
     tone = "santai",
     temperature = 0.7,
     memoryTurns = 8,
@@ -57,7 +49,6 @@ class AIService {
     const startTime = Date.now();
     this.abortController = new AbortController();
 
-    // Decide whether to use real Gemini API or Mock Engine
     const shouldUseMock = this.currentModel === "mock-demo" || !this.hasApiKey();
 
     if (shouldUseMock) {
@@ -85,11 +76,10 @@ class AIService {
       });
     } catch (err) {
       if (err.name === "AbortError") {
-        throw new Error("Generasi respon dihentikan oleh pengguna.");
+        throw new Error("Penyusunan itinerary dihentikan oleh pengguna.");
       }
       console.warn("Gemini API call failed, falling back to Interactive Mock Engine:", err);
-      // Fallback seamlessly to mock if API key quota exceeded / invalid
-      const fallbackNotice = `> ⚠️ **Catatan Sistem**: Panggilan Gemini API mengalami kendala (${err.message || 'Network/Key error'}). Dialihkan ke **Interactive Simulation Mode**.\n\n`;
+      const fallbackNotice = `> ⚠️ **Catatan Sistem**: Panggilan Gemini API mengalami kendala (${err.message || 'Koneksi/Kunci API'}). Beralih otomatis ke **Interactive Travel Demo Engine**.\n\n`;
       onChunk(fallbackNotice, fallbackNotice);
 
       const mockRes = await this.generateMockResponse({
@@ -112,22 +102,14 @@ class AIService {
     }
   }
 
-  /**
-   * Format message history for Gemini API
-   */
   formatGeminiContents(messages, memoryTurns) {
-    // Slice according to memory depth
     const recentMessages = messages.slice(-memoryTurns);
-
     return recentMessages.map(msg => ({
       role: msg.role === "assistant" ? "model" : "user",
       parts: [{ text: msg.content }]
     }));
   }
 
-  /**
-   * Call real Google Gemini API
-   */
   async callGeminiAPI({
     messages,
     persona,
@@ -141,7 +123,6 @@ class AIService {
     const systemPrompt = buildSystemPrompt(persona, tone);
     const contents = this.formatGeminiContents(messages, memoryTurns);
 
-    // Endpoint for Gemini streamGenerateContent with SSE
     const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${this.currentModel}:streamGenerateContent?alt=sse&key=${this.apiKey}`;
 
     const requestBody = {
@@ -152,7 +133,7 @@ class AIService {
       generationConfig: {
         temperature: Number(temperature),
         topP: 0.95,
-        maxOutputTokens: 3000
+        maxOutputTokens: 3500
       },
       safetySettings: [
         { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_MEDIUM_AND_ABOVE" },
@@ -186,7 +167,7 @@ class AIService {
 
       buffer += decoder.decode(value, { stream: true });
       const lines = buffer.split("\n");
-      buffer = lines.pop(); // keep last incomplete line
+      buffer = lines.pop();
 
       for (const line of lines) {
         if (line.startsWith("data: ")) {
@@ -200,23 +181,9 @@ class AIService {
               fullText += textChunk;
               onChunk(textChunk, fullText);
             }
-          } catch (e) {
-            // ignore non-json SSE lines
-          }
+          } catch (e) {}
         }
       }
-    }
-
-    // Process leftover buffer if any
-    if (buffer.startsWith("data: ")) {
-      try {
-        const parsed = JSON.parse(buffer.slice(6).trim());
-        const textChunk = parsed.candidates?.[0]?.content?.parts?.[0]?.text || "";
-        if (textChunk) {
-          fullText += textChunk;
-          onChunk(textChunk, fullText);
-        }
-      } catch (e) {}
     }
 
     const latencyMs = Date.now() - startTime;
@@ -230,10 +197,6 @@ class AIService {
     };
   }
 
-  /**
-   * Realistic Interactive Mock Engine
-   * Generates custom, tone-aligned, persona-aware developer solutions with simulated streaming
-   */
   async generateMockResponse({
     messages,
     persona,
@@ -246,21 +209,19 @@ class AIService {
     const lastMessage = messages[messages.length - 1]?.content || "";
     const mockContent = this.createMockReply(lastMessage, persona, tone);
 
-    // Simulate realistic chunked streaming
     let accumulated = "";
-    const chunkSize = Math.max(8, Math.floor(mockContent.length / 30));
+    const chunkSize = Math.max(10, Math.floor(mockContent.length / 32));
 
     for (let i = 0; i < mockContent.length; i += chunkSize) {
       if (signal && signal.aborted) {
-        throw new Error("Generasi respon dihentikan oleh pengguna.");
+        throw new Error("Penyusunan itinerary dihentikan oleh pengguna.");
       }
 
       const chunk = mockContent.slice(i, i + chunkSize);
       accumulated += chunk;
       onChunk(chunk, accumulated);
 
-      // Jitter delay between 15ms and 45ms for realistic typing simulation
-      const delay = Math.floor(Math.random() * 30) + 15;
+      const delay = Math.floor(Math.random() * 25) + 15;
       await new Promise(resolve => setTimeout(resolve, delay));
     }
 
@@ -271,320 +232,265 @@ class AIService {
       text: mockContent,
       latencyMs,
       tokens: estTokens,
-      model: "Interactive Demo (Mock AI Engine)"
+      model: "Interactive Demo (Travel AI Engine)"
     };
   }
 
-  /**
-   * Pattern-matching mock generator tailored to user prompt, persona, and tone
-   */
   createMockReply(prompt, personaKey, toneKey) {
     const lower = prompt.toLowerCase();
-    const persona = CONFIG.personas[personaKey] || CONFIG.personas.fullstack;
+    const persona = CONFIG.personas[personaKey] || CONFIG.personas.backpacker;
 
-    // Greeting / Persona Salutation based on Tone
     let greeting = "";
     let closing = "";
 
     if (toneKey === "santai") {
-      greeting = "Yo! Santai bre, masalah ini udah sering banget kejadian di dunia nyata. Mari kita bedah bareng!";
-      closing = "\n\nCoba terapin solusi di atas, kalau masih ada yang error langsung lempar stack trace-nya ke sini lagi ya! 🚀";
+      greeting = `Halo travelers! Siap liburan seru nih bareng **${persona.name}**! Yuk kita rancang perjalanan tak terlupakan:`;
+      closing = `\n\nTips santai: Jangan lupa bawa sunscreen dan powerbank ya sob. Kalau ada yang mau diganti atau disesuaikan rutenya, tinggal bilang aja! 🌴🎒`;
     } else if (toneKey === "formal") {
-      greeting = `Halo. Menanggapi pertanyaan Anda terkait arsitektur dan implementasi teknis, berikut adalah analisis komprehensif dari perspektif **${persona.name}**:`;
-      closing = "\n\nDemikian rekomendasi teknis yang dapat diimplementasikan. Pastikan untuk melakukan automated unit testing sebelum rilis ke staging.";
+      greeting = `Selamat datang di layanan konsultasi perjalanan **WanderWise Travel Concierge**. Berdasarkan preferensi Anda, berikut kami susun perencanaan perjalanan komprehensif dari sudut pandang **${persona.name}**:`;
+      closing = `\n\nDemikian rancangan perjalanan yang kami rekomendasikan. Tim concierge kami siap melakukan kustomisasi jadwal sesuai kebutuhan eksklusif Anda.`;
     } else if (toneKey === "concise") {
-      greeting = "⚡ **Solusi Langsung:**";
-      closing = "";
-    } else if (toneKey === "socratic") {
-      greeting = `Halo! Menarik sekali masalah yang kamu hadapi. Sebagai mentor, mari kita telusuri logikanya bersama-sama agar kamu benar-benar paham akar masalahnya:`;
-      closing = "\n\n🤔 **Pertanyaan Refleksi Untukmu:** Setelah melihat pola di atas, menurutmu di baris mana data tersebut berpotensi null saat pertama kali render?";
+      greeting = `⚡ **Rangkuman Cepat Rencana Perjalanan:**`;
+      closing = ``;
+    } else if (toneKey === "storyteller") {
+      greeting = `Tutup matamu sejenak dan bayangkan aroma angin laut yang hangat serta gemerisik daun kelapa yang menyambut langkahmu... Mari kita mulai kisah petualangan ini bersama **${persona.name}**:`;
+      closing = `\n\nSetiap langkah perjalanan adalah cerita baru yang menunggumu untuk ditulis. Selamat menjelajah dunia yang indah ini! 🌅`;
     }
 
-    // 1. Error: Cannot read properties of undefined (reading 'map')
-    if (lower.includes("map") && (lower.includes("undefined") || lower.includes("typeerror") || lower.includes("stack trace"))) {
+    // 1. Bali 3D2N Itinerary
+    if (lower.includes("bali") || (lower.includes("3") && lower.includes("hari") && lower.includes("malam"))) {
       if (toneKey === "concise") {
         return `${greeting}
-Gunakan **Optional Chaining** (\`?.\`) atau **Default Value** (\`[]\`).
+**Destinasi:** Bali Selatan & Ubud (3 Hari 2 Malam)  
+**Estimasi Total Budget:** Rp 2.850.000 / orang
 
-\`\`\`jsx
-// Solusi 1: Optional chaining + fallback
-{users?.map(user => (
-  <UserCard key={user.id} data={user} />
-)) || <p>Tidak ada data pengguna.</p>}
+### Jadwal Singkat:
+- **Hari 1 (Kedatangan & Sunset):** Pantai Melasti → GWK Cultural Park → Sunset Seafood Dinner di Jimbaran.
+- **Hari 2 (Pesona Ubud):** Tegalalang Rice Terrace → Campuhan Ridge Walk → Monkey Forest → Pasar Seni Ubud.
+- **Hari 3 (Water Activity & Oleh-oleh):** Pantai Pandawa / Tanjung Benoa → Belanja di Krisna Oleh-Oleh → Bandara Ngurah Rai.
 
-// Solusi 2: Inisialisasi state default
-const [users, setUsers] = useState([]); // JANGAN useState() tanpa default array!
-\`\`\`
-- **Penyebab**: Komponen me-render sebelum asynchronous API fetch selesai, sehingga \`users\` masih bernilai \`undefined\`.`;
+### Rincian Biaya Cepat:
+- Penginapan (2 malam di guesthouse/hotel): Rp 900.000
+- Sewa Motor + Bensin (3 hari): Rp 270.000
+- Makan & Minum (3 hari): Rp 750.000
+- Tiket Masuk Wisata: Rp 430.000
+- Cadangan / Parkir: Rp 500.000`;
       }
 
       return `${greeting}
 
-### 🐞 Analisis Root Cause
-Error \`TypeError: Cannot read properties of undefined (reading 'map')\` terjadi karena variabel yang ingin kamu iterate bernilai \`undefined\` saat proses render berjalan. Hal ini biasanya terjadi pada React/Vue ketika data dari REST API masih dalam proses fetching asynchronous.
+## 🌴 Itinerary 3 Hari 2 Malam: Eksplorasi Bali Indah & Hemat
 
-### 🛠️ Solusi & Kode Rekomendasi
+Berikut rancangan rencana perjalanan yang dirancang khusus untuk kenyamanan dan efisiensi waktu perjalanan Anda:
 
-#### 1. Beri Default Value pada State
-\`\`\`javascript
-// ❌ Potensi Error:
-const [userList, setUserList] = useState(); // Bernilai undefined!
+---
 
-// ✅ Best Practice:
-const [userList, setUserList] = useState([]); // Inisialisasi array kosong
-\`\`\`
+### 📅 Jadwal Perjalanan Harian
 
-#### 2. Gunakan Optional Chaining & Nullish Coalescing
-\`\`\`jsx
-export function UserListView({ users, isLoading }) {
-  if (isLoading) {
-    return <div className="loading-spinner">Sedang memuat data...</div>;
-  }
+#### Hari 1: Sunset & Kehangatan Bali Selatan
+* **10:00 - 12:00**: Mendarat di Bandara I Gusti Ngurah Rai, ambil sewa motor/kendaraan dan check-in penginapan di area Kuta/Seminyak.
+* **13:00 - 15:30**: Menikmati panorama tebing kapur spektakuler di **Pantai Melasti** (Ungasan).
+* **16:30 - 18:30**: Menyaksikan golden sunset memukau di atas tebing **Pura Uluwatu** sambil menikmati pertunjukan Tari Kecak.
+* **19:30 - 21:00**: Makan malam seafood segar di tepi pasir pantai **Teluk Jimbaran**.
 
-  return (
-    <div className="user-grid">
-      {users?.length > 0 ? (
-        users.map(user => (
-          <div key={user.id} className="user-card">
-            <h4>{user.name}</h4>
-            <p>{user.email}</p>
-          </div>
-        ))
-      ) : (
-        <p className="empty-state">Data pengguna kosong.</p>
-      )}
-    </div>
-  );
-}
-\`\`\`
+#### Hari 2: Kesejukan Alam & Seni Tradisional Ubud
+* **07:30 - 09:00**: Sarapan lokal dan perjalanan menuju Ubud.
+* **09:30 - 11:30**: Berfoto dan jalan pagi di undakan sawah hijau **Tegalalang Rice Terrace**.
+* **12:00 - 13:30**: Santap siang Nasi Ayam Kedewatan Ibu Mangku yang legendaris.
+* **14:00 - 16:00**: Berjalan santai menikmati udara asri di **Bukit Campuhan (Campuhan Ridge Walk)**.
+* **16:30 - 18:00**: Mengunjungi **Sacred Monkey Forest Sanctuary** dan belanja suvenir di Pasar Seni Ubud.
+* **19:30**: Kembali ke hotel dan istirahat.
 
-#### 3. Defensive API Response Handler
-\`\`\`typescript
-async function fetchUsers(): Promise<User[]> {
-  try {
-    const res = await api.get('/api/users');
-    // Selalu pastikan return array valid meskipun server return null
-    return Array.isArray(res.data) ? res.data : [];
-  } catch (error) {
-    console.error('Gagal mengambil data user:', error);
-    return [];
-  }
-}
-\`\`\`
+#### Hari 3: Pantai Pasir Putih & Suvenir Khas Bali
+* **08:30 - 11:00**: Santai dan berenang di **Pantai Pandawa** atau mencoba watersport di Tanjung Benoa.
+* **12:00 - 14:00**: Berburu oleh-oleh khas (Pia Legong, Kacang Disco, Kemeja Pantai) di **Krisna Oleh-Oleh**.
+* **14:30**: Menuju bandara untuk penerbangan kembali ke kota asal.
+
+---
+
+### 💰 Estimasi Rincian Anggaran (Budget Breakdown)
+
+| Kategori | Deskripsi | Estimasi Biaya (IDR) |
+| :--- | :--- | :--- |
+| **Akomodasi** | Guesthouse / Hotel Estetik 2 Malam | Rp 900.000 |
+| **Transportasi** | Sewa Motor Nmax/Vario (3 Hari) + Bensin | Rp 270.000 |
+| **Konsumsi** | Makan lokal, kafe kelapa, & Jimbaran seafood | Rp 850.000 |
+| **Tiket Wisata** | Tiket Melasti, Uluwatu + Tari Kecak, Monkey Forest | Rp 480.000 |
+| **Oleh-oleh & Tak Terduga** | Pie Susu, kopi kintamani, dana darurat | Rp 450.000 |
+| **TOTAL ESTIMASI** | **Pengeluaran per orang** | **± Rp 2.950.000** |
+
+---
+
+### 🎒 Tips & Rekomendasi Penting:
+1. **Etika Pura**: Kenakan kain sarung dan selendang saat memasuki area suci Pura Uluwatu (disediakan di loket tiket).
+2. **Hindari Kemacetan**: Jalur Canggu dan Sunset Road kerap padat pada pukul 17:00 - 19:00, prioritaskan penggunaan sepeda motor untuk mobilitas lincah.
 ${closing}`;
     }
 
-    // 2. Database N+1 Query
-    if (lower.includes("n+1") || lower.includes("query") || lower.includes("database") || lower.includes("orm")) {
+    // 2. Yogyakarta Culinary & Heritage
+    if (lower.includes("jogja") || lower.includes("yogyakarta") || lower.includes("gudeg") || lower.includes("kuliner")) {
       return `${greeting}
 
-### ⚡ Memahami N+1 Query Problem
-N+1 query terjadi ketika aplikasi mengeksekusi 1 query untuk mengambil *N* data induk (misal 100 Post), lalu ORM menjalankan 1 query tambahan untuk setiap item secara individual untuk mengambil relasi (Author) di dalam loop. Total: **1 + 100 = 101 query!**
+## 🍜 Panduan Wisata Kuliner Legendaris & Pusaka Yogyakarta (2 Hari)
 
-### 🚀 Cara Mengatasinya
+Yogyakarta bukan sekadar kota, melainkan denyut kehangatan rasa dan sejarah yang abadi:
 
-#### A. Menggunakan Eager Loading (JOIN / Preload)
-\`\`\`sql
--- ❌ N+1 Style (101 Query):
-SELECT * FROM posts LIMIT 100;
--- Lalu ORM menjalankan 100x:
-SELECT * FROM users WHERE id = ?;
+---
 
--- ✅ Eager Loading (1 atau 2 Query via IN / JOIN):
-SELECT p.*, u.name as author_name, u.email as author_email
-FROM posts p
-LEFT JOIN users u ON p.author_id = u.id
-LIMIT 100;
-\`\`\`
+### 🗺️ Rute Kuliner Harian
 
-#### B. Contoh Implementasi di Prisma ORM & Node.js
-\`\`\`typescript
-// Menggunakan 'include' agar dieksekusi via JOIN / Batching
-const postsWithAuthors = await prisma.post.findMany({
-  take: 50,
-  include: {
-    author: {
-      select: { id: true, name: true, avatarUrl: true }
-    },
-    tags: true
-  }
-});
-\`\`\`
+#### Hari 1: Denyut Tradisi Mataram
+* **06:30 - 08:30 | Sarapan Legendaris**: **Lupis & Cenil Mbah Satinem** (Jl. Bumijo). Lupis kenyal bersiram kuah gula aren kental yang pernah masuk liputan Netflix Street Food. *Buka mulai 06:00, ambil nomor antrean!*
+* **10:00 - 12:00 | Pusaka Budaya**: Menjelajahi keindahan arsitektur air **Taman Sari** dan **Keraton Ngayogyakarta Hadiningrat**.
+* **12:30 - 14:00 | Makan Siang Otentik**: **Gudeg Yu Djum Wijilan 167**. Nikmati gudeg kering manis gurih dengan krecek pedas dan telur bebek bacem.
+* **16:00 - 18:00 | Sore Tenang**: Menikmati kopi rempah dan pisang goreng di bantaran sawah **Kopi Klotok Pakem**.
+* **20:00 - 22:00 | Malam Hangat**: **Kopi Joss Angkringan Lik Man** dekat Stasiun Tugu. Sensasi kopi tubruk yang dicemplungi arang membara menyala!
 
-#### C. Gunakan Dataloader untuk GraphQL
-Jika menggunakan GraphQL / Microservices, manfaatkan library \`dataloader\` untuk melakukan auto-batching dan per-request caching secara transparan.
+#### Hari 2: Eksplorasi Rasa Selatan & Malam Romantis
+* **08:00 - 10:00 | Sarapan Gurih**: **Soto Bathok Mbah Katro** di dekat Candi Sambisari. Disajikan dalam tempurung kelapa dengan tempe mendoan hangat.
+* **13:00 - 15:00 | Heritage Jalanan**: Menikmati es dawet ngudi rasa Pasar Beringharjo dan hunting batik tulis.
+* **18:00 - 20:00 | Santap Malam Spektakuler**: **Sate Klatak Pak Pong** di Imogiri. Daging kambing muda empuk dipanggang menggunakan jeruji besi sepeda dengan kuah gulai gurih melimpah.
+* **20:30 - 22:30**: **Bakmi Jawa Mbah Gito** Kotagede. Menikmati bakmi godhog di bangunan kayu jati bernuansa pedesaan Jawa.
+
+---
+
+### 💡 Tips Warga Lokal (Insider Tips):
+1. **Pecel & Angkringan**: Tanyakan harga menu terlebih dahulu bila jajan di tenda sekitar Malioboro untuk menghindari getok harga.
+2. **Waktu Terbaik**: Datanglah ke Kopi Klotok sebelum jam 16:00 untuk menghindari kehabisan sayur lodeh dan telur krispi andalan.
 ${closing}`;
     }
 
-    // 3. Docker & DevOps
-    if (lower.includes("docker") || lower.includes("dockerfile") || lower.includes("container") || lower.includes("devops")) {
+    // 3. Japan Solo Travel
+    if (lower.includes("jepang") || lower.includes("japan") || lower.includes("tokyo") || lower.includes("kyoto")) {
       return `${greeting}
 
-### 🐳 Production Multi-Stage Dockerfile (Node.js Alpine)
-Multi-stage build memisahkan proses kompilasi dependency dengan runtime container akhir, memangkas image size hingga **80%** dan membuang tool kompilasi untuk keamanan maksimal.
+## 🍁 Panduan Lengkap Solo Traveling ke Jepang (Tokyo - Kyoto - Osaka)
 
-\`\`\`dockerfile
-# ==========================================
-# STAGE 1: Dependency & Build
-# ==========================================
-FROM node:20-alpine AS builder
-WORKDIR /app
+Menjelajahi Negeri Sakura seorang diri saat musim gugur (autumn foliage) adalah pengalaman yang sangat aman, efisien, dan memesona.
 
-# Copy dependency specifications first (Docker cache optimization)
-COPY package*.json ./
-RUN npm ci --only=production && cp -R node_modules prod_node_modules
-RUN npm ci
+---
 
-# Copy source code and build
-COPY . .
-RUN npm run build || true
+### 🚅 1. Navigasi Transportasi
+* **IC Card Digital (Suica / Pasmo / ICOCA)**: Tambahkan kartu Suica ke Apple Wallet / Google Wallet di smartphone Anda. Sangat praktis untuk subway, kereta komuter, bus, bahkan belanja di kombini (7-Eleven/Lawson).
+* **Shinkansen (Peluru Cepat)**: Tiket Shinkansen Tokaido (Tokyo ke Kyoto ~2 jam 15 menit) dapat dipesan langsung via aplikasi *SmartEX* untuk mendapatkan diskon early bird.
+* **Aplikasi Wajib**: Download aplikasi **Japan Travel by NAVITIME** atau **Google Maps** yang sangat akurat menunjukkan platform kereta, gerbong transfer, dan tarif.
 
-# ==========================================
-# STAGE 2: Production Minimal Runtime
-# ==========================================
-FROM node:20-alpine AS runner
-WORKDIR /app
-ENV NODE_ENV=production
-ENV PORT=3000
+---
 
-# Security: Jalankan sebagai non-root user
-USER node
+### 📶 2. Konektivitas & Internet
+* **eSIM / Pocket WiFi**: Beli eSIM (misal: Airalo, Ubigi, atau Klook) sebelum keberangkatan. Pastikan kuota minimal 2GB/hari atau unlimited agar lancar navigasi GPS.
 
-# Copy only production dependencies & build artifacts
-COPY --chown=node:node --from=builder /app/prod_node_modules ./node_modules
-COPY --chown=node:node --from=builder /app/package*.json ./
-COPY --chown=node:node --from=builder /app/dist ./dist 2>/dev/null || true
-COPY --chown=node:node --from=builder /app/src ./src 2>/dev/null || true
+---
 
-EXPOSE 3000
+### 🏮 3. Rekomendasi Rute Autumn Foliage
+1. **Tokyo**: Meiji Jingu Gaien (Icho Namiki / Ginkgo Avenue berdaun kuning keemasan), Shinjuku Gyoen, Shibuya Sky saat senja.
+2. **Kyoto**: Kuil Tofukuji (lautan daun momiji merah), Kiyomizu-dera, Arashiyama Bamboo Grove, dan Fushimi Inari Taisha di pagi hari (pukul 07:00 bebas kerumunan).
+3. **Osaka**: Dotonbori street food (Takoyaki & Okonomiyaki) dan Osaka Castle Park.
 
-# Healthcheck probe
-HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3 \
-  CMD wget --no-verbose --tries=1 --spider http://localhost:3000/health || exit 1
+---
 
-CMD ["node", "src/index.js"]
-\`\`\`
-
-### 💡 Keuntungan Best Practice Ini:
-1. **Ukuran Image Sangat Kecil**: Hanya ~120MB dibandingkan ~1GB jika memakai image Node biasa.
-2. **Keamanan (Security)**: Menjalankan container dengan user non-root (\`USER node\`).
-3. **Build Caching**: Layer \`package.json\` di-cache selama dependencies tidak berubah.
+### 🤝 4. Etika Krusial di Jepang
+* **Dilarang Menelepon di Kereta**: Kereta di Jepang sangat hening; ubah ponsel ke mode senyap (*manner mode*).
+* **Sampah Pribadi**: Jarang sekali tempat sampah umum di jalanan. Siapkan kantong plastik kecil di tas untuk membawa sampah Anda kembali ke hotel.
+* **Tidak Ada Budaya Tip**: Jangan meninggalkan uang tip di restoran, hal tersebut dianggap tidak sopan karena pelayanan prima sudah merupakan standar kewajiban mereka.
 ${closing}`;
     }
 
-    // 4. REST API Auth / JWT / Architecture
-    if (lower.includes("auth") || lower.includes("jwt") || lower.includes("token") || lower.includes("arsitektur")) {
+    // 4. Labuan Bajo Sailing Trip
+    if (lower.includes("bajo") || lower.includes("labuan") || lower.includes("komodo") || lower.includes("sailing")) {
       return `${greeting}
 
-### 🏗️ Arsitektur Dual-Token: Access Token + Refresh Token dengan Rotation
-Kombinasi Access Token (masa hidup singkat, misal 15 menit) dan Refresh Token (masa hidup 7 hari) disimpan dengan aman untuk meminimalisir risiko credential leakage.
+## ⛵ Panduan Sailing Trip Liveaboard 4D3N di Labuan Bajo & Taman Nasional Komodo
 
-\`\`\`
-[ Client ]
-   │
-   ├── (1) POST /auth/login ──────────> [ Auth Server ]
-   │                                           │ (Verifikasi hash password)
-   │ <─── 200 OK + JWT Access Token ───────────┤
-   │      + Refresh Token (HttpOnly Cookie)    │
-   │
-   ├── (2) GET /api/v1/protected (Bearer JWT) ─> [ API Gateway / Service ]
-   │                                           │ (Verifikasi tanda tangan token)
-   │ <─── 200 Response Data ───────────────────┤
-   │
-   ├── (3) Access Token Expired (401)
-   │
-   └── (4) POST /auth/refresh ────────────────> [ Auth Server ]
-          (Cookie HttpOnly otomatis terkirim)  │ (Rotasi refresh token baru)
-       <── 200 OK + New Access Token ──────────┤
-\`\`\`
+Merasakan sensasi tidur di atas kapal pinisi phinisi mengarungi laut flores bertabur bintang:
 
-#### Rekomendasi Keamanan Kunci:
-1. **HttpOnly & Secure Cookie**: Simpan Refresh Token di Cookie dengan flag \`HttpOnly\`, \`Secure\`, dan \`SameSite=Strict\` untuk mencegah serangan XSS.
-2. **In-Memory Access Token**: Simpan Access Token di memory aplikasi klien (bukan localStorage) agar tidak mudah diakses script injeksi pihak ketiga.
-3. **Refresh Token Rotation**: Setiap kali refresh token digunakan, ganti dengan refresh token baru dan hanguskan yang lama.
+---
+
+### 🗺️ Rute & Destinasi Utama
+* **Pulau Kelor**: Trekking pemanasan dengan panorama laut gradasi toska.
+* **Pulau Padar**: Ikonik dengan 3 teluk berpasir berbeda (putih, merah muda, hitam). Trekking 800 anak tangga saat subuh untuk sunrise magis!
+* **Pink Beach**: Snorkeling bersama terumbu karang warna-warni di atas pasir merah muda alami.
+* **Pulau Komodo / Rinca**: Trekking bersama Ranger TN Komodo mengamati habitat asli satwa purba Komodo Dragon.
+* **Manta Point**: Berenang bebas (snorkeling) berdampingan dengan Manta Ray raksasa.
+* **Pulau Kalong**: Menonton jutaan kelelawar buah raksasa terbang melintasi langit senja saat sunset.
+
+---
+
+### 🎒 Checklist Wajib Bawa:
+- [x] Sandal/Sepatu trekking dengan grip kuat (jalur Padar licin berkerikil).
+- [x] Dry bag tahan air (10L - 15L) untuk melindungi gadget di dinghy boat.
+- [x] Reef-safe sunscreen (bebas bahan kimia Oxybenzone untuk melindungi terumbu karang).
+- [x] Obat anti-mabuk laut (diminum 30 menit sebelum berlayar).
+- [x] Kacamata hitam & topi bertepi lebar.
+
+---
+
+### 💰 Estimasi Biaya Phinisi Sharing:
+* **Paket Open Trip Phinisi Standard**: Rp 2.500.000 - Rp 3.500.000 / orang (termasuk makan 3x sehari di kapal, alat snorkel, kabin AC).
+* **Tiket Masuk TN Komodo**: ± Rp 250.000 - Rp 350.000 (WNI) / Rp 500.000+ (WNA).
 ${closing}`;
     }
 
-    // 5. System Design / Interview
-    if (lower.includes("interview") || lower.includes("shortener") || lower.includes("system design") || lower.includes("leet")) {
+    // 5. Gunung Prau Hiking
+    if (lower.includes("prau") || lower.includes("gunung") || lower.includes("hiking") || lower.includes("trekking")) {
       return `${greeting}
 
-### 🎯 System Design Mock: URL Shortener (e.g. TinyURL)
+## ⛰️ Panduan Pendakian Gunung Prau (2.565 MDPL) via Jalur Patak Banteng
 
-#### 1. Klarifikasi Kebutuhan (Requirements Gathering)
-- **Fungsional**:
-  - Memendekkan URL panjang menjadi link 7 karakter acak (contoh: \`dev.ly/x7K9p2\`).
-  - Redirect link pendek ke URL asli dengan latensi di bawah 50ms (HTTP 301 vs 302).
-  - Masa aktif link dapat diatur (opsional custom alias).
-- **Non-Fungsional**:
-  - Read-heavy system (Rasio Baca : Tulis = 100 : 1).
-  - Ketersediaan tinggi (High Availability 99.99%).
+Gunung Prau di Dataran Tinggi Dieng terkenal sebagai salah satu gunung dengan panorama *Golden Sunrise* terbaik di Asia Tenggara.
 
-#### 2. Estimasi Kapasitas
-- 100 juta URL baru per bulan (~40 URL/detik ditulis).
-- Read throughput: 4.000 request/detik.
-- Storage 5 tahun: 6 miliar URL × 500 bytes = ~3 TeraByte.
+---
 
-#### 3. Skema URL Encoding: Mengapa Base62?
-Menggunakan karakter \`[a-z, A-Z, 0-9]\` (total 62 kombinasi).
-Dengan panjang 7 karakter:
-$$62^7 \\approx 3.52 \\text{ triliun kombinasi unik!}$$
+### ⏱️ Estimasi Waktu & Jalur
+* **Basecamp ke Pos 1**: 20 menit (bisa naik ojek hemat waktu).
+* **Pos 1 ke Pos 2**: 30 menit (jalur tanah dan undakan batu).
+* **Pos 2 ke Pos 3**: 45 menit (mulai menanjak terjal, akar pohon).
+* **Pos 3 ke Sunrise Camp (Puncak)**: 45 menit (tanjakan curam 'patahan').
+* *Total durasi naik pendakian santai: 2.5 s/d 3.5 jam.*
 
-\`\`\`typescript
-const BASE62 = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+---
 
-function encodeIdToBase62(num: bigint): string {
-  let str = "";
-  while (num > 0n) {
-    str = BASE62[Number(num % 62n)] + str;
-    num = num / 62n;
-  }
-  return str.padStart(7, "0");
-}
-\`\`\`
+### ❄️ Suhu Udara & Pakaian
+Suhu di puncak Gunung Prau pada malam hari berkisar **5°C s/d 10°C** (bahkan bisa mencapai 0°C dengan embun es / bun upas di bulan Juli-Agustus).
+* **Gunakan Sistem Layering**:
+  1. Base layer: Thermal baselayer / pakaian dry-fit (jangan katun biasa).
+  2. Mid layer: Jaket fleece / sweater wol hangat.
+  3. Outer layer: Jaket windproof / waterproof tebal berpenutup kepala.
+  4. Wajib: Sarung tangan hangat, kupluk, dan kaus kaki cadangan.
 
-#### 4. Arsitektur Komponen:
-- **Distributed ID Generator** (Twitter Snowflake / Redis Increment) untuk ID integer unik.
-- **Cache Layer (Redis)**: Menyimpan 20% URL paling sering dikunjungi (Pareto 80/20) untuk read latency ultra cepat < 5ms.
-- **Database**: NoSQL Key-Value (DynamoDB / Cassandra) atau PostgreSQL ber-partition.
+---
+
+### 📝 Perizinan & Tiket Simaksi:
+* Tiket simaksi resmi: Rp 30.000 / orang.
+* Siapkan fotokopi KTP / identitas diri.
+* Wajib membawa turun kembali seluruh sampah logistik pendakian!
 ${closing}`;
     }
 
-    // 6. Generic / Default Developer Assistance
+    // 6. Generic Travel Query
     return `${greeting}
 
-Terima kasih atas pertanyaannya! Berdasarkan konfigurasi parameter saat ini:
-- **Persona**: ${persona.name} (${persona.tagline})
+Terima kasih atas pertanyaannya! Berdasarkan pengaturan parameter asisten saat ini:
+- **Spesialisasi**: ${persona.name} (${persona.tagline})
 - **Gaya Bahasa**: ${CONFIG.tones[toneKey]?.name || toneKey}
-- **Temperature**: ${temperature}
+- **Tingkat Kreativitas**: ${temperature}
 
-Berikut adalah panduan teknis yang relevan untuk pertanyaan Anda:
+Berikut rekomendasi dan panduan perjalanan terbaik untuk Anda:
 
-### 💡 Konsep & Pendekatan Utama
-1. **Identifikasi Masalah**: Pecah masalah menjadi bagian modular terkecil.
-2. **Penerapan Clean Code**: Terapkan pemisahan logika (separation of concerns), penamaan variabel yang deskriptif, serta error handling yang eksplisit.
-3. **Efisiensi Algoritma**: Perhatikan kompleksitas waktu ($O(N)$) dan ruang memory ($O(1)$) untuk skalabilitas.
+### 🌟 Rekomendasi Utama:
+1. **Waktu Terbaik Berkunjung**: Pilih musim peralihan (*shoulder season*) untuk menikmati cuaca cerah dengan keramaian turis yang lebih minim dan harga penginapan bersahabat.
+2. **Akomodasi Strategis**: Pilih penginapan yang dekat dengan akses transportasi publik atau stasiun utama agar mobilitas hemat waktu.
+3. **Eksplorasi Rasa Lokal**: Selalu luangkan satu waktu makan untuk mencoba kuliner khas pasar tradisional atau warung legendaris warga lokal.
 
-\`\`\`javascript
-// Contoh implementasi modular & reusable
-export async function executeTaskWithRetry(taskFn, maxRetries = 3, delayMs = 1000) {
-  let lastError;
-  for (let attempt = 1; attempt <= maxRetries; attempt++) {
-    try {
-      return await taskFn();
-    } catch (err) {
-      lastError = err;
-      console.warn(\`Percobaan ke-\${attempt} gagal: \${err.message}\`);
-      if (attempt < maxRetries) {
-        await new Promise(res => setTimeout(res, delayMs * attempt));
-      }
-    }
-  }
-  throw new Error(\`Gagal setelah \${maxRetries} percobaan: \${lastError.message}\`);
-}
+\`\`\`markdown
+Contoh Format Rencana Harian:
+- Pagi (08:00 - 11:00) : Eksplorasi spot alam & fotografi
+- Siang (12:00 - 14:00): Wisata kuliner khas daerah
+- Sore (16:00 - 18:30): Menikmati matahari terbenam (sunset point)
+- Malam (19:30 - selesai): Wisata belanja malam / relaksasi
 \`\`\`
 
-Silakan tanyakan detail spesifik atau tempelkan potongan kode yang ingin kamu konsultasikan lebih lanjut!
+Beri tahu saya destinasi yang ingin Anda tuju, durasi hari liburan, serta perkiraan budget, dan saya akan buatkan itinerary kustom secara instan!
 ${closing}`;
   }
 }

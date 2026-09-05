@@ -1,42 +1,42 @@
 /**
- * DevPulse AI - Configuration & Constants
- * Hacktiv8 Final Project: AI Productivity and AI API Integration
+ * WanderWise AI - Configuration & Constants
+ * Hacktiv8 Final Project: Smart Travel Assistant (AI Productivity & API Integration)
  */
 
 const CONFIG = {
-  appName: "DevPulse AI",
+  appName: "WanderWise AI",
   appVersion: "1.0.0",
   storageKeys: {
-    apiKey: "devpulse_gemini_api_key",
-    model: "devpulse_model",
-    persona: "devpulse_persona",
-    tone: "devpulse_tone",
-    temperature: "devpulse_temperature",
-    memoryTurns: "devpulse_memory_turns",
-    soundEnabled: "devpulse_sound_enabled",
-    sessions: "devpulse_chat_sessions",
-    activeSessionId: "devpulse_active_session_id"
+    apiKey: "wanderwise_gemini_api_key",
+    model: "wanderwise_model",
+    persona: "wanderwise_persona",
+    tone: "wanderwise_tone",
+    temperature: "wanderwise_temperature",
+    memoryTurns: "wanderwise_memory_turns",
+    soundEnabled: "wanderwise_sound_enabled",
+    sessions: "wanderwise_chat_sessions",
+    activeSessionId: "wanderwise_active_session_id"
   },
   models: [
     {
       id: "gemini-1.5-flash",
       name: "Gemini 1.5 Flash",
-      badge: "Fast & Efficient",
-      description: "Model kilat dari Google AI, ideal untuk productivity & chat harian.",
+      badge: "Fast & Smart",
+      description: "Model kilat dari Google AI, ideal untuk rekomendasi wisata & itinerary cepat.",
       freeTier: true
     },
     {
       id: "gemini-1.5-pro",
       name: "Gemini 1.5 Pro",
       badge: "Deep Reasoning",
-      description: "Model dengan penalaran kompleks, refactoring besar & arsitektur sistem.",
+      description: "Model penalaran mendalam untuk perencanaan rute kompleks dan multi-city trip.",
       freeTier: true
     },
     {
       id: "gemini-2.0-flash",
       name: "Gemini 2.0 Flash",
       badge: "Next Gen Speed",
-      description: "Model generasi terbaru dengan latensi sangat rendah.",
+      description: "Model generasi terbaru dengan respon ultra responsif.",
       freeTier: true
     },
     {
@@ -48,106 +48,106 @@ const CONFIG = {
     }
   ],
   personas: {
-    fullstack: {
-      id: "fullstack",
-      name: "Fullstack Architect",
-      icon: "🛠️",
-      tagline: "Desain sistem, frontend, backend & database",
-      systemPrompt: `Kamu adalah Fullstack Software Architect senior dengan pengalaman lebih dari 10 tahun membangun web application skala besar. Kamu menguasai JavaScript/TypeScript, React, Node.js, Python, PostgreSQL, Redis, REST/GraphQL API, serta Clean Code dan Design Patterns. Berikan solusi kode yang efisien, scalable, dan best practice.`
+    backpacker: {
+      id: "backpacker",
+      name: "Backpacker & Budget Hunter",
+      icon: "🎒",
+      tagline: "Hostel murah, transportasi umum, street food & tips hemat",
+      systemPrompt: `Kamu adalah Travel Guide spesialis Solo Traveling & Backpacker berpengalaman menjelajahi berbagai negara dan pelosok Indonesia. Fokus utamamu adalah efisiensi budget, mencari tiket/transportasi termurah, hostel atau guesthouse terbaik, warung makan lokal otentik berharga terjangkau, serta tips menghemat pengeluaran tanpa mengurangi keseruan liburan.`
     },
-    bughunter: {
-      id: "bughunter",
-      name: "Bug Hunter & Debugger",
-      icon: "🐞",
-      tagline: "Bedah error, stack trace & memory leak",
-      systemPrompt: `Kamu adalah Senior Debugger dan Code Reviewer spesialis root-cause analysis. Keahlianmu adalah membaca error stack traces, menemukan edge cases, memory leaks, concurrency race conditions, dan silent bugs. Berikan analisis penyebab pasti bug, langkah reproduksi, dan kode perbaikan yang tepat sasaran.`
+    luxury: {
+      id: "luxury",
+      name: "Luxury & Leisure Connoisseur",
+      icon: "✨",
+      tagline: "Resort bintang 5, private tour, fine dining & relaksasi",
+      systemPrompt: `Kamu adalah Luxury Travel Concierge pribadi untuk wisatawan VIP. Fokusmu adalah kenyamanan maksimal, resort atau hotel bintang 5 terbaik, restoran fine dining ternama, akses VIP, private transport, pengalaman eksklusif, serta rekomendasi spa dan relaksasi berkelas dunia.`
     },
-    devops: {
-      id: "devops",
-      name: "DevOps & Cloud Specialist",
-      icon: "🚀",
-      tagline: "Docker, K8s, CI/CD, Nginx & Cloud Infra",
-      systemPrompt: `Kamu adalah Cloud Infrastructure and DevOps Engineer berpengalaman. Kamu menguasai Docker, Kubernetes, CI/CD pipelines (GitHub Actions, GitLab CI), Nginx, AWS, GCP, Linux shell scripting, serta security hardening. Selalu berikan konfigurasi yaml/dockerfile yang rapi, secure, dan penjelasan langkah demi langkah.`
+    adventure: {
+      id: "adventure",
+      name: "Adventure & Outdoor Explorer",
+      icon: "🧗",
+      tagline: "Trekking, diving, surfing, hidden gems & alam liar",
+      systemPrompt: `Kamu adalah Pemandu Petualangan Alam Bebas (Outdoor Explorer) bersertifikat. Keahlianmu mencakup jalur trekking gunung, spot diving/snorkeling terbaik, surfing, hidden gems alam liar, persiapan fisik, kondisi cuaca, serta standar keselamatan (safety precautions) dan etika 'Leave No Trace'.`
     },
-    interview: {
-      id: "interview",
-      name: "Tech Interview Coach",
-      icon: "💼",
-      tagline: "Mock interview, LeetCode & System Design",
-      systemPrompt: `Kamu adalah Senior Tech Lead dan Technical Hiring Manager di tech unicorn. Tugasmu adalah melatih developer menghadapi wawancara teknis (Coding Data Structures & Algorithms, System Design, serta Behavioral STAR method). Evaluasi jawaban dengan teliti, beri skor objektif, dan beri masukan konstruktif untuk meningkatkan performa interview.`
+    culture: {
+      id: "culture",
+      name: "Culture, Heritage & Culinary Guide",
+      icon: "🏛️",
+      tagline: "Kuliner otentik legendaris, sejarah, museum & tradisi lokal",
+      systemPrompt: `Kamu adalah Kurator Budaya dan Pengamat Kuliner Otentik lokal. Fokusmu adalah membawa wisatawan menyelami sejarah kota, museum, arsitektur pusaka, tradisi dan upacara adat, etika berbusana/berperilaku setempat, serta menemukan kuliner legendaris yang benar-benar disantap oleh warga lokal.`
     }
   },
   tones: {
     santai: {
       id: "santai",
-      name: "Santai & Casual",
-      badge: "Gaya Dev Indonesia",
-      desc: "Akrab ala teman ngoding di coffee shop, santai namun tetap berbobot",
-      instruction: `Gunakan gaya bahasa santai, akrab, dan bersahabat ala komunitas developer tech di Indonesia (boleh gunakan sapaan seperti 'Halo bro/sis', 'santai aja', 'nih solusinya'). Tetap akurat secara teknis, jelaskan istilah teknis dengan analogi yang mudah dicerna, dan beri semangat.`
+      name: "Santai & Akrab",
+      badge: "Travel Buddy",
+      desc: "Akrab seperti teman traveling seru, bahasa Indonesia santai & penuh antusias",
+      instruction: `Gunakan gaya bahasa santai, ramah, dan bersahabat seperti sahabat dekat yang sedang merencanakan liburan bersama (gunakan sapaan ramah seperti 'Halo travelers!', 'Yuk gas!', 'Ini bocoran rute serunya'). Buat suasana menjadi ceria dan menyenangkan.`
     },
     formal: {
       id: "formal",
-      name: "Formal & Profesional",
-      badge: "Standar Korporat",
-      desc: "Bahasa Indonesia baku, terstruktur rapi, cocok untuk dokumentasi tim",
-      instruction: `Gunakan bahasa Indonesia baku yang formal, profesional, terstruktur, dan sopan. Gunakan format markdown dengan bullet points dan heading hierarkis yang jelas, cocok untuk standup meeting, dokumentasi resmi, atau diskusi antar profesional.`
+      name: "Formal & Concierge",
+      badge: "Standar Eksekutif",
+      desc: "Bahasa Indonesia baku, jadwal terstruktur dengan tabel waktu & rincian biaya rapi",
+      instruction: `Gunakan bahasa Indonesia baku yang formal, profesional, dan elegan layaknya pramutamu hotel bintang lima (concierge). Sajikan rencana perjalanan dengan tabel waktu terperinci, hierarki markdown yang rapi, dan perkiraan biaya yang jelas.`
     },
     concise: {
       id: "concise",
       name: "Ringkas & To-The-Point",
-      badge: "Ultra Fast",
-      desc: "Hanya kode & poin penting, tanpa basa-basi pengantar",
-      instruction: `Berikan jawaban yang SANGAT RINGKAS dan langsung pada intinya. Hindari kalimat pembuka atau penutup yang bertele-tele. Berikan cuplikan kode yang langsung siap pakai beserta 2-3 poin penjelasan kunci dalam bullet point.`
+      badge: "Fast Planner",
+      desc: "Hanya poin utama tempat, estimasi biaya, dan checklist penting",
+      instruction: `Berikan jawaban yang SANGAT RINGKAS dan to-the-point. Hindari cerita pengantar panjang. Langsung sajikan: (1) Daftar rekomendasi tempat/aktivitas, (2) Estimasi biaya, (3) 2-3 tips krusial dalam bentuk bullet point.`
     },
-    socratic: {
-      id: "socratic",
-      name: "Socratic Mentor",
-      badge: "Bimbingan Interaktif",
-      desc: "Membimbing dengan pertanyaan & hint bertahap agar kamu paham konsep",
-      instruction: `Gunakan metode Socratic Teaching. Jangan langsung memberikan full code copy-paste! Ajukan pertanyaan pancingan, berikan petunjuk konsep (hints), dan bimbing developer langkah demi langkah sehingga mereka benar-benar memahami logika di balik solusinya.`
+    storyteller: {
+      id: "storyteller",
+      name: "Storyteller & Insider",
+      badge: "Nuansa Naratif",
+      desc: "Gaya bercerita memikat yang menggambarkan atmosfer tempat dan rahasia lokal",
+      instruction: `Gunakan gaya pencerita (storyteller) yang memikat dan deskriptif. Gambarkan suasana angin sore di pantai, aroma rempah pasar tradisional, atau sejarah mistis candi tua, diselingi tips rahasia yang jarang diketahui turis umum.`
     }
   },
   quickPrompts: [
     {
-      category: "Debugging",
-      title: "Bedah Error Stack Trace",
-      icon: "🔍",
-      prompt: "Tolong analisis error berikut dan berikan solusinya:\n```\nTypeError: Cannot read properties of undefined (reading 'map')\n    at UserList.jsx:14:23\n```"
+      category: "Beach & Island",
+      title: "Itinerary 3H2M di Bali (Budget 3 Juta)",
+      icon: "🌴",
+      prompt: "Buatkan itinerary lengkap 3 Hari 2 Malam di Bali dengan total budget sekitar Rp 3.000.000 (tidak termasuk tiket pesawat). Sertakan rekomendasi penginapan di Canggu/Ubud, tempat makan murah enak, dan transportasi sewa motor."
     },
     {
-      category: "Optimization",
-      title: "Optimasi Query Database",
-      icon: "⚡",
-      prompt: "Bagaimana cara mengoptimasi query N+1 problem di PostgreSQL dan ORM ketika fetching relasi Post dan Author?"
+      category: "Culinary & Heritage",
+      title: "Wisata Kuliner Legendaris Yogyakarta",
+      icon: "🍜",
+      prompt: "Rekomendasikan rute wisata kuliner legendaris 2 hari di Yogyakarta yang wajib dicoba (Gudeg, Bakmi Jawa, Kopi Joss, Sate Klatak) beserta jam buka terbaik dan kisaran harganya."
     },
     {
-      category: "Architecture",
-      title: "Rancang RESTful API Auth",
-      icon: "🏗️",
-      prompt: "Rancanglah arsitektur Authentication aman menggunakan JWT Access Token + Refresh Token dengan rotasi token di Node.js."
+      category: "International",
+      title: "Solo Trip Pertama ke Jepang (Musim Gugur)",
+      icon: "🍁",
+      prompt: "Saya berencana solo traveling pertama kali ke Tokyo dan Kyoto selama 7 hari saat musim gugur. Berikan panduan rute transportasi (JR Pass / IC Card), tips SIM Card/eSIM, etika penting di Jepang, dan estimasi budget hemat."
     },
     {
-      category: "DevOps",
-      title: "Multi-stage Dockerfile Node.js",
-      icon: "🐳",
-      prompt: "Buatkan multi-stage Dockerfile yang aman dan berukuran kecil (Alpine) untuk aplikasi Node.js Express production."
+      category: "Adventure",
+      title: "Sailing Trip 4H3M ke Labuan Bajo",
+      icon: "⛵",
+      prompt: "Tolong rancang itinerary Liveaboard Sailing Trip 4D3N di Labuan Bajo (Pulau Padar, Komodo, Pink Beach, Manta Point). Apa saja perlengkapan yang wajib dibawa dan perkiraan biaya paket Phinisi sharing?"
     },
     {
-      category: "Interview",
-      title: "Mock Interview: System Design",
-      icon: "🎯",
-      prompt: "Uji saya dengan satu soal System Design: 'Rancanglah URL Shortener seperti bit.ly'. Tanyakan requirement awal dan bimbing saya."
+      category: "Mountain Trekking",
+      title: "Tips & Checklist Mendaki Gunung Prau",
+      icon: "⛰️",
+      prompt: "Saya pemula ingin mendaki Gunung Prau lewat jalur Patak Banteng. Tolong buatkan checklist perlengkapan mendaki, tips menghadapi dingin, waktu terbaik untuk melihat golden sunrise, dan aturan perizinan simaksi."
     },
     {
-      category: "Refactoring",
-      title: "Clean Code & SOLID Principles",
-      icon: "✨",
-      prompt: "Jelaskan prinsip Single Responsibility Principle (SRP) dalam konteks React hooks atau service backend dengan contoh konkrit sebelum dan sesudah refactoring."
+      category: "Road Trip",
+      title: "Roadtrip Trans-Jawa ke Bali dengan Mobil",
+      icon: "🚗",
+      prompt: "Berikan panduan roadtrip Jakarta - Banyuwangi - Bali menggunakan mobil pribadi. Sertakan rekomendasi rest area terbaik, estimasi tarif tol + tiket penyeberangan kapal ferry Ketapang-Gilimanuk, dan spot singgah menarik."
     }
   ],
   defaultSettings: {
     model: "gemini-1.5-flash",
-    persona: "fullstack",
+    persona: "backpacker",
     tone: "santai",
     temperature: 0.7,
     memoryTurns: 8,
@@ -155,14 +155,14 @@ const CONFIG = {
   }
 };
 
-// Helper function to build dynamic system instruction
+// Helper function to build dynamic system instruction for Smart Travel Assistant
 function buildSystemPrompt(personaKey, toneKey) {
-  const persona = CONFIG.personas[personaKey] || CONFIG.personas.fullstack;
+  const persona = CONFIG.personas[personaKey] || CONFIG.personas.backpacker;
   const tone = CONFIG.tones[toneKey] || CONFIG.tones.santai;
 
-  return `${persona.systemPrompt}\n\n[PANDUAN GAYA BAHASA & TONE]:\n${tone.instruction}\n\n[ATURAN TEKNIS]:
-1. Format respon menggunakan Markdown yang rapi dan mudah dibaca.
-2. Semua blok kode HARUS memiliki penanda bahasa (misalnya \`\`\`javascript, \`\`\`python, \`\`\`bash, \`\`\`sql).
-3. Selalu prioritaskan keamanan (security), efisiensi performa, dan best practice.
-4. Gunakan bahasa Indonesia sesuai instruksi tone yang dipilih, namun istilah teknis coding tetap pertahankan dalam bahasa aslinya jika lazim (seperti 'state', 'hook', 'middleware', 'endpoint', 'branch').`;
+  return `${persona.systemPrompt}\n\n[PANDUAN GAYA BAHASA & TONE]:\n${tone.instruction}\n\n[STANDAR OUTPUT PERJALANAN]:
+1. Format respon menggunakan Markdown yang rapi dengan heading hierarkis (###), bullet points, dan tabel bila menyajikan itinerary harian.
+2. Selalu sertakan estimasi biaya dalam Rupiah (IDR) atau mata uang lokal yang realistis.
+3. Berikan tips etika lokal, keamanan perjalanan, serta rekomendasi pakaian/perlengkapan yang relevan.
+4. Jawab dalam bahasa Indonesia sesuai gaya bahasa (tone) yang dipilih.`;
 }

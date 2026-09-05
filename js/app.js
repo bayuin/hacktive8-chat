@@ -1,5 +1,5 @@
 /**
- * DevPulse AI - Application Controller
+ * WanderWise AI - Application Controller
  * Coordinates UI events, parameter switching, message streaming, audio, and state
  */
 
@@ -133,7 +133,7 @@ document.addEventListener("DOMContentLoaded", () => {
         localStorage.setItem(CONFIG.storageKeys.persona, persona.id);
         renderPersonaOptions();
         updateHeaderAndChips();
-        showToast(`Persona diubah: ${persona.name}`);
+        showToast(`Gaya wisata diubah: ${persona.name}`);
       });
 
       DOM.personaGrid.appendChild(card);
@@ -157,7 +157,7 @@ document.addEventListener("DOMContentLoaded", () => {
         localStorage.setItem(CONFIG.storageKeys.tone, tone.id);
         renderToneOptions();
         updateHeaderAndChips();
-        showToast(`Tone diubah: ${tone.name}`);
+        showToast(`Gaya bahasa diubah: ${tone.name}`);
       });
 
       DOM.toneGrid.appendChild(btn);
@@ -180,7 +180,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function updateHeaderAndChips() {
-    const persona = CONFIG.personas[state.persona] || CONFIG.personas.fullstack;
+    const persona = CONFIG.personas[state.persona] || CONFIG.personas.backpacker;
     const tone = CONFIG.tones[state.tone] || CONFIG.tones.santai;
     const model = CONFIG.models.find(m => m.id === state.model) || CONFIG.models[0];
 
@@ -245,16 +245,15 @@ document.addEventListener("DOMContentLoaded", () => {
           <span class="session-title" title="${session.title}">${escapeHTML(session.title)}</span>
         </div>
         <div class="session-actions">
-          <button class="session-btn rename" title="Ganti Nama Sesi">
+          <button class="session-btn rename" title="Ganti Nama Rencana">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
           </button>
-          <button class="session-btn delete" title="Hapus Sesi">
+          <button class="session-btn delete" title="Hapus Rencana">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
           </button>
         </div>
       `;
 
-      // Switch session on click
       item.querySelector(".session-title-wrap").addEventListener("click", () => {
         if (state.isGenerating) return;
         soundFx.playClick();
@@ -263,25 +262,23 @@ document.addEventListener("DOMContentLoaded", () => {
         renderMessages();
       });
 
-      // Rename session
       item.querySelector(".session-btn.rename").addEventListener("click", (e) => {
         e.stopPropagation();
-        const newTitle = prompt("Masukkan nama baru untuk sesi ini:", session.title);
+        const newTitle = prompt("Masukkan nama baru untuk rencana perjalanan ini:", session.title);
         if (newTitle && newTitle.trim()) {
           chatManager.renameSession(session.id, newTitle);
           renderSessions();
         }
       });
 
-      // Delete session
       item.querySelector(".session-btn.delete").addEventListener("click", (e) => {
         e.stopPropagation();
-        if (confirm(`Hapus sesi "${session.title}"?`)) {
+        if (confirm(`Hapus rencana "${session.title}"?`)) {
           soundFx.playClear();
           chatManager.deleteSession(session.id);
           renderSessions();
           renderMessages();
-          showToast("Sesi obrolan dihapus");
+          showToast("Rencana perjalanan dihapus");
         }
       });
 
@@ -309,10 +306,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const hero = document.createElement("div");
     hero.className = "welcome-hero";
     hero.innerHTML = `
-      <div class="hero-glow-logo">⚡</div>
-      <h2 class="hero-title">DevPulse <span>AI Assistant</span></h2>
+      <div class="hero-glow-logo">✈️</div>
+      <h2 class="hero-title">WanderWise <span>Smart Travel Assistant</span></h2>
       <p class="hero-subtitle">
-        Asisten kecerdasan buatan untuk akselerasi produktivitas koding, review arsitektur, dan bedah bug. Dilengkapi kendali parameter kreatif & integrasi LLM API.
+        Asisten kecerdasan buatan untuk merancang itinerary liburan impian, estimasi budget, dan kurasi kuliner otentik. Dilengkapi kendali parameter kreatif & integrasi LLM API.
       </p>
 
       <div class="quick-prompts-grid" id="quickPromptsGrid">
@@ -346,7 +343,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function appendMessageToDOM(msg, shouldScroll = true) {
-    // Remove welcome hero if exists
     const hero = DOM.messagesContainer.querySelector(".welcome-hero");
     if (hero) hero.remove();
 
@@ -360,8 +356,8 @@ document.addEventListener("DOMContentLoaded", () => {
       minute: "2-digit"
     });
 
-    const persona = CONFIG.personas[state.persona] || CONFIG.personas.fullstack;
-    const avatarContent = isUser ? "👤" : (persona.icon || "🤖");
+    const persona = CONFIG.personas[state.persona] || CONFIG.personas.backpacker;
+    const avatarContent = isUser ? "👤" : (persona.icon || "✈️");
 
     let formattedContent = "";
     if (isUser) {
@@ -383,9 +379,9 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>
         ${!isUser ? `
           <div class="message-footer">
-            <button class="msg-action-btn copy-msg-btn" title="Salin seluruh jawaban">
+            <button class="msg-action-btn copy-msg-btn" title="Salin seluruh isi rencana">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
-              <span>Salin</span>
+              <span>Salin Itinerary</span>
             </button>
             ${msg.latencyMs ? `<span style="font-size: 0.7rem; color: var(--text-muted); font-family: var(--font-mono);">${msg.latencyMs}ms</span>` : ""}
           </div>
@@ -393,17 +389,15 @@ document.addEventListener("DOMContentLoaded", () => {
       </div>
     `;
 
-    // Bind copy message button
     const copyBtn = row.querySelector(".copy-msg-btn");
     if (copyBtn) {
       copyBtn.addEventListener("click", () => {
         navigator.clipboard.writeText(msg.content);
         soundFx.playClick();
-        showToast("Teks jawaban berhasil disalin ke clipboard!");
+        showToast("Rencana perjalanan berhasil disalin!");
       });
     }
 
-    // Enhance code blocks with copy snippet headers
     enhanceCodeBlocks(row);
 
     DOM.messagesContainer.appendChild(row);
@@ -430,14 +424,12 @@ document.addEventListener("DOMContentLoaded", () => {
   function enhanceCodeBlocks(container) {
     const preElements = container.querySelectorAll("pre");
     preElements.forEach(pre => {
-      // Avoid re-wrapping
       if (pre.parentElement.classList.contains("code-wrapper")) return;
 
       const codeElem = pre.querySelector("code");
       const rawText = codeElem ? codeElem.innerText : pre.innerText;
 
-      // Detect language from class (e.g. language-javascript)
-      let lang = "code";
+      let lang = "itinerary";
       if (codeElem && codeElem.className) {
         const match = codeElem.className.match(/language-([a-zA-Z0-9_\-]+)/);
         if (match) lang = match[1];
@@ -461,7 +453,7 @@ document.addEventListener("DOMContentLoaded", () => {
         soundFx.playClick();
         const btnSpan = this.querySelector("span");
         const prevText = btnSpan.textContent;
-        btnSpan.textContent = "Copied! ✓";
+        btnSpan.textContent = "Tersalin! ✓";
         this.style.color = "var(--accent-emerald)";
         setTimeout(() => {
           btnSpan.textContent = prevText;
@@ -485,17 +477,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     soundFx.playSent();
 
-    // 1. Add user message
     const userMsg = chatManager.addMessage("user", text);
     appendMessageToDOM(userMsg, true);
 
-    // Reset input
     DOM.chatInput.value = "";
     autoGrowTextarea();
-    renderSessions(); // update session title if changed
+    renderSessions();
 
-    // 2. Add placeholder bot message
-    const persona = CONFIG.personas[state.persona] || CONFIG.personas.fullstack;
+    const persona = CONFIG.personas[state.persona] || CONFIG.personas.backpacker;
     const botPlaceholder = chatManager.addMessage("assistant", "", {
       persona: persona.name,
       model: state.model
@@ -503,7 +492,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const botRow = appendMessageToDOM(botPlaceholder, true);
     const botContentElem = botRow.querySelector(".message-content");
 
-    // Display typing indicator
     botContentElem.innerHTML = `
       <div class="typing-indicator">
         <div class="typing-dot"></div>
@@ -512,7 +500,6 @@ document.addEventListener("DOMContentLoaded", () => {
       </div>
     `;
 
-    // Toggle UI generating state
     setGeneratingState(true);
 
     let accumulatedText = "";
@@ -534,42 +521,39 @@ document.addEventListener("DOMContentLoaded", () => {
 
       soundFx.playReceived();
 
-      // Update final message in state
       chatManager.updateLastMessage(responseData.text, {
         latencyMs: responseData.latencyMs,
         tokens: responseData.tokens,
         model: responseData.model
       });
 
-      // Update telemetry display
       DOM.telemetryLatency.textContent = `${responseData.latencyMs}ms`;
       DOM.telemetryTokens.textContent = `~${responseData.tokens}`;
       DOM.telemetryModel.textContent = responseData.model;
 
-      // Re-render message row to update footer actions & latency
       botContentElem.innerHTML = formatMarkdown(responseData.text);
       enhanceCodeBlocks(botRow);
 
       const footer = botRow.querySelector(".message-footer");
       if (footer) {
         footer.innerHTML = `
-          <button class="msg-action-btn copy-msg-btn" title="Salin seluruh jawaban">
+          <button class="msg-action-btn copy-msg-btn" title="Salin seluruh isi rencana">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
-            <span>Salin</span>
+            <span>Salin Itinerary</span>
           </button>
           <span style="font-size: 0.7rem; color: var(--text-muted); font-family: var(--font-mono);">${responseData.latencyMs}ms</span>
         `;
         footer.querySelector(".copy-msg-btn").addEventListener("click", () => {
           navigator.clipboard.writeText(responseData.text);
           soundFx.playClick();
-          showToast("Teks jawaban berhasil disalin ke clipboard!");
+          showToast("Rencana perjalanan berhasil disalin!");
         });
       }
 
     } catch (err) {
       soundFx.playError();
-      console.error("Chat Generation Error:", err);
-      const errorMsg = `> ⚠️ **Terjadi Kesalahan**: ${err.message || "Gagal menghasilkan respon."}`;
+      console.error("Travel Generation Error:", err);
+      const errorMsg = `> ⚠️ **Terjadi Kendala**: ${err.message || "Gagal menyusun rencana perjalanan."}`;
       chatManager.updateLastMessage(errorMsg);
       botContentElem.innerHTML = formatMarkdown(errorMsg);
       showToast(err.message || "Terjadi kesalahan!", "error");
@@ -597,16 +581,14 @@ document.addEventListener("DOMContentLoaded", () => {
   // =========================================================================
 
   function attachEventListeners() {
-    // Send & Stop
     DOM.sendBtn.addEventListener("click", handleSendMessage);
     DOM.stopBtn.addEventListener("click", () => {
       aiService.abort();
       setGeneratingState(false);
       soundFx.playClear();
-      showToast("Generasi dihentikan");
+      showToast("Penyusunan rute dihentikan");
     });
 
-    // Textarea input & keyboard
     DOM.chatInput.addEventListener("input", autoGrowTextarea);
     DOM.chatInput.addEventListener("keydown", (e) => {
       if (e.key === "Enter" && !e.shiftKey) {
@@ -615,18 +597,16 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
-    // New Chat Button
     DOM.newChatBtn.addEventListener("click", () => {
       if (state.isGenerating) return;
       soundFx.playClear();
-      chatManager.createNewSession("Sesi Obrolan Baru");
+      chatManager.createNewSession("Rencana Perjalanan Baru");
       renderSessions();
       renderMessages();
       DOM.chatInput.focus();
-      showToast("Sesi obrolan baru dimulai");
+      showToast("Sesi rencana liburan baru dimulai");
     });
 
-    // Global Shortcut: Ctrl+K / Cmd+K for New Chat
     window.addEventListener("keydown", (e) => {
       if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
         e.preventDefault();
@@ -634,24 +614,21 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
-    // Clear Current Chat
     DOM.clearChatBtn.addEventListener("click", () => {
-      if (confirm("Bersihkan semua pesan dalam sesi obrolan ini?")) {
+      if (confirm("Bersihkan semua pesan dalam rencana perjalanan ini?")) {
         soundFx.playClear();
         chatManager.clearActiveSession();
         renderMessages();
-        showToast("Percakapan telah dibersihkan");
+        showToast("Rencana perjalanan telah dibersihkan");
       }
     });
 
-    // Export Chat (Markdown)
     DOM.exportBtn.addEventListener("click", () => {
       soundFx.playClick();
       chatManager.exportCurrentChat("markdown");
-      showToast("Percakapan diekspor ke format Markdown (.md)");
+      showToast("Itinerary diekspor ke format Markdown (.md)");
     });
 
-    // Sound Toggle
     DOM.soundToggleBtn.addEventListener("click", () => {
       state.soundEnabled = !state.soundEnabled;
       soundFx.setEnabled(state.soundEnabled);
@@ -661,7 +638,6 @@ document.addEventListener("DOMContentLoaded", () => {
       showToast(`Efek suara: ${state.soundEnabled ? "Aktif" : "Nonaktif"}`);
     });
 
-    // Sliders & Selects
     DOM.tempSlider.addEventListener("input", (e) => {
       state.temperature = parseFloat(e.target.value);
       localStorage.setItem(CONFIG.storageKeys.temperature, state.temperature);
@@ -680,10 +656,9 @@ document.addEventListener("DOMContentLoaded", () => {
       state.memoryTurns = parseInt(e.target.value);
       localStorage.setItem(CONFIG.storageKeys.memoryTurns, state.memoryTurns);
       updateHeaderAndChips();
-      showToast(`Konteks memory diubah: ${state.memoryTurns === 0 ? "Full" : state.memoryTurns + " turns"}`);
+      showToast(`Konteks preferensi diubah: ${state.memoryTurns === 0 ? "Full" : state.memoryTurns + " pesan"}`);
     });
 
-    // Drawer Toggles (Mobile & Responsive)
     DOM.sidebarToggleBtn.addEventListener("click", () => {
       DOM.sidebar.classList.toggle("open");
     });
@@ -696,7 +671,6 @@ document.addEventListener("DOMContentLoaded", () => {
       DOM.paramsDrawer.classList.remove("open");
     });
 
-    // Settings Modal
     DOM.openSettingsBtn.addEventListener("click", () => {
       DOM.apiKeyInput.value = aiService.apiKey;
       DOM.settingsModal.classList.add("open");
@@ -716,7 +690,6 @@ document.addEventListener("DOMContentLoaded", () => {
       showToast(key ? "API Key berhasil disimpan!" : "API Key dihapus (menggunakan mode Mock)");
     });
 
-    // Close modal on Escape
     window.addEventListener("keydown", (e) => {
       if (e.key === "Escape" && DOM.settingsModal.classList.contains("open")) {
         closeModal();
@@ -737,7 +710,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function showToast(message, type = "info") {
     const toast = document.createElement("div");
     toast.className = "toast";
-    const icon = type === "error" ? "⚠️" : "⚡";
+    const icon = type === "error" ? "⚠️" : "✈️";
     toast.innerHTML = `<span>${icon}</span><span>${escapeHTML(message)}</span>`;
     DOM.toastContainer.appendChild(toast);
 

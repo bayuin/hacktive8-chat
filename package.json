@@ -1,7 +1,7 @@
 {
-  "name": "hacktiv8-ai-productivity-chatbot",
+  "name": "hacktiv8-smart-travel-assistant",
   "version": "1.0.0",
-  "description": "DevPulse AI - Chatbot AI Produktivitas & Integrasi AI API untuk Developer (Hacktiv8 Final Project)",
+  "description": "WanderWise AI - Smart Travel Assistant & Perencana Liburan Berbasis AI (Hacktiv8 Final Project)",
   "main": "index.html",
   "scripts": {
     "start": "npx -y serve . -p 3000",

@@ -656,13 +656,57 @@ body {
 }
 
 .message-content blockquote {
-  border-left: 3px solid var(--accent-indigo);
+  border-left: 3px solid var(--accent-cyan);
   padding: 8px 14px;
-  background: rgba(99, 102, 241, 0.08);
+  background: rgba(6, 182, 212, 0.08);
   border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
   margin: 12px 0;
-  color: #E0E7FF;
+  color: #CFFAFE;
   font-size: 0.88rem;
+}
+
+/* Travel Itinerary Tables */
+.message-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 14px 0;
+  font-size: 0.85rem;
+  background: rgba(10, 15, 26, 0.6);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-sm);
+}
+
+.message-content th {
+  background: rgba(6, 182, 212, 0.12);
+  color: var(--accent-cyan);
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  padding: 10px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.message-content td {
+  padding: 10px 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  color: var(--text-primary);
+}
+
+.message-content tr:last-child td {
+  border-bottom: none;
+}
+
+.message-content tr:hover td {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+/* Checklists */
+.message-content input[type="checkbox"] {
+  margin-right: 8px;
+  accent-color: var(--accent-cyan);
 }
 
 .message-content inline-code,
