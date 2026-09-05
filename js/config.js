@@ -1,10 +1,10 @@
 /**
- * WanderWise AI - Configuration & Constants
+ * SuperB Travel Assistant - Configuration & Constants
  * Hacktiv8 Final Project: Smart Travel Assistant (AI Productivity & API Integration)
  */
 
 const CONFIG = {
-  appName: "WanderWise AI",
+  appName: "SuperB Travel Assistant",
   appVersion: "1.0.0",
   storageKeys: {
     apiKey: "wanderwise_gemini_api_key",

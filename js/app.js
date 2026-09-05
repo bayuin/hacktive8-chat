@@ -89,6 +89,7 @@ document.addEventListener("DOMContentLoaded", () => {
     removeFileBtn: document.getElementById("removeFileBtn"),
     recordingBar: document.getElementById("recordingBar"),
     recordingTimer: document.getElementById("recordingTimer"),
+    recordingTranscriptPreview: document.getElementById("recordingTranscriptPreview"),
     stopRecordBtn: document.getElementById("stopRecordBtn"),
     cancelRecordBtn: document.getElementById("cancelRecordBtn"),
 
@@ -366,7 +367,7 @@ document.addEventListener("DOMContentLoaded", () => {
     hero.className = "welcome-hero";
     hero.innerHTML = `
       <div class="hero-glow-logo">✈️</div>
-      <h2 class="hero-title">WanderWise <span>Smart Travel Assistant</span></h2>
+      <h2 class="hero-title">SuperB <span>Travel Assistant</span></h2>
       <p class="hero-subtitle">
         Rancang liburan impian, estimasi budget, dan kurasi tempat terbaik dengan kendali parameter instan.
       </p>
@@ -562,6 +563,37 @@ document.addEventListener("DOMContentLoaded", () => {
   let recordingInterval = null;
   let recordingSeconds = 0;
   let mediaStream = null;
+  let speechRecognizer = null;
+  let liveSpeechTranscript = "";
+
+  function initSpeechRecognizer() {
+    if (typeof window !== "undefined" && ("webkitSpeechRecognition" in window || "SpeechRecognition" in window)) {
+      try {
+        const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+        speechRecognizer = new SpeechRec();
+        speechRecognizer.lang = "id-ID";
+        speechRecognizer.continuous = true;
+        speechRecognizer.interimResults = true;
+
+        speechRecognizer.onresult = (event) => {
+          let full = "";
+          for (let i = 0; i < event.results.length; ++i) {
+            full += event.results[i][0].transcript + " ";
+          }
+          liveSpeechTranscript = full.trim();
+          if (DOM.recordingTranscriptPreview) {
+            DOM.recordingTranscriptPreview.textContent = liveSpeechTranscript ? `"${liveSpeechTranscript}"` : "(Bicara sekarang...)";
+          }
+        };
+
+        speechRecognizer.onerror = (e) => {
+          console.warn("Speech recognition error:", e.error);
+        };
+      } catch (err) {
+        console.warn("Inisialisasi SpeechRecognition dilewati:", err);
+      }
+    }
+  }
 
   async function startLiveVoiceRecording() {
     if (state.isRecording) return;
@@ -575,13 +607,25 @@ document.addEventListener("DOMContentLoaded", () => {
       mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
       audioChunks = [];
       recordingSeconds = 0;
+      liveSpeechTranscript = "";
 
-      let mimeType = 'audio/webm';
+      if (DOM.recordingTranscriptPreview) {
+        DOM.recordingTranscriptPreview.textContent = "(Bicara sekarang...)";
+      }
+
+      if (!speechRecognizer) {
+        initSpeechRecognizer();
+      }
+      if (speechRecognizer) {
+        try { speechRecognizer.start(); } catch (e) {}
+      }
+
+      let mimeType = "audio/webm";
       if (typeof MediaRecorder !== "undefined") {
-        if (!MediaRecorder.isTypeSupported('audio/webm')) {
-          if (MediaRecorder.isTypeSupported('audio/ogg')) mimeType = 'audio/ogg';
-          else if (MediaRecorder.isTypeSupported('audio/mp4')) mimeType = 'audio/mp4';
-          else mimeType = '';
+        if (!MediaRecorder.isTypeSupported("audio/webm")) {
+          if (MediaRecorder.isTypeSupported("audio/ogg")) mimeType = "audio/ogg";
+          else if (MediaRecorder.isTypeSupported("audio/mp4")) mimeType = "audio/mp4";
+          else mimeType = "";
         }
       }
 
@@ -599,12 +643,13 @@ document.addEventListener("DOMContentLoaded", () => {
           return;
         }
 
-        const blobType = mediaRecorder.mimeType || 'audio/webm';
+        const blobType = mediaRecorder.mimeType || "audio/webm";
         const audioBlob = new Blob(audioChunks, { type: blobType });
-        const ext = blobType.includes('ogg') ? 'ogg' : blobType.includes('mp4') ? 'mp4' : 'webm';
+        const ext = blobType.includes("ogg") ? "ogg" : blobType.includes("mp4") ? "mp4" : "webm";
         const audioFile = new File([audioBlob], `rekaman-suara-${Date.now()}.${ext}`, { type: blobType });
 
-        handleFileSelected(audioFile, "audio");
+        const finalTranscript = liveSpeechTranscript.trim();
+        handleFileSelected(audioFile, "audio", { transcript: finalTranscript });
       };
 
       mediaRecorder.start(250);
@@ -623,7 +668,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }, 1000);
 
       soundFx.playClick();
-      showToast("Sedang merekam suara langsung...");
+      showToast("Sedang merekam suara... Silakan bicara!");
     } catch (err) {
       console.warn("Microphone access error:", err);
       showToast("Akses mikrofon tidak diizinkan. Membuka pemilih berkas...", "error");
@@ -635,6 +680,10 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!state.isRecording || !mediaRecorder) return;
     clearInterval(recordingInterval);
     recordingInterval = null;
+
+    if (speechRecognizer) {
+      try { speechRecognizer.stop(); } catch (e) {}
+    }
 
     state.isRecording = false;
     if (DOM.recordingBar) DOM.recordingBar.style.display = "none";
@@ -657,8 +706,13 @@ document.addEventListener("DOMContentLoaded", () => {
     clearInterval(recordingInterval);
     recordingInterval = null;
 
+    if (speechRecognizer) {
+      try { speechRecognizer.stop(); } catch (e) {}
+    }
+
     state.isRecording = false;
     audioChunks = [];
+    liveSpeechTranscript = "";
     if (DOM.recordingBar) DOM.recordingBar.style.display = "none";
     if (DOM.recordVoiceBtn) DOM.recordVoiceBtn.classList.remove("recording");
 
@@ -674,7 +728,7 @@ document.addEventListener("DOMContentLoaded", () => {
     showToast("Rekaman dibatalkan");
   }
 
-  function handleFileSelected(file, type) {
+  async function handleFileSelected(file, type, extra = {}) {
     if (!file) return;
 
     // Filter ketat sesuai tipe berkas
@@ -706,16 +760,27 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+    // Ekstraksi teks dokumen langsung di peramban jika berkas berbasis teks
+    let extractedText = extra.extractedText || "";
+    if (type === "document" && !extractedText && (file.type.startsWith("text/") || /\.(txt|csv|md|json)$/i.test(file.name))) {
+      try {
+        extractedText = await file.text();
+      } catch (err) {
+        console.warn("Gagal membaca teks berkas dokumen:", err);
+      }
+    }
+
     const sizeFormatted = formatFileSize(file.size);
     let icon = "📄";
     let metaText = `Dokumen • ${sizeFormatted}`;
 
     if (type === "image") {
       icon = "🖼️";
-      metaText = `Foto Destinasi • ${sizeFormatted}`;
+      metaText = `Foto Destinasi (OCR Aktif) • ${sizeFormatted}`;
     } else if (type === "audio") {
       icon = "🎙️";
-      metaText = `Rekaman Suara • ${sizeFormatted}`;
+      const transcriptSummary = extra.transcript ? ` • "${extra.transcript.slice(0, 30)}..."` : "";
+      metaText = `Rekaman Suara (${sizeFormatted})${transcriptSummary}`;
     }
 
     const reader = new FileReader();
@@ -726,7 +791,9 @@ document.addEventListener("DOMContentLoaded", () => {
         name: file.name,
         size: file.size,
         sizeFormatted: sizeFormatted,
-        dataUrl: e.target.result
+        dataUrl: e.target.result,
+        transcript: extra.transcript || "",
+        extractedText: extractedText
       };
 
       if (DOM.filePreviewIcon) DOM.filePreviewIcon.textContent = icon;
@@ -737,6 +804,12 @@ document.addEventListener("DOMContentLoaded", () => {
       if (DOM.attachImageBtn) DOM.attachImageBtn.classList.toggle("active", type === "image");
       if (DOM.recordVoiceBtn) DOM.recordVoiceBtn.classList.toggle("active", type === "audio");
       if (DOM.attachDocBtn) DOM.attachDocBtn.classList.toggle("active", type === "document");
+
+      // Jika ada transkrip rekaman suara dan input masih kosong, tampilkan transkrip di input
+      if (type === "audio" && extra.transcript && !DOM.chatInput.value.trim()) {
+        DOM.chatInput.value = extra.transcript;
+        autoGrowTextarea();
+      }
 
       soundFx.playClick();
       showToast(`${file.name} siap dikirim!`);
@@ -818,10 +891,14 @@ document.addEventListener("DOMContentLoaded", () => {
         responseData = await aiService.generateFromMedia({
           file: currentAttachment.file,
           mediaType: currentAttachment.type,
-          prompt: text,
+          prompt: text || currentAttachment.transcript || "",
           persona: state.persona,
           tone: state.tone,
           temperature: state.temperature,
+          extra: {
+            transcript: currentAttachment.transcript,
+            extractedText: currentAttachment.extractedText
+          },
           onChunk: (chunk, acc) => {
             accumulatedText = acc;
             botContentElem.innerHTML = formatMarkdown(accumulatedText);

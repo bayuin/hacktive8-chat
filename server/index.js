@@ -26,9 +26,9 @@ const upload = multer({
 const clientDir = path.join(__dirname, '..');
 app.use(express.static(clientDir));
 
-// Standar Wajib Knowledge Base WanderWise AI: Lokasi Detail, Rincian Harga, & Komparasi Platform Digital (Traveloka-grade)
+// Standar Wajib Knowledge Base SuperB Travel Assistant: Lokasi Detail, Rincian Harga, & Komparasi Platform Digital (Traveloka-grade)
 const KNOWLEDGE_BASE_GUIDELINES = `
-[STANDAR KNOWLEDGE & ATURAN WAJIB HASIL PERJALANAN WANDERWISE AI]:
+[STANDAR KNOWLEDGE & ATURAN WAJIB HASIL PERJALANAN SUPERB TRAVEL ASSISTANT]:
 Sebagai asisten travel cerdas berstandar Traveloka, pada setiap rekomendasi destinasi, rencana liburan, atau itinerary yang kamu hasilkan, kamu WAJIB menyertakan 3 pilar informasi:
 
 1. 📍 INFORMASI LOKASI DETAIL & AKSESIBILITAS:
@@ -54,12 +54,12 @@ Sebagai asisten travel cerdas berstandar Traveloka, pada setiap rekomendasi dest
      | Item / Atraksi | Traveloka | Tiket.com | Agoda / Klook | Loket Resmi (OTS) | Tips Promo & Keunggulan |
    - Berikan rekomendasi platform terbaik untuk mengamankan harga termurah.`;
 
-// System Prompts & Persona Guidelines untuk WanderWise AI
+// System Prompts & Persona Guidelines untuk SuperB Travel Assistant
 const PERSONA_PROMPTS = {
-  backpacker: 'Kamu adalah WanderWise, asisten travel cerdas spesialis Backpacker & Hemat Budget. Berikan rekomendasi penginapan terjangkau (hostel/guesthouse), transportasi umum termurah, kuliner kaki lima autentik, serta tips menghemat pengeluaran tanpa mengurangi keseruan liburan.',
-  luxury: 'Kamu adalah WanderWise, konsultan liburan mewah (Luxury & VIP Travel). Fokuskan pada resort bintang lima terbaik, fine dining kelas dunia, private tour eksklusif, fasilitas premium, serta pengalaman mewah kelas atas.',
-  adventure: 'Kamu adalah WanderWise, pemandu wisata petualangan dan alam terbuka (Adventure & Outdoor). Rekomendasikan rute trekking, spot diving/surfing terbaik, perlengkapan outdoor penting, tips keselamatan ekstrem, dan spot hidden gems alam liar.',
-  culture: 'Kamu adalah WanderWise, kurator wisata budaya dan warisan sejarah (Culture & Heritage). Jelaskan kisah sejarah mendalam di balik destinasi, etiket adat lokal yang harus dihormati, museum seni, dan festival tradisional khas daerah tersebut.'
+  backpacker: 'Kamu adalah SuperB, asisten travel cerdas spesialis Backpacker & Hemat Budget. Berikan rekomendasi penginapan terjangkau (hostel/guesthouse), transportasi umum termurah, kuliner kaki lima autentik, serta tips menghemat pengeluaran tanpa mengurangi keseruan liburan.',
+  luxury: 'Kamu adalah SuperB, konsultan liburan mewah (Luxury & VIP Travel). Fokuskan pada resort bintang lima terbaik, fine dining kelas dunia, private tour eksklusif, fasilitas premium, serta pengalaman mewah kelas atas.',
+  adventure: 'Kamu adalah SuperB, pemandu wisata petualangan dan alam terbuka (Adventure & Outdoor). Rekomendasikan rute trekking, spot diving/surfing terbaik, perlengkapan outdoor penting, tips keselamatan ekstrem, dan spot hidden gems alam liar.',
+  culture: 'Kamu adalah SuperB, kurator wisata budaya dan warisan sejarah (Culture & Heritage). Jelaskan kisah sejarah mendalam di balik destinasi, etiket adat lokal yang harus dihormati, museum seni, dan festival tradisional khas daerah tersebut.'
 };
 
 const TONE_GUIDES = {
@@ -130,7 +130,7 @@ app.get('/api/health', (req, res) => {
   const hasApiKey = Boolean(process.env.GEMINI_API_KEY && process.env.GEMINI_API_KEY !== 'your_gemini_api_key_here');
   res.json({
     status: 'online',
-    service: 'WanderWise AI REST API (Express + @google/genai)',
+    service: 'SuperB Travel Assistant REST API (Express + @google/genai)',
     hasApiKey: hasApiKey,
     supportedModels: [
       'gemini-3.5-flash-lite',
@@ -154,7 +154,7 @@ const handleGenerateText = async (req, res) => {
 
     const ai = getGenAI(req);
     const response = await generateContentWithFallback(ai, model, prompt, {
-      systemInstruction: `Kamu adalah WanderWise AI, asisten travel cerdas Traveloka-grade.\n${KNOWLEDGE_BASE_GUIDELINES}`
+      systemInstruction: `Kamu adalah SuperB Travel Assistant, asisten travel cerdas Traveloka-grade.\n${KNOWLEDGE_BASE_GUIDELINES}`
     });
     res.status(200).json({ result: response.text });
   } catch (error) {
@@ -175,19 +175,31 @@ const handleGenerateFromImage = async (req, res) => {
       return res.status(400).json({ error: 'File gambar (field "image") wajib diunggah.' });
     }
 
-    // Mengubah buffer file ke base64 (persis seperti slide baris 45: req.file.buffer.toString('base64'))
+    // Mengubah buffer file ke base64
     const base64Image = req.file.buffer.toString('base64');
     const ai = getGenAI(req);
 
-    const defaultImgPrompt = 'Jelaskan gambar destinasi wisata ini, sertakan informasi lokasi detail & aksesibilitas, rincian harga/HTM, serta tabel komparasi harga platform digital (Traveloka, Tiket.com, Agoda, Klook, Loket Resmi):';
+    const defaultImgPrompt = `Lakukan pembacaan dan ekstraksi seluruh teks/tulisan (OCR) dari gambar ini secara teliti dan akurat.
+Tugas Anda:
+1. 📝 TULISAN / TEKS TERDETEKSI (OCR): Tuliskan seluruh teks, nama tempat, maskapai, kode booking, nomor tiket, tanggal, harga, atau petunjuk yang tertera pada gambar secara detail.
+2. 🗺️ ANALISIS & REKOMENDASI PERJALANAN: Jelaskan informasi dari teks tersebut dan berikan panduan perjalanan terkait.
+3. 📍 INFORMASI LOKASI DETAIL & AKSES: Rincian lokasi, patokan, dan rute transportasi.
+4. 💰 RINCIAN HARGA & TARIF RESMI: Estimasi tarif atau harga resmi terkait.
+5. 🏷️📊 TABEL KOMPARASI PLATFORM DIGITAL: Bandingkan estimasi harga di Traveloka, Tiket.com, Agoda, Klook, dan Loket Resmi.`;
+
+    const userPrompt = prompt ? `${defaultImgPrompt}\n\nCatatan Tambahan Pengguna: ${prompt}` : defaultImgPrompt;
+
+    let mimeType = req.file.mimetype || 'image/jpeg';
+    if (mimeType.includes(';')) mimeType = mimeType.split(';')[0].trim();
+
     const contents = [
       {
         role: 'user',
         parts: [
-          { text: prompt || defaultImgPrompt },
+          { text: userPrompt },
           {
             inlineData: {
-              mimeType: req.file.mimetype || 'image/jpeg',
+              mimeType: mimeType,
               data: base64Image
             }
           }
@@ -196,7 +208,7 @@ const handleGenerateFromImage = async (req, res) => {
     ];
 
     const response = await generateContentWithFallback(ai, model, contents, {
-      systemInstruction: `Kamu adalah WanderWise AI, asisten travel cerdas Traveloka-grade.\n${KNOWLEDGE_BASE_GUIDELINES}`
+      systemInstruction: `Kamu adalah SuperB Travel Assistant, asisten travel cerdas Traveloka-grade.\n${KNOWLEDGE_BASE_GUIDELINES}`
     });
     res.status(200).json({ result: response.text });
   } catch (error) {
@@ -220,15 +232,27 @@ const handleGenerateFromAudio = async (req, res) => {
     const base64Audio = req.file.buffer.toString('base64');
     const ai = getGenAI(req);
 
-    const defaultAudioPrompt = 'Dengarkan rekaman suara pertanyaan wisata ini dan berikan jawaban lengkap mencakup lokasi detail & akses, rincian tarif/HTM resmi, serta tabel komparasi harga platform digital:';
+    let audioMime = req.file.mimetype || 'audio/webm';
+    if (audioMime.includes(';')) audioMime = audioMime.split(';')[0].trim();
+    if (audioMime === 'audio/mp4' || audioMime === 'audio/m4a') audioMime = 'audio/mp4';
+
+    const defaultAudioPrompt = `Transkripsikan rekaman audio suara ini secara teliti kata-per-kata terlebih dahulu (Speech-to-Text).
+${prompt ? `Transkrip / Pertanyaan Pengguna yang Terdeteksi: "${prompt}"\n` : ''}
+Tugas Anda:
+1. 🎙️ TRANSKRIP REKAMAN SUARA: Tuliskan transkripsi persis apa yang diucapkan pengguna dalam rekaman audio ini.
+2. 🗺️ JAWABAN FAKTUAL & JELAS: Jawab secara tepat, faktual, dan mendalam sesuai apa yang ditanyakan (dilarang berhalusinasi atau memberikan jawaban di luar konteks pertanyaan).
+3. 📍 INFORMASI LOKASI DETAIL & AKSES: Rincian lokasi, patokan, dan opsi transportasi.
+4. 💰 RINCIAN HARGA & ESTIMASI BUDGET: Detail harga tiket/HTM resmi dan penginapan.
+5. 🏷️📊 TABEL KOMPARASI HARGA PLATFORM DIGITAL: Bandingkan harga di Traveloka, Tiket.com, Agoda, Klook, dan Loket Resmi.`;
+
     const contents = [
       {
         role: 'user',
         parts: [
-          { text: prompt || defaultAudioPrompt },
+          { text: defaultAudioPrompt },
           {
             inlineData: {
-              mimeType: req.file.mimetype || 'audio/mp3',
+              mimeType: audioMime,
               data: base64Audio
             }
           }
@@ -237,7 +261,7 @@ const handleGenerateFromAudio = async (req, res) => {
     ];
 
     const response = await generateContentWithFallback(ai, model, contents, {
-      systemInstruction: `Kamu adalah WanderWise AI, asisten travel cerdas Traveloka-grade.\n${KNOWLEDGE_BASE_GUIDELINES}`
+      systemInstruction: `Kamu adalah SuperB Travel Assistant, asisten travel cerdas Traveloka-grade.\n${KNOWLEDGE_BASE_GUIDELINES}`
     });
     res.status(200).json({ result: response.text });
   } catch (error) {
@@ -261,15 +285,38 @@ const handleGenerateFromDocument = async (req, res) => {
     const base64Doc = req.file.buffer.toString('base64');
     const ai = getGenAI(req);
 
-    const defaultDocPrompt = 'Analisis dokumen itinerary/tiket perjalanan ini dan berikan ringkasan jadwal, verifikasi lokasi detail, rincian biaya, serta komparasi harga platform digital jika ada alternatif yang lebih hemat:';
+    // Cek apakah file berupa teks langsung (txt, csv, md, json)
+    let extractedDocText = '';
+    const isTextDoc = (req.file.mimetype && req.file.mimetype.startsWith('text/')) ||
+      /\.(txt|csv|md|json)$/i.test(req.file.originalname || '');
+    if (isTextDoc) {
+      try {
+        extractedDocText = req.file.buffer.toString('utf-8');
+      } catch (e) {
+        console.warn('Gagal membaca teks dokumen UTF-8:', e);
+      }
+    }
+
+    const defaultDocPrompt = `Ekstrak dan baca seluruh tulisan, jadwal, dan informasi dari berkas dokumen ini secara teliti (Document Text Capture).
+${extractedDocText ? `\n--- ISI DOKUMEN YANG BERHASIL DIEKSTRAK ---\n${extractedDocText.slice(0, 8000)}\n--- AKHIR DOKUMEN ---\n` : ''}
+${prompt ? `Catatan Tambahan Pengguna: "${prompt}"\n` : ''}
+Tugas Anda:
+1. 📄 RINGKASAN & TEKS TERBACA DARI DOKUMEN: Cantumkan informasi penting, nama destinasi, tanggal, jadwal perjalanan, nomor tiket, atau rincian budget yang tertulis dalam dokumen.
+2. 🗺️ ANALISIS & EVALUASI ITINERARY: Evaluasi jadwal atau tiket perjalanan tersebut serta berikan saran optimasi rute.
+3. 📍 INFORMASI LOKASI DETAIL: Rincian tempat-tempat yang tercantum dalam dokumen dan akses transportasinya.
+4. 💰 RINCIAN BIAYA & KOMPARASI PLATFORM: Berikan tabel komparasi harga Traveloka, Tiket.com, dan Agoda untuk alternatif tiket atau hotel yang lebih hemat.`;
+
+    let docMime = req.file.mimetype || 'application/pdf';
+    if (docMime.includes(';')) docMime = docMime.split(';')[0].trim();
+
     const contents = [
       {
         role: 'user',
         parts: [
-          { text: prompt || defaultDocPrompt },
+          { text: defaultDocPrompt },
           {
             inlineData: {
-              mimeType: req.file.mimetype || 'application/pdf',
+              mimeType: docMime,
               data: base64Doc
             }
           }
@@ -278,7 +325,7 @@ const handleGenerateFromDocument = async (req, res) => {
     ];
 
     const response = await generateContentWithFallback(ai, model, contents, {
-      systemInstruction: `Kamu adalah WanderWise AI, asisten travel cerdas Traveloka-grade.\n${KNOWLEDGE_BASE_GUIDELINES}`
+      systemInstruction: `Kamu adalah SuperB Travel Assistant, asisten travel cerdas Traveloka-grade.\n${KNOWLEDGE_BASE_GUIDELINES}`
     });
     res.status(200).json({ result: response.text });
   } catch (error) {
@@ -291,7 +338,7 @@ const handleGenerateFromDocument = async (req, res) => {
 app.post('/generate-from-document', upload.single('document'), handleGenerateFromDocument);
 app.post('/api/generate-from-document', upload.single('document'), handleGenerateFromDocument);
 
-// 5. Endpoint Chat Percakapan Multi-Turn: POST /api/chat (Untuk WanderWise UI)
+// 5. Endpoint Chat Percakapan Multi-Turn: POST /api/chat (Untuk SuperB Travel UI)
 app.post('/api/chat', async (req, res) => {
   const startTime = Date.now();
   try {
@@ -370,7 +417,7 @@ app.get('*', (req, res) => {
 // Start Server
 app.listen(PORT, () => {
   console.log(`=======================================================`);
-  console.log(`🚀 WanderWise AI Express Server berjalan!`);
+  console.log(`🚀 SuperB Travel Assistant Express Server berjalan!`);
   console.log(`📍 URL: http://localhost:${PORT}`);
   console.log(`🔑 Gemini API Key: ${process.env.GEMINI_API_KEY ? 'Terpasang' : 'Belum diisi di server/.env'}`);
   console.log(`📦 Model Default: ${process.env.DEFAULT_MODEL || 'gemini-3.5-flash-lite'}`);

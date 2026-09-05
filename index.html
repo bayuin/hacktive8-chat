@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WanderWise AI - Smart Travel Assistant & Perencana Liburan | Hacktiv8 Final Project</title>
-  <meta name="description" content="WanderWise AI adalah chatbot cerdas asisten perjalanan dan perencana liburan (itinerary, budget, kuliner) dengan parameter kreatif (persona, gaya bahasa, temperature) dan integrasi Google Gemini LLM API. Final Project Hacktiv8.">
-  <meta name="keywords" content="Hacktiv8, Smart Travel Assistant, Chatbot AI, Gemini API, AI Productivity, Itinerary Planner, Travel Chatbot">
-  <meta name="author" content="Hacktiv8 Developer">
+  <title>SuperB Travel Assistant - Perencana Liburan Cerdas & AI Trip Guide</title>
+  <meta name="description" content="SuperB Travel Assistant adalah asisten perjalanan cerdas (itinerary, budget, kuliner) dengan integrasi multimodal teks, foto, dokumen, dan suara langsung.">
+  <meta name="keywords" content="SuperB Travel Assistant, Hacktiv8, Smart Travel Assistant, Chatbot AI, Gemini API, AI Productivity, Itinerary Planner, Travel Chatbot">
+  <meta name="author" content="SuperB Developer">
 
   <!-- Favicon -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✈️</text></svg>">
@@ -26,10 +26,10 @@
         <button id="sidebarToggleBtn" class="btn btn-icon" aria-label="Toggle Sidebar" title="Buka/Tutup Riwayat Perjalanan">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M9 3v18"/></svg>
         </button>
-        <div class="brand" id="brandLogo" title="WanderWise AI - Hacktiv8 Smart Travel Assistant">
+        <div class="brand" id="brandLogo" title="SuperB Travel Assistant">
           <div class="brand-icon">✈️</div>
-          <h1 class="brand-name">WanderWise<span style="color: var(--accent-cyan);">.AI</span></h1>
-          <span class="brand-badge">SMART TRAVEL ASSISTANT</span>
+          <h1 class="brand-name">SuperB<span style="color: var(--accent-cyan);"> Travel</span></h1>
+          <span class="brand-badge">SUPERB ASSISTANT</span>
         </div>
       </div>
 
@@ -108,7 +108,7 @@
             <span style="color: var(--accent-emerald);">v1.0.0</span>
           </div>
           <div class="footer-meta">
-            <span>Smart Travel Assistant</span>
+            <span>SuperB Travel Assistant</span>
             <a href="https://github.com" target="_blank" class="footer-link">GitHub Repo ↗</a>
           </div>
         </div>
@@ -121,7 +121,7 @@
         <div class="telemetry-bar">
           <div class="telemetry-item">
             <span>Model:</span>
-            <span id="telemetryModel" class="telemetry-value">gemini-1.5-flash</span>
+            <span id="telemetryModel" class="telemetry-value">gemini-3.5-flash-lite</span>
           </div>
           <div class="telemetry-item">
             <span>Latensi AI:</span>
@@ -162,12 +162,13 @@
               </span>
             </div>
 
-            <!-- Live Voice Recording Bar -->
+            <!-- Live Voice Recording Bar (dengan live speech-to-text preview) -->
             <div id="recordingBar" class="recording-bar" style="display: none;">
               <div class="rec-indicator">
                 <span class="rec-dot"></span>
-                <span class="rec-label">Merekam...</span>
+                <span class="rec-label">Merekam Suara:</span>
                 <span id="recordingTimer" class="rec-timer">00:00</span>
+                <span id="recordingTranscriptPreview" class="rec-transcript-preview" style="font-size: 0.78rem; color: var(--text-secondary); max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-left: 6px; font-style: italic;">(Bicara sekarang...)</span>
               </div>
               <div class="rec-actions">
                 <button type="button" id="cancelRecordBtn" class="rec-btn cancel" title="Batal Rekam">
