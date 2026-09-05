@@ -1,5 +1,4 @@
 const path = require('path');
-const fs = require('fs');
 const express = require('express');
 const cors = require('cors');
 const multer = require('multer');
@@ -17,14 +16,10 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Setup Multer untuk upload file (gambar, dokumen, audio)
-const uploadDir = path.join(__dirname, 'uploads');
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir, { recursive: true });
-}
+// Setup Multer dengan Memory Storage agar req.file.buffer tersedia untuk base64 encoding (sesuai modul Hacktiv8)
 const upload = multer({
-  dest: uploadDir,
-  limits: { fileSize: 10 * 1024 * 1024 } // limit 10MB
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 25 * 1024 * 1024 } // limit 25MB (untuk audio/dokumen/gambar)
 });
 
 // 3. Sajikan Frontend Static Files dari direktori utama Hacktiv8
@@ -46,8 +41,60 @@ const TONE_GUIDES = {
   storyteller: 'Gunakan gaya narasi deskriptif yang memikat (storytelling), gambarkan suasana tempat, aroma, dan panorama secara imajinatif.'
 };
 
+// Helper untuk inisialisasi GoogleGenAI SDK dengan API Key dari .env atau client header
+function getGenAI(req) {
+  const apiKey = (process.env.GEMINI_API_KEY && process.env.GEMINI_API_KEY !== 'your_gemini_api_key_here')
+    ? process.env.GEMINI_API_KEY
+    : (req.headers['x-gemini-api-key'] || req.body?.apiKey);
+
+  if (!apiKey) {
+    const err = new Error('API Key Gemini belum dikonfigurasi di file server/.env.');
+    err.status = 401;
+    err.hint = 'Buka file server/.env dan isi variabel GEMINI_API_KEY=AIzaSy... lalu restart server.';
+    throw err;
+  }
+  return new GoogleGenAI({ apiKey });
+}
+
+// Helper eksekusi AI dengan dukungan multi-model (Flash 3.5, 3.6, 3.7, 3.8) & graceful fallback
+async function generateContentWithFallback(ai, requestedModel, contents, config = {}) {
+  let targetModel = requestedModel || process.env.DEFAULT_MODEL || 'gemini-2.0-flash';
+  
+  // Normalisasi penamaan model flash
+  const candidateModels = [
+    targetModel,
+    'gemini-2.0-flash',
+    'gemini-1.5-flash'
+  ];
+
+  let lastError = null;
+  for (const modelName of candidateModels) {
+    try {
+      return await ai.models.generateContent({
+        model: modelName,
+        contents: contents,
+        config: config
+      });
+    } catch (err) {
+      lastError = err;
+      const isModelIssue = err.message && (
+        err.message.includes('not found') ||
+        err.message.includes('not available') ||
+        err.message.includes('404') ||
+        err.message.includes('400')
+      );
+      if (isModelIssue) {
+        console.warn(`Model ${modelName} belum tersedia di region/tier ini, mencoba fallback...`);
+        continue;
+      }
+      throw err;
+    }
+  }
+  throw lastError;
+}
+
 // ==============================================================================
-// REST API ENDPOINTS
+// REST API ENDPOINTS (Sesuai Struktur Materi Kursus Hacktiv8)
 // ==============================================================================
 
 // Endpoint Status & Health Check
@@ -57,33 +104,155 @@ app.get('/api/health', (req, res) => {
     status: 'online',
     service: 'WanderWise AI REST API (Express + @google/genai)',
     hasApiKey: hasApiKey,
-    defaultModel: process.env.DEFAULT_MODEL || 'gemini-2.0-flash',
+    supportedModels: [
+      'gemini-3.5-flash-lite',
+      'gemini-3.6-flash',
+      'gemini-3.7-flash',
+      'gemini-3.8-flash'
+    ],
+    defaultModel: process.env.DEFAULT_MODEL || 'gemini-3.5-flash-lite',
     nodeVersion: process.version,
     timestamp: new Date().toISOString()
   });
 });
 
-// Endpoint Upload File (Multer Demo)
-app.post('/api/upload', upload.single('file'), (req, res) => {
+// 1. Endpoint Teks: POST /generate-text (Sesuai Lampiran VSCode Baris 22)
+const handleGenerateText = async (req, res) => {
   try {
-    if (!req.file) {
-      return res.status(400).json({ error: 'Tidak ada file yang diunggah.' });
+    const { prompt, model } = req.body;
+    if (!prompt) {
+      return res.status(400).json({ error: 'Field "prompt" wajib disertakan.' });
     }
-    res.json({
-      message: 'File berhasil diunggah via Multer',
-      file: {
-        originalName: req.file.originalname,
-        mimeType: req.file.mimetype,
-        size: req.file.size,
-        path: req.file.path
-      }
-    });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
 
-// Endpoint Chat REST API dengan @google/genai SDK
+    const ai = getGenAI(req);
+    const response = await generateContentWithFallback(ai, model, prompt);
+    res.status(200).json({ result: response.text });
+  } catch (error) {
+    console.error('Error generating text:', error);
+    res.status(error.status || 500).json({
+      error: error.message || 'An error occurred while generating text.'
+    });
+  }
+};
+app.post('/generate-text', handleGenerateText);
+app.post('/api/generate-text', handleGenerateText);
+
+// 2. Endpoint Gambar: POST /generate-from-image (Sesuai Lampiran VSCode Baris 42)
+const handleGenerateFromImage = async (req, res) => {
+  try {
+    const { prompt, model } = req.body;
+    if (!req.file) {
+      return res.status(400).json({ error: 'File gambar (field "image") wajib diunggah.' });
+    }
+
+    // Mengubah buffer file ke base64 (persis seperti slide baris 45: req.file.buffer.toString('base64'))
+    const base64Image = req.file.buffer.toString('base64');
+    const ai = getGenAI(req);
+
+    const contents = [
+      {
+        role: 'user',
+        parts: [
+          { text: prompt || 'Jelaskan gambar destinasi wisata ini dan berikan rekomendasi itinerary serta tips liburan:' },
+          {
+            inlineData: {
+              mimeType: req.file.mimetype || 'image/jpeg',
+              data: base64Image
+            }
+          }
+        ]
+      }
+    ];
+
+    const response = await generateContentWithFallback(ai, model, contents);
+    res.status(200).json({ result: response.text });
+  } catch (error) {
+    console.error('Error generating from image:', error);
+    res.status(error.status || 500).json({
+      error: error.message || 'An error occurred while generating from image.'
+    });
+  }
+};
+app.post('/generate-from-image', upload.single('image'), handleGenerateFromImage);
+app.post('/api/generate-from-image', upload.single('image'), handleGenerateFromImage);
+
+// 3. Endpoint Suara / Audio: POST /generate-from-audio (Sesuai Struktur Kursus)
+const handleGenerateFromAudio = async (req, res) => {
+  try {
+    const { prompt, model } = req.body;
+    if (!req.file) {
+      return res.status(400).json({ error: 'File audio (field "audio") wajib diunggah.' });
+    }
+
+    const base64Audio = req.file.buffer.toString('base64');
+    const ai = getGenAI(req);
+
+    const contents = [
+      {
+        role: 'user',
+        parts: [
+          { text: prompt || 'Dengarkan rekaman suara ini dan berikan ringkasan rencana perjalanan/pertanyaan wisata:' },
+          {
+            inlineData: {
+              mimeType: req.file.mimetype || 'audio/mp3',
+              data: base64Audio
+            }
+          }
+        ]
+      }
+    ];
+
+    const response = await generateContentWithFallback(ai, model, contents);
+    res.status(200).json({ result: response.text });
+  } catch (error) {
+    console.error('Error generating from audio:', error);
+    res.status(error.status || 500).json({
+      error: error.message || 'An error occurred while generating from audio.'
+    });
+  }
+};
+app.post('/generate-from-audio', upload.single('audio'), handleGenerateFromAudio);
+app.post('/api/generate-from-audio', upload.single('audio'), handleGenerateFromAudio);
+
+// 4. Endpoint Dokumen: POST /generate-from-document (Sesuai Struktur Kursus)
+const handleGenerateFromDocument = async (req, res) => {
+  try {
+    const { prompt, model } = req.body;
+    if (!req.file) {
+      return res.status(400).json({ error: 'File dokumen (field "document") wajib diunggah.' });
+    }
+
+    const base64Doc = req.file.buffer.toString('base64');
+    const ai = getGenAI(req);
+
+    const contents = [
+      {
+        role: 'user',
+        parts: [
+          { text: prompt || 'Analisis dokumen itinerary/tiket perjalanan ini dan berikan ringkasan jadwal serta tips:' },
+          {
+            inlineData: {
+              mimeType: req.file.mimetype || 'application/pdf',
+              data: base64Doc
+            }
+          }
+        ]
+      }
+    ];
+
+    const response = await generateContentWithFallback(ai, model, contents);
+    res.status(200).json({ result: response.text });
+  } catch (error) {
+    console.error('Error generating from document:', error);
+    res.status(error.status || 500).json({
+      error: error.message || 'An error occurred while generating from document.'
+    });
+  }
+};
+app.post('/generate-from-document', upload.single('document'), handleGenerateFromDocument);
+app.post('/api/generate-from-document', upload.single('document'), handleGenerateFromDocument);
+
+// 5. Endpoint Chat Percakapan Multi-Turn: POST /api/chat (Untuk WanderWise UI)
 app.post('/api/chat', async (req, res) => {
   const startTime = Date.now();
   try {
@@ -93,20 +262,7 @@ app.post('/api/chat', async (req, res) => {
       return res.status(400).json({ error: 'Parameter "messages" array wajib disertakan.' });
     }
 
-    // Ambil API Key dari .env (prioritas utama) atau fallback dari client request header
-    const apiKey = (process.env.GEMINI_API_KEY && process.env.GEMINI_API_KEY !== 'your_gemini_api_key_here')
-      ? process.env.GEMINI_API_KEY
-      : (req.headers['x-gemini-api-key'] || req.body.apiKey);
-
-    if (!apiKey) {
-      return res.status(401).json({
-        error: 'API Key Gemini belum dikonfigurasi di file server/.env.',
-        hint: 'Buka file server/.env dan isi variabel GEMINI_API_KEY=AIzaSy... lalu restart server.'
-      });
-    }
-
-    // Inisialisasi @google/genai SDK
-    const ai = new GoogleGenAI({ apiKey: apiKey });
+    const ai = getGenAI(req);
 
     // Format instruksi sistem berdasarkan persona dan tone
     const personaInstruction = PERSONA_PROMPTS[persona] || PERSONA_PROMPTS.backpacker;
@@ -114,7 +270,6 @@ app.post('/api/chat', async (req, res) => {
     const systemInstruction = `${personaInstruction}\nPanduan Gaya Bahasa: ${toneInstruction}\nFormatkan output menggunakan Markdown terstruktur rapi dengan emoji perjalanan yang relevan.`;
 
     // Format riwayat chat untuk Gemini API
-    // Pastikan tidak ada turn kosong dan urutan user-model konsisten
     const contents = [];
     for (const msg of messages) {
       if (!msg.content || !msg.content.trim()) continue;
@@ -134,21 +289,15 @@ app.post('/api/chat', async (req, res) => {
       return res.status(400).json({ error: 'Pesan obrolan tidak boleh kosong.' });
     }
 
-    // Tentukan model target (dukungan Flash 2.5 / 2.0 / 1.5)
-    let targetModel = model || process.env.DEFAULT_MODEL || 'gemini-2.0-flash';
-    if (targetModel.includes('2.5-flash-lite')) {
-      targetModel = 'gemini-2.0-flash'; // Fallback aman jika model preview berubah
-    }
-
-    // Panggil Gemini API via @google/genai SDK
-    const response = await ai.models.generateContent({
-      model: targetModel,
-      contents: contents,
-      config: {
+    const response = await generateContentWithFallback(
+      ai,
+      model,
+      contents,
+      {
         systemInstruction: systemInstruction,
         temperature: Math.max(0.0, Math.min(2.0, parseFloat(temperature) || 0.7)),
       }
-    });
+    );
 
     const responseText = response.text || (response.candidates && response.candidates[0]?.content?.parts?.[0]?.text) || 'Maaf, tidak ada respon yang diterima.';
     const latencyMs = Date.now() - startTime;
@@ -157,7 +306,7 @@ app.post('/api/chat', async (req, res) => {
     return res.json({
       success: true,
       text: responseText,
-      model: targetModel,
+      model: model || 'gemini-3.5-flash-lite',
       latencyMs: latencyMs,
       tokens: estimatedTokens
     });
@@ -165,9 +314,10 @@ app.post('/api/chat', async (req, res) => {
   } catch (err) {
     const latencyMs = Date.now() - startTime;
     console.error('Gemini SDK Error:', err);
-    return res.status(500).json({
+    return res.status(err.status || 500).json({
       success: false,
       error: err.message || 'Terjadi kesalahan saat memproses permintaan AI.',
+      hint: err.hint,
       latencyMs: latencyMs
     });
   }
@@ -184,6 +334,7 @@ app.listen(PORT, () => {
   console.log(`🚀 WanderWise AI Express Server berjalan!`);
   console.log(`📍 URL: http://localhost:${PORT}`);
   console.log(`🔑 Gemini API Key: ${process.env.GEMINI_API_KEY ? 'Terpasang' : 'Belum diisi di server/.env'}`);
-  console.log(`📦 Model Default: ${process.env.DEFAULT_MODEL || 'gemini-2.0-flash'}`);
+  console.log(`📦 Model Default: ${process.env.DEFAULT_MODEL || 'gemini-3.5-flash-lite'}`);
+  console.log(`🎯 Endpoints: /generate-text, /generate-from-image, /generate-from-audio, /generate-from-document, /api/chat`);
   console.log(`=======================================================`);
 });

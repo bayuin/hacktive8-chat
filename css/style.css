@@ -6,36 +6,36 @@
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
 
 :root {
-  /* Color Palette - Cyberpunk Obsidian & Electric Cyan / Indigo */
-  --bg-main: #080B12;
-  --bg-sidebar: #0C101B;
-  --bg-card: rgba(18, 24, 38, 0.75);
-  --bg-card-hover: rgba(28, 37, 58, 0.85);
-  --bg-input: #0F1524;
-  --bg-glass: rgba(15, 21, 36, 0.7);
+  /* Color Palette - Traveloka Signature Azure Blue & Deep Midnight */
+  --bg-main: #05101E;
+  --bg-sidebar: #091A30;
+  --bg-card: rgba(14, 34, 61, 0.8);
+  --bg-card-hover: rgba(20, 46, 80, 0.9);
+  --bg-input: #0A1E38;
+  --bg-glass: rgba(9, 26, 48, 0.85);
 
-  --border-subtle: rgba(255, 255, 255, 0.08);
-  --border-active: rgba(99, 102, 241, 0.4);
-  --border-glow: rgba(6, 182, 212, 0.3);
+  --border-subtle: rgba(255, 255, 255, 0.1);
+  --border-active: #0194F3;
+  --border-glow: rgba(1, 148, 243, 0.35);
 
-  --text-primary: #F3F4F6;
-  --text-secondary: #9CA3AF;
-  --text-muted: #6B7280;
+  --text-primary: #F8FAFC;
+  --text-secondary: #9BB1CC;
+  --text-muted: #5F7A99;
 
-  --accent-indigo: #6366F1;
-  --accent-cyan: #06B6D4;
-  --accent-emerald: #10B981;
-  --accent-amber: #F59E0B;
+  --accent-indigo: #0064D2; /* Traveloka Deep Blue */
+  --accent-cyan: #0194F3;   /* Traveloka Iconic Sky Blue */
+  --accent-emerald: #00BA7A;/* Traveloka Success Green */
+  --accent-amber: #FF5E1F;  /* Traveloka Iconic Orange */
   --accent-rose: #F43F5E;
 
-  --gradient-brand: linear-gradient(135deg, #6366F1 0%, #06B6D4 100%);
-  --gradient-glow: linear-gradient(135deg, rgba(99, 102, 241, 0.25) 0%, rgba(6, 182, 212, 0.25) 100%);
-  --gradient-card: linear-gradient(180deg, rgba(26, 34, 53, 0.5) 0%, rgba(15, 21, 36, 0.8) 100%);
+  --gradient-brand: linear-gradient(135deg, #0194F3 0%, #0064D2 100%);
+  --gradient-glow: linear-gradient(135deg, rgba(1, 148, 243, 0.3) 0%, rgba(0, 100, 210, 0.3) 100%);
+  --gradient-card: linear-gradient(180deg, rgba(14, 34, 61, 0.6) 0%, rgba(9, 26, 48, 0.85) 100%);
 
   --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
   --shadow-md: 0 8px 24px -4px rgba(0, 0, 0, 0.5);
   --shadow-lg: 0 16px 36px -6px rgba(0, 0, 0, 0.7);
-  --shadow-glow: 0 0 20px rgba(99, 102, 241, 0.25);
+  --shadow-glow: 0 0 20px rgba(1, 148, 243, 0.3);
 
   --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
@@ -51,70 +51,80 @@
   --header-height: 64px;
 }
 
-/* Light Theme Mode */
+/* Light Theme Mode - Traveloka Iconic Clean Aesthetic */
 [data-theme="light"] {
-  --bg-main: #F4F6F9;
+  --bg-main: #F7F9FA;         /* Traveloka Clean Background */
   --bg-sidebar: #FFFFFF;
-  --bg-card: rgba(255, 255, 255, 0.9);
-  --bg-card-hover: rgba(241, 245, 249, 0.98);
+  --bg-card: #FFFFFF;
+  --bg-card-hover: #F1F6FB;
   --bg-input: #FFFFFF;
-  --bg-glass: rgba(255, 255, 255, 0.88);
+  --bg-glass: rgba(255, 255, 255, 0.94);
 
-  --border-subtle: rgba(15, 23, 42, 0.08);
-  --border-active: rgba(14, 165, 233, 0.5);
-  --border-glow: rgba(14, 165, 233, 0.25);
+  --border-subtle: #E5EBF2;
+  --border-active: #0194F3;
+  --border-glow: rgba(1, 148, 243, 0.25);
 
-  --text-primary: #0F172A;
-  --text-secondary: #475569;
-  --text-muted: #64748B;
+  --text-primary: #031838;    /* Traveloka Deep Navy Text */
+  --text-secondary: #4A5F78;
+  --text-muted: #687176;
 
-  --accent-indigo: #4F46E5;
-  --accent-cyan: #0284C7;
-  --accent-emerald: #059669;
-  --accent-amber: #D97706;
+  --accent-indigo: #0064D2;
+  --accent-cyan: #0194F3;     /* Traveloka Sky Blue */
+  --accent-emerald: #00BA7A;
+  --accent-amber: #FF5E1F;    /* Traveloka Orange */
   --accent-rose: #E11D48;
 
-  --gradient-brand: linear-gradient(135deg, #0284C7 0%, #059669 100%);
-  --gradient-glow: linear-gradient(135deg, rgba(2, 132, 199, 0.15) 0%, rgba(5, 150, 105, 0.15) 100%);
-  --gradient-card: linear-gradient(180deg, rgba(241, 245, 249, 0.8) 0%, rgba(255, 255, 255, 0.95) 100%);
+  --gradient-brand: linear-gradient(135deg, #0194F3 0%, #0064D2 100%);
+  --gradient-glow: linear-gradient(135deg, rgba(1, 148, 243, 0.15) 0%, rgba(0, 100, 210, 0.15) 100%);
+  --gradient-card: linear-gradient(180deg, #FFFFFF 0%, #F7F9FA 100%);
 
-  --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.05);
-  --shadow-md: 0 8px 24px -4px rgba(15, 23, 42, 0.08);
-  --shadow-lg: 0 16px 36px -6px rgba(15, 23, 42, 0.12);
-  --shadow-glow: 0 0 20px rgba(2, 132, 199, 0.2);
+  --shadow-sm: 0 2px 8px rgba(3, 24, 56, 0.05);
+  --shadow-md: 0 8px 24px -4px rgba(3, 24, 56, 0.08);
+  --shadow-lg: 0 16px 36px -6px rgba(3, 24, 56, 0.12);
+  --shadow-glow: 0 0 20px rgba(1, 148, 243, 0.2);
 }
 
 [data-theme="light"] .app-container {
-  background: radial-gradient(circle at 50% 0%, rgba(2, 132, 199, 0.08) 0%, transparent 50%),
-              radial-gradient(circle at 100% 100%, rgba(5, 150, 105, 0.06) 0%, transparent 40%);
+  background: radial-gradient(circle at 50% 0%, rgba(1, 148, 243, 0.08) 0%, transparent 50%),
+              radial-gradient(circle at 100% 100%, rgba(0, 186, 122, 0.05) 0%, transparent 40%);
 }
 
 [data-theme="light"] .hero-title {
-  color: #0F172A;
+  color: #031838;
+}
+
+[data-theme="light"] .hero-title span {
+  color: #0194F3;
 }
 
 [data-theme="light"] .message-content h1,
 [data-theme="light"] .message-content h2,
 [data-theme="light"] .message-content h3,
 [data-theme="light"] .message-content h4 {
-  color: #0F172A;
+  color: #031838;
 }
 
 [data-theme="light"] .message-content table {
   background: #FFFFFF;
+  border: 1px solid #E5EBF2;
+}
+
+[data-theme="light"] .message-content th {
+  background: #F1F6FB;
+  color: #0064D2;
 }
 
 [data-theme="light"] .message-content td {
-  border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+  border-bottom: 1px solid #E5EBF2;
   color: #1E293B;
 }
 
 [data-theme="light"] .code-wrapper {
-  background: #0F172A;
+  background: #0C2340;
 }
 
 [data-theme="light"] .code-header {
-  background: #1E293B;
+  background: #061528;
 }
 
 [data-theme="light"] .code-wrapper pre {
@@ -122,64 +132,153 @@
 }
 
 [data-theme="light"] .telemetry-bar {
-  background: rgba(241, 245, 249, 0.75);
-  border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+  background: rgba(247, 249, 250, 0.85);
+  border-bottom: 1px solid #E5EBF2;
 }
 
 [data-theme="light"] .modal-overlay {
-  background: rgba(15, 23, 42, 0.45);
+  background: rgba(3, 24, 56, 0.5);
 }
 
 [data-theme="light"] .status-pill {
-  background: rgba(15, 23, 42, 0.05);
+  background: #EDF6FD;
+  border-color: #BEE3F8;
 }
 
 [data-theme="light"] .sidebar-footer {
-  background: rgba(15, 23, 42, 0.03);
+  background: #F1F6FB;
+  border-top: 1px solid #E5EBF2;
 }
 
 [data-theme="light"] .btn-secondary {
-  background: rgba(15, 23, 42, 0.04);
+  background: #F1F6FB;
+  border-color: #D3E2F0;
+  color: #031838;
 }
 
 [data-theme="light"] .btn-secondary:hover {
-  background: rgba(15, 23, 42, 0.08);
+  background: #E4EFF9;
+  border-color: #0194F3;
 }
 
 [data-theme="light"] .btn-icon {
-  background: rgba(15, 23, 42, 0.04);
+  background: #F1F6FB;
+  border-color: #D3E2F0;
+  color: #4A5F78;
 }
 
 [data-theme="light"] .btn-icon:hover {
-  background: rgba(15, 23, 42, 0.08);
+  background: #E4EFF9;
+  color: #0194F3;
+  border-color: #0194F3;
 }
 
 [data-theme="light"] .param-chip {
-  background: rgba(15, 23, 42, 0.04);
+  background: #EDF6FD;
+  border: 1px solid #CCE7FA;
+  color: #0064D2;
 }
 
 [data-theme="light"] .persona-card {
   background: #FFFFFF;
+  border: 1px solid #E5EBF2;
 }
 
 [data-theme="light"] .persona-card:hover {
-  background: #F8FAFC;
+  background: #F7FAFD;
+  border-color: #0194F3;
+}
+
+[data-theme="light"] .persona-card.active {
+  background: #E8F5FD;
+  border-color: #0194F3;
 }
 
 [data-theme="light"] .tone-btn {
   background: #FFFFFF;
+  border: 1px solid #E5EBF2;
+  color: #4A5F78;
 }
 
 [data-theme="light"] .tone-btn:hover {
-  background: #F8FAFC;
+  background: #F7FAFD;
+  border-color: #0194F3;
+}
+
+[data-theme="light"] .tone-btn.active {
+  background: #E8F5FD;
+  border-color: #0194F3;
+  color: #0064D2;
 }
 
 [data-theme="light"] .styled-select {
   background: #FFFFFF;
+  border: 1px solid #D3E2F0;
+  color: #031838;
 }
 
 [data-theme="light"] .input-box-wrapper {
   background: #FFFFFF;
+  border: 1px solid #D3E2F0;
+}
+
+[data-theme="light"] .input-box-wrapper:focus-within {
+  border-color: #0194F3;
+  box-shadow: 0 0 0 3px rgba(1, 148, 243, 0.15);
+}
+
+[data-theme="light"] .prompt-card {
+  background: #FFFFFF;
+  border: 1px solid #E5EBF2;
+}
+
+[data-theme="light"] .prompt-card:hover {
+  background: #F7FAFD;
+  border-color: #0194F3;
+  box-shadow: 0 6px 18px rgba(1, 148, 243, 0.12);
+}
+
+[data-theme="light"] .prompt-title {
+  color: #031838;
+}
+
+/* Fix Kontras Judul Perjalanan Aktif (Issue #2) */
+.session-item.active {
+  background: rgba(1, 148, 243, 0.18);
+  color: #38BDF8;
+  border: 1px solid rgba(1, 148, 243, 0.4);
+}
+
+.session-item.active .session-title {
+  color: #38BDF8;
+  font-weight: 600;
+}
+
+.session-item.active svg {
+  color: #0194F3;
+}
+
+[data-theme="light"] .session-item {
+  color: #4A5F78;
+}
+
+[data-theme="light"] .session-item:hover {
+  background: #F1F6FB;
+  color: #031838;
+}
+
+[data-theme="light"] .session-item.active {
+  background: #E8F5FD;
+  border: 1.5px solid #0194F3;
+}
+
+[data-theme="light"] .session-item.active .session-title {
+  color: #0064D2; /* Deep Traveloka Blue - Kontras Tinggi dan Terlihat Jelas */
+  font-weight: 700;
+}
+
+[data-theme="light"] .session-item.active svg {
+  color: #0194F3;
 }
 
 /* Reset & Global */
@@ -447,14 +546,15 @@ body {
 }
 
 .session-item:hover {
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(1, 148, 243, 0.08);
   color: var(--text-primary);
 }
 
 .session-item.active {
-  background: rgba(99, 102, 241, 0.14);
-  color: #FFFFFF;
-  border: 1px solid rgba(99, 102, 241, 0.25);
+  background: rgba(1, 148, 243, 0.16);
+  color: #0194F3;
+  border: 1px solid rgba(1, 148, 243, 0.35);
+  font-weight: 600;
 }
 
 .session-title-wrap {

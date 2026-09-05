@@ -25,6 +25,27 @@ const CONFIG = {
       badge: "Fast & Lightweight",
       description: "Model ringan dan super responsif dari Google AI untuk rekomendasi wisata & perencana itinerary.",
       freeTier: true
+    },
+    {
+      id: "gemini-3.6-flash",
+      name: "Gemini 3.6 Flash",
+      badge: "Travel Reasoning",
+      description: "Model cerdas dengan kemampuan penalaran rute perjalanan & kalkulasi budget yang akurat.",
+      freeTier: true
+    },
+    {
+      id: "gemini-3.7-flash",
+      name: "Gemini 3.7 Flash",
+      badge: "Hybrid Thinking & Speed",
+      description: "Model mutakhir dengan kecepatan tinggi dan pemahaman multimodal gambar/tempat wisata.",
+      freeTier: true
+    },
+    {
+      id: "gemini-3.8-flash",
+      name: "Gemini 3.8 Flash",
+      badge: "Ultra Next-Gen",
+      description: "Model generasi terdepan Google AI untuk perencanaan liburan komprehensif tanpa batas.",
+      freeTier: true
     }
   ],
   personas: {
@@ -132,7 +153,7 @@ const CONFIG = {
     temperature: 0.7,
     memoryTurns: 0,
     soundEnabled: true,
-    theme: "dark"
+    theme: "light"
   }
 };
 
