@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DevPulse AI - Chatbot AI Produktivitas & Integrasi AI API | Hacktiv8 Final Project</title>
+  <meta name="description" content="DevPulse AI adalah asisten cerdas untuk produktivitas developer dengan konfigurasi parameter kreatif (persona, tone gaya bahasa, temperature) dan integrasi Google Gemini LLM API. Final Project Hacktiv8.">
+  <meta name="keywords" content="Hacktiv8, Chatbot AI, Gemini API, AI Productivity, LLM Integration, Developer Tools">
+  <meta name="author" content="Hacktiv8 Developer">
+
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+
+  <!-- Highlight.js for Syntax Highlighting -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="app-container">
+    
+    <!-- Top Navigation Bar -->
+    <header class="top-nav" role="banner">
+      <div class="nav-left">
+        <button id="sidebarToggleBtn" class="btn btn-icon" aria-label="Toggle Sidebar" title="Buka/Tutup Sidebar Sesi">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M9 3v18"/></svg>
+        </button>
+        <div class="brand" id="brandLogo" title="DevPulse AI - Hacktiv8 Final Project">
+          <div class="brand-icon">⚡</div>
+          <h1 class="brand-name">DevPulse<span style="color: var(--accent-cyan);">.AI</span></h1>
+          <span class="brand-badge">HACKTIV8 PROJECT</span>
+        </div>
+      </div>
+
+      <div class="nav-center">
+        <div class="status-pill" id="statusPill" title="Status Engine AI">
+          <span class="pulse-dot"></span>
+          <span id="activeModelLabel">Gemini 1.5 Flash</span>
+          <span style="color: var(--border-subtle);">•</span>
+          <span id="activePersonaPill" style="color: var(--accent-cyan); font-weight: 600;">🛠️ Fullstack</span>
+          <span style="color: var(--border-subtle);">•</span>
+          <span id="activeTonePill" style="color: var(--accent-amber);">☕ Santai</span>
+        </div>
+      </div>
+
+      <div class="nav-right">
+        <!-- Sound Effect Toggle -->
+        <button id="soundToggleBtn" class="btn btn-icon" aria-label="Toggle Suara" title="Toggle Efek Suara (Aktif)">
+          <svg id="soundIconOn" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+          <svg id="soundIconOff" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="22" x2="16" y1="9" y2="15"/><line x1="16" x2="22" y1="9" y2="15"/></svg>
+        </button>
+
+        <!-- Export Chat -->
+        <button id="exportBtn" class="btn btn-secondary" title="Ekspor Percakapan (Markdown)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+          <span>Export</span>
+        </button>
+
+        <!-- Clear Chat -->
+        <button id="clearChatBtn" class="btn btn-secondary" title="Bersihkan Pesan di Sesi Ini">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
+        </button>
+
+        <!-- API Key & Settings Modal Trigger -->
+        <button id="openSettingsBtn" class="btn btn-primary" title="Pengaturan API Key Gemini & Konfigurasi">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+          <span id="apiKeyBtnText">API Key</span>
+        </button>
+
+        <!-- Right Params Drawer Toggle -->
+        <button id="paramsToggleBtn" class="btn btn-icon" aria-label="Toggle Parameters" title="Buka Panel Parameter Kreatif">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="21" y2="21"/><line x1="4" x2="20" y1="14" y2="14"/><line x1="4" x2="20" y1="7" y2="7"/><circle cx="14" cy="21" r="2"/><circle cx="8" cy="14" r="2"/><circle cx="16" cy="7" r="2"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <div class="workspace">
+      
+      <!-- Left Sidebar: Session Management -->
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+          <button id="newChatBtn" class="new-chat-btn" title="Mulai Sesi Percakapan Baru">
+            <span style="display: flex; align-items: center; gap: 8px;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" x2="12" y1="5" y2="19"/><line x1="5" x2="19" y1="12" y2="12"/></svg>
+              <span>Obrolan Baru</span>
+            </span>
+            <span class="kbd-shortcut">Ctrl+K</span>
+          </button>
+        </div>
+
+        <!-- Session List -->
+        <nav class="sessions-list" id="sessionsList" aria-label="Riwayat Percakapan">
+          <!-- Populated dynamically by JS -->
+        </nav>
+
+        <!-- Sidebar Footer -->
+        <div class="sidebar-footer">
+          <div class="footer-meta">
+            <span>Hacktiv8 Final Project</span>
+            <span style="color: var(--accent-emerald);">v1.0.0</span>
+          </div>
+          <div class="footer-meta">
+            <span>AI API Integration</span>
+            <a href="https://github.com" target="_blank" class="footer-link">GitHub Repo ↗</a>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Center Chat Area -->
+      <main class="chat-viewport" id="chatViewport">
+        
+        <!-- Live Telemetry Bar -->
+        <div class="telemetry-bar">
+          <div class="telemetry-item">
+            <span>Model:</span>
+            <span id="telemetryModel" class="telemetry-value">gemini-1.5-flash</span>
+          </div>
+          <div class="telemetry-item">
+            <span>Latensi Respon:</span>
+            <span id="telemetryLatency" class="telemetry-value">-</span>
+          </div>
+          <div class="telemetry-item">
+            <span>Estimasi Token:</span>
+            <span id="telemetryTokens" class="telemetry-value">-</span>
+          </div>
+        </div>
+
+        <!-- Messages Scroll Area -->
+        <div class="messages-container" id="messagesContainer">
+          <!-- Empty State (Welcome Screen) or Message Rows populated dynamically -->
+        </div>
+
+        <!-- Chat Input Dock -->
+        <div class="input-dock">
+          <div class="input-container">
+            
+            <!-- Dynamic Param Chips -->
+            <div class="active-param-chips">
+              <span class="param-chip" title="Persona Terpilih">
+                <span id="chipPersonaIcon">🛠️</span>
+                <span>Persona: <b id="chipPersonaText">Fullstack Architect</b></span>
+              </span>
+              <span class="param-chip" title="Gaya Bahasa Terpilih">
+                <span>Tone: <b id="chipToneText">Santai & Casual</b></span>
+              </span>
+              <span class="param-chip" title="Tingkat Kreativitas">
+                <span>Temp: <b id="chipTempText">0.7</b></span>
+              </span>
+              <span class="param-chip" title="Kedalaman Memory Konteks">
+                <span>Memory: <b id="chipMemoryText">8 Percakapan</b></span>
+              </span>
+            </div>
+
+            <!-- Textarea Box -->
+            <div class="input-box-wrapper">
+              <textarea 
+                id="chatInput" 
+                class="chat-textarea" 
+                placeholder="Tanyakan masalah koding, analisis error stack trace, atau arsitektur sistem... (Enter untuk kirim, Shift+Enter untuk baris baru)" 
+                rows="1"
+              ></textarea>
+              
+              <div class="input-actions">
+                <button id="stopBtn" class="send-btn stop-btn" style="display: none;" title="Hentikan Generasi Respon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><rect width="12" height="12" x="6" y="6" rx="2"/></svg>
+                </button>
+
+                <button id="sendBtn" class="send-btn" title="Kirim Pesan">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" x2="11" y1="2" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                </button>
+              </div>
+            </div>
+
+            <div class="input-hint">
+              Tips: Anda dapat mengubah Persona & Gaya Bahasa di panel sebelah kanan kapan saja untuk memodifikasi respon AI secara dinamis.
+            </div>
+
+          </div>
+        </div>
+
+      </main>
+
+      <!-- Right Drawer: Creative Parameters Control Center -->
+      <aside class="params-drawer" id="paramsDrawer">
+        <div class="params-header">
+          <div class="params-title">
+            <span>⚙️ Parameter Kreatif</span>
+          </div>
+          <button id="closeParamsBtn" class="btn btn-icon" title="Tutup Panel Parameter">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" x2="6" y1="6" y2="18"/><line x1="6" x2="18" y1="6" y2="18"/></svg>
+          </button>
+        </div>
+
+        <div class="params-body">
+
+          <!-- 1. Domain Persona Selector -->
+          <div class="param-section">
+            <div class="param-label-wrap">
+              <span class="param-label">1. Domain & Persona Bot</span>
+              <span class="param-badge" id="activePersonaBadge">Fullstack</span>
+            </div>
+            <div class="persona-grid" id="personaGrid">
+              <!-- Rendered dynamically from CONFIG.personas -->
+            </div>
+          </div>
+
+          <!-- 2. Gaya Bahasa (Tone Switcher) -->
+          <div class="param-section">
+            <div class="param-label-wrap">
+              <span class="param-label">2. Gaya Bahasa (Tone)</span>
+              <span class="param-badge" id="activeToneBadge">Santai</span>
+            </div>
+            <div class="tone-grid" id="toneGrid">
+              <!-- Rendered dynamically from CONFIG.tones -->
+            </div>
+          </div>
+
+          <!-- 3. Kreativitas / Temperature Slider -->
+          <div class="param-section">
+            <div class="param-label-wrap">
+              <span class="param-label">3. Temperature (Kreativitas)</span>
+              <span class="param-badge" id="tempValDisplay">0.7</span>
+            </div>
+            <div class="range-slider-wrap">
+              <input type="range" id="tempSlider" class="styled-slider" min="0.0" max="1.0" step="0.1" value="0.7">
+              <div class="slider-scale">
+                <span>0.0 (Presisi/Strict)</span>
+                <span>0.5 (Seimbang)</span>
+                <span>1.0 (Kreatif)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4. Model Selection -->
+          <div class="param-section">
+            <div class="param-label-wrap">
+              <span class="param-label">4. Pilihan Model AI</span>
+            </div>
+            <select id="modelSelect" class="styled-select">
+              <!-- Rendered from CONFIG.models -->
+            </select>
+          </div>
+
+          <!-- 5. Memory & Context Depth -->
+          <div class="param-section">
+            <div class="param-label-wrap">
+              <span class="param-label">5. Konteks Memory (Turns)</span>
+            </div>
+            <select id="memorySelect" class="styled-select">
+              <option value="2">2 Pesan Terakhir (Minimal)</option>
+              <option value="4">4 Pesan Terakhir</option>
+              <option value="8" selected>8 Pesan Terakhir (Rekomendasi)</option>
+              <option value="16">16 Pesan Terakhir (Konteks Panjang)</option>
+              <option value="0">Semua Percakapan (Full Memory)</option>
+            </select>
+            <span style="font-size: 0.7rem; color: var(--text-muted); margin-top: 4px;">
+              Mengontrol seberapa banyak riwayat percakapan sebelumnya yang diikutsertakan ke prompt API untuk menjaga konteks.
+            </span>
+          </div>
+
+        </div>
+      </aside>
+
+    </div>
+
+    <!-- API Key Settings Modal -->
+    <div class="modal-overlay" id="settingsModal">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h2 class="modal-title">Konfigurasi API Key & Model</h2>
+          <button id="closeSettingsBtn" class="btn btn-icon" title="Tutup Modal">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" x2="6" y1="6" y2="18"/><line x1="6" x2="18" y1="6" y2="18"/></svg>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label" for="apiKeyInput">Google Gemini API Key</label>
+            <input 
+              type="password" 
+              id="apiKeyInput" 
+              class="form-input" 
+              placeholder="AIzaSy..." 
+              autocomplete="off"
+            >
+            <p class="form-hint">
+              Dapatkan API Key gratis di <a href="https://aistudio.google.com/app/apikey" target="_blank" class="footer-link">Google AI Studio ↗</a>.
+              Kunci Anda disimpan secara aman hanya di <code>localStorage</code> browser klien Anda.
+            </p>
+          </div>
+
+          <div style="background: rgba(99, 102, 241, 0.08); border: 1px solid rgba(99, 102, 241, 0.2); padding: 12px; border-radius: 8px; font-size: 0.8rem;">
+            <b style="color: var(--accent-cyan);">💡 Mode Tanpa API Key:</b> Jika penguji atau instruktur Hacktiv8 belum memasukkan API Key, sistem otomatis mengaktifkan <b>Interactive Demo (Mock AI Engine)</b> dengan simulasi streaming lengkap, sehingga aplikasi tetap 100% dapat diuji coba.
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button id="cancelSettingsBtn" class="btn btn-secondary">Batal</button>
+          <button id="saveSettingsBtn" class="btn btn-primary">Simpan Pengaturan</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+  </div>
+
+  <!-- Marked.js for Markdown Rendering -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <!-- Highlight.js for Syntax Highlighting -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+  <!-- Application Modules -->
+  <script src="js/config.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/chat.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,760 @@
+/**
+ * DevPulse AI - Application Controller
+ * Coordinates UI events, parameter switching, message streaming, audio, and state
+ */
+
+document.addEventListener("DOMContentLoaded", () => {
+  // Application State
+  const state = {
+    persona: localStorage.getItem(CONFIG.storageKeys.persona) || CONFIG.defaultSettings.persona,
+    tone: localStorage.getItem(CONFIG.storageKeys.tone) || CONFIG.defaultSettings.tone,
+    temperature: parseFloat(localStorage.getItem(CONFIG.storageKeys.temperature)) || CONFIG.defaultSettings.temperature,
+    memoryTurns: parseInt(localStorage.getItem(CONFIG.storageKeys.memoryTurns)) || CONFIG.defaultSettings.memoryTurns,
+    model: localStorage.getItem(CONFIG.storageKeys.model) || CONFIG.defaultSettings.model,
+    soundEnabled: localStorage.getItem(CONFIG.storageKeys.soundEnabled) !== "false",
+    isGenerating: false
+  };
+
+  // Configure marked with highlight.js
+  if (window.marked) {
+    marked.setOptions({
+      highlight: function (code, lang) {
+        if (window.hljs) {
+          const validLanguage = hljs.getLanguage(lang) ? lang : "plaintext";
+          return hljs.highlight(code, { language: validLanguage }).value;
+        }
+        return code;
+      },
+      breaks: true,
+      gfm: true
+    });
+  }
+
+  // DOM Elements
+  const DOM = {
+    // Nav & Telemetry
+    sidebarToggleBtn: document.getElementById("sidebarToggleBtn"),
+    paramsToggleBtn: document.getElementById("paramsToggleBtn"),
+    brandLogo: document.getElementById("brandLogo"),
+    activeModelLabel: document.getElementById("activeModelLabel"),
+    activePersonaPill: document.getElementById("activePersonaPill"),
+    activeTonePill: document.getElementById("activeTonePill"),
+    telemetryModel: document.getElementById("telemetryModel"),
+    telemetryLatency: document.getElementById("telemetryLatency"),
+    telemetryTokens: document.getElementById("telemetryTokens"),
+    soundToggleBtn: document.getElementById("soundToggleBtn"),
+    soundIconOn: document.getElementById("soundIconOn"),
+    soundIconOff: document.getElementById("soundIconOff"),
+    exportBtn: document.getElementById("exportBtn"),
+    clearChatBtn: document.getElementById("clearChatBtn"),
+    openSettingsBtn: document.getElementById("openSettingsBtn"),
+    apiKeyBtnText: document.getElementById("apiKeyBtnText"),
+
+    // Sidebar
+    sidebar: document.getElementById("sidebar"),
+    newChatBtn: document.getElementById("newChatBtn"),
+    sessionsList: document.getElementById("sessionsList"),
+
+    // Main Chat
+    messagesContainer: document.getElementById("messagesContainer"),
+    chatInput: document.getElementById("chatInput"),
+    sendBtn: document.getElementById("sendBtn"),
+    stopBtn: document.getElementById("stopBtn"),
+
+    // Active Param Chips
+    chipPersonaIcon: document.getElementById("chipPersonaIcon"),
+    chipPersonaText: document.getElementById("chipPersonaText"),
+    chipToneText: document.getElementById("chipToneText"),
+    chipTempText: document.getElementById("chipTempText"),
+    chipMemoryText: document.getElementById("chipMemoryText"),
+
+    // Params Drawer
+    paramsDrawer: document.getElementById("paramsDrawer"),
+    closeParamsBtn: document.getElementById("closeParamsBtn"),
+    personaGrid: document.getElementById("personaGrid"),
+    toneGrid: document.getElementById("toneGrid"),
+    tempSlider: document.getElementById("tempSlider"),
+    tempValDisplay: document.getElementById("tempValDisplay"),
+    modelSelect: document.getElementById("modelSelect"),
+    memorySelect: document.getElementById("memorySelect"),
+    activePersonaBadge: document.getElementById("activePersonaBadge"),
+    activeToneBadge: document.getElementById("activeToneBadge"),
+
+    // Modal & Toast
+    settingsModal: document.getElementById("settingsModal"),
+    closeSettingsBtn: document.getElementById("closeSettingsBtn"),
+    cancelSettingsBtn: document.getElementById("cancelSettingsBtn"),
+    saveSettingsBtn: document.getElementById("saveSettingsBtn"),
+    apiKeyInput: document.getElementById("apiKeyInput"),
+    toastContainer: document.getElementById("toastContainer")
+  };
+
+  // Initialize Sound
+  soundFx.setEnabled(state.soundEnabled);
+  updateSoundUI();
+
+  // Initialize AIService with current model
+  aiService.setModel(state.model);
+  updateApiKeyBadge();
+
+  // Render Parameters & Sessions
+  renderPersonaOptions();
+  renderToneOptions();
+  renderModelSelect();
+  renderMemorySelect();
+  renderSessions();
+  renderMessages();
+  updateHeaderAndChips();
+
+  // Attach Event Listeners
+  attachEventListeners();
+
+  // =========================================================================
+  // Rendering Functions
+  // =========================================================================
+
+  function renderPersonaOptions() {
+    DOM.personaGrid.innerHTML = "";
+    Object.values(CONFIG.personas).forEach(persona => {
+      const card = document.createElement("div");
+      card.className = `persona-card ${state.persona === persona.id ? "active" : ""}`;
+      card.dataset.personaId = persona.id;
+      card.innerHTML = `
+        <div class="persona-icon">${persona.icon}</div>
+        <div class="persona-info">
+          <div class="persona-name">${persona.name}</div>
+          <div class="persona-tagline">${persona.tagline}</div>
+        </div>
+      `;
+
+      card.addEventListener("click", () => {
+        soundFx.playClick();
+        state.persona = persona.id;
+        localStorage.setItem(CONFIG.storageKeys.persona, persona.id);
+        renderPersonaOptions();
+        updateHeaderAndChips();
+        showToast(`Persona diubah: ${persona.name}`);
+      });
+
+      DOM.personaGrid.appendChild(card);
+    });
+  }
+
+  function renderToneOptions() {
+    DOM.toneGrid.innerHTML = "";
+    Object.values(CONFIG.tones).forEach(tone => {
+      const btn = document.createElement("button");
+      btn.className = `tone-btn ${state.tone === tone.id ? "active" : ""}`;
+      btn.dataset.toneId = tone.id;
+      btn.innerHTML = `
+        <span class="tone-name">${tone.name}</span>
+        <span class="tone-desc">${tone.badge}</span>
+      `;
+
+      btn.addEventListener("click", () => {
+        soundFx.playClick();
+        state.tone = tone.id;
+        localStorage.setItem(CONFIG.storageKeys.tone, tone.id);
+        renderToneOptions();
+        updateHeaderAndChips();
+        showToast(`Tone diubah: ${tone.name}`);
+      });
+
+      DOM.toneGrid.appendChild(btn);
+    });
+  }
+
+  function renderModelSelect() {
+    DOM.modelSelect.innerHTML = "";
+    CONFIG.models.forEach(m => {
+      const opt = document.createElement("option");
+      opt.value = m.id;
+      opt.textContent = `${m.name} (${m.badge})`;
+      if (m.id === state.model) opt.selected = true;
+      DOM.modelSelect.appendChild(opt);
+    });
+  }
+
+  function renderMemorySelect() {
+    DOM.memorySelect.value = state.memoryTurns.toString();
+  }
+
+  function updateHeaderAndChips() {
+    const persona = CONFIG.personas[state.persona] || CONFIG.personas.fullstack;
+    const tone = CONFIG.tones[state.tone] || CONFIG.tones.santai;
+    const model = CONFIG.models.find(m => m.id === state.model) || CONFIG.models[0];
+
+    // Nav Pills
+    DOM.activeModelLabel.textContent = model.name;
+    DOM.activePersonaPill.textContent = `${persona.icon} ${persona.name.split(" ")[0]}`;
+    DOM.activeTonePill.textContent = tone.name.split(" ")[0];
+
+    // Badges in Drawer
+    DOM.activePersonaBadge.textContent = persona.name.split(" ")[0];
+    DOM.activeToneBadge.textContent = tone.name.split(" ")[0];
+    DOM.tempValDisplay.textContent = state.temperature.toFixed(1);
+    DOM.tempSlider.value = state.temperature;
+
+    // Bottom Chips
+    DOM.chipPersonaIcon.textContent = persona.icon;
+    DOM.chipPersonaText.textContent = persona.name;
+    DOM.chipToneText.textContent = tone.name;
+    DOM.chipTempText.textContent = state.temperature.toFixed(1);
+    DOM.chipMemoryText.textContent = state.memoryTurns === 0 ? "Full Memory" : `${state.memoryTurns} Pesan`;
+
+    // Telemetry
+    DOM.telemetryModel.textContent = state.model;
+  }
+
+  function updateApiKeyBadge() {
+    if (aiService.hasApiKey()) {
+      DOM.apiKeyBtnText.textContent = "API Key Active";
+      DOM.openSettingsBtn.classList.remove("btn-secondary");
+      DOM.openSettingsBtn.classList.add("btn-primary");
+    } else {
+      DOM.apiKeyBtnText.textContent = "Set API Key";
+      DOM.openSettingsBtn.classList.remove("btn-primary");
+      DOM.openSettingsBtn.classList.add("btn-secondary");
+    }
+  }
+
+  function updateSoundUI() {
+    if (state.soundEnabled) {
+      DOM.soundIconOn.style.display = "block";
+      DOM.soundIconOff.style.display = "none";
+      DOM.soundToggleBtn.classList.add("active");
+    } else {
+      DOM.soundIconOn.style.display = "none";
+      DOM.soundIconOff.style.display = "block";
+      DOM.soundToggleBtn.classList.remove("active");
+    }
+  }
+
+  function renderSessions() {
+    const activeSession = chatManager.getActiveSession();
+    DOM.sessionsList.innerHTML = "";
+
+    chatManager.sessions.forEach(session => {
+      const item = document.createElement("div");
+      item.className = `session-item ${session.id === activeSession.id ? "active" : ""}`;
+      item.dataset.sessionId = session.id;
+
+      item.innerHTML = `
+        <div class="session-title-wrap">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span class="session-title" title="${session.title}">${escapeHTML(session.title)}</span>
+        </div>
+        <div class="session-actions">
+          <button class="session-btn rename" title="Ganti Nama Sesi">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+          </button>
+          <button class="session-btn delete" title="Hapus Sesi">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
+          </button>
+        </div>
+      `;
+
+      // Switch session on click
+      item.querySelector(".session-title-wrap").addEventListener("click", () => {
+        if (state.isGenerating) return;
+        soundFx.playClick();
+        chatManager.switchSession(session.id);
+        renderSessions();
+        renderMessages();
+      });
+
+      // Rename session
+      item.querySelector(".session-btn.rename").addEventListener("click", (e) => {
+        e.stopPropagation();
+        const newTitle = prompt("Masukkan nama baru untuk sesi ini:", session.title);
+        if (newTitle && newTitle.trim()) {
+          chatManager.renameSession(session.id, newTitle);
+          renderSessions();
+        }
+      });
+
+      // Delete session
+      item.querySelector(".session-btn.delete").addEventListener("click", (e) => {
+        e.stopPropagation();
+        if (confirm(`Hapus sesi "${session.title}"?`)) {
+          soundFx.playClear();
+          chatManager.deleteSession(session.id);
+          renderSessions();
+          renderMessages();
+          showToast("Sesi obrolan dihapus");
+        }
+      });
+
+      DOM.sessionsList.appendChild(item);
+    });
+  }
+
+  function renderMessages() {
+    const session = chatManager.getActiveSession();
+    DOM.messagesContainer.innerHTML = "";
+
+    if (!session.messages || session.messages.length === 0) {
+      renderWelcomeHero();
+      return;
+    }
+
+    session.messages.forEach(msg => {
+      appendMessageToDOM(msg, false);
+    });
+
+    scrollToBottom();
+  }
+
+  function renderWelcomeHero() {
+    const hero = document.createElement("div");
+    hero.className = "welcome-hero";
+    hero.innerHTML = `
+      <div class="hero-glow-logo">⚡</div>
+      <h2 class="hero-title">DevPulse <span>AI Assistant</span></h2>
+      <p class="hero-subtitle">
+        Asisten kecerdasan buatan untuk akselerasi produktivitas koding, review arsitektur, dan bedah bug. Dilengkapi kendali parameter kreatif & integrasi LLM API.
+      </p>
+
+      <div class="quick-prompts-grid" id="quickPromptsGrid">
+        <!-- Quick prompt cards -->
+      </div>
+    `;
+
+    const promptsGrid = hero.querySelector("#quickPromptsGrid");
+    CONFIG.quickPrompts.forEach(p => {
+      const card = document.createElement("div");
+      card.className = "prompt-card";
+      card.innerHTML = `
+        <div class="prompt-header">
+          <span>${p.icon}</span>
+          <span>${p.category}</span>
+        </div>
+        <div class="prompt-title">${p.title}</div>
+      `;
+
+      card.addEventListener("click", () => {
+        soundFx.playClick();
+        DOM.chatInput.value = p.prompt;
+        autoGrowTextarea();
+        DOM.chatInput.focus();
+      });
+
+      promptsGrid.appendChild(card);
+    });
+
+    DOM.messagesContainer.appendChild(hero);
+  }
+
+  function appendMessageToDOM(msg, shouldScroll = true) {
+    // Remove welcome hero if exists
+    const hero = DOM.messagesContainer.querySelector(".welcome-hero");
+    if (hero) hero.remove();
+
+    const isUser = msg.role === "user";
+    const row = document.createElement("div");
+    row.className = `message-row ${isUser ? "user" : "assistant"}`;
+    row.id = msg.id;
+
+    const timeStr = new Date(msg.timestamp || Date.now()).toLocaleTimeString("id-ID", {
+      hour: "2-digit",
+      minute: "2-digit"
+    });
+
+    const persona = CONFIG.personas[state.persona] || CONFIG.personas.fullstack;
+    const avatarContent = isUser ? "👤" : (persona.icon || "🤖");
+
+    let formattedContent = "";
+    if (isUser) {
+      formattedContent = `<p>${escapeHTML(msg.content).replace(/\n/g, "<br>")}</p>`;
+    } else {
+      formattedContent = formatMarkdown(msg.content);
+    }
+
+    row.innerHTML = `
+      <div class="avatar ${isUser ? "user" : "bot"}">${avatarContent}</div>
+      <div class="message-bubble">
+        <div class="message-meta">
+          <span style="font-weight: 600;">${isUser ? "Anda" : CONFIG.appName}</span>
+          ${!isUser && msg.persona ? `<span style="color: var(--accent-cyan);">• ${msg.persona}</span>` : ""}
+          <span>${timeStr}</span>
+        </div>
+        <div class="message-content">
+          ${formattedContent}
+        </div>
+        ${!isUser ? `
+          <div class="message-footer">
+            <button class="msg-action-btn copy-msg-btn" title="Salin seluruh jawaban">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+              <span>Salin</span>
+            </button>
+            ${msg.latencyMs ? `<span style="font-size: 0.7rem; color: var(--text-muted); font-family: var(--font-mono);">${msg.latencyMs}ms</span>` : ""}
+          </div>
+        ` : ""}
+      </div>
+    `;
+
+    // Bind copy message button
+    const copyBtn = row.querySelector(".copy-msg-btn");
+    if (copyBtn) {
+      copyBtn.addEventListener("click", () => {
+        navigator.clipboard.writeText(msg.content);
+        soundFx.playClick();
+        showToast("Teks jawaban berhasil disalin ke clipboard!");
+      });
+    }
+
+    // Enhance code blocks with copy snippet headers
+    enhanceCodeBlocks(row);
+
+    DOM.messagesContainer.appendChild(row);
+
+    if (shouldScroll) {
+      scrollToBottom();
+    }
+
+    return row;
+  }
+
+  function formatMarkdown(content) {
+    if (!content) return "";
+    if (window.marked) {
+      try {
+        return marked.parse(content);
+      } catch (e) {
+        console.error("Markdown parse error:", e);
+      }
+    }
+    return escapeHTML(content).replace(/\n/g, "<br>");
+  }
+
+  function enhanceCodeBlocks(container) {
+    const preElements = container.querySelectorAll("pre");
+    preElements.forEach(pre => {
+      // Avoid re-wrapping
+      if (pre.parentElement.classList.contains("code-wrapper")) return;
+
+      const codeElem = pre.querySelector("code");
+      const rawText = codeElem ? codeElem.innerText : pre.innerText;
+
+      // Detect language from class (e.g. language-javascript)
+      let lang = "code";
+      if (codeElem && codeElem.className) {
+        const match = codeElem.className.match(/language-([a-zA-Z0-9_\-]+)/);
+        if (match) lang = match[1];
+      }
+
+      const wrapper = document.createElement("div");
+      wrapper.className = "code-wrapper";
+
+      const header = document.createElement("div");
+      header.className = "code-header";
+      header.innerHTML = `
+        <span class="code-lang">${lang}</span>
+        <button class="copy-code-btn" type="button">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+          <span>Copy Snippet</span>
+        </button>
+      `;
+
+      header.querySelector(".copy-code-btn").addEventListener("click", function () {
+        navigator.clipboard.writeText(rawText);
+        soundFx.playClick();
+        const btnSpan = this.querySelector("span");
+        const prevText = btnSpan.textContent;
+        btnSpan.textContent = "Copied! ✓";
+        this.style.color = "var(--accent-emerald)";
+        setTimeout(() => {
+          btnSpan.textContent = prevText;
+          this.style.color = "";
+        }, 1500);
+      });
+
+      pre.parentNode.insertBefore(wrapper, pre);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
+  }
+
+  // =========================================================================
+  // Send & Stream Message Logic
+  // =========================================================================
+
+  async function handleSendMessage() {
+    const text = DOM.chatInput.value.trim();
+    if (!text || state.isGenerating) return;
+
+    soundFx.playSent();
+
+    // 1. Add user message
+    const userMsg = chatManager.addMessage("user", text);
+    appendMessageToDOM(userMsg, true);
+
+    // Reset input
+    DOM.chatInput.value = "";
+    autoGrowTextarea();
+    renderSessions(); // update session title if changed
+
+    // 2. Add placeholder bot message
+    const persona = CONFIG.personas[state.persona] || CONFIG.personas.fullstack;
+    const botPlaceholder = chatManager.addMessage("assistant", "", {
+      persona: persona.name,
+      model: state.model
+    });
+    const botRow = appendMessageToDOM(botPlaceholder, true);
+    const botContentElem = botRow.querySelector(".message-content");
+
+    // Display typing indicator
+    botContentElem.innerHTML = `
+      <div class="typing-indicator">
+        <div class="typing-dot"></div>
+        <div class="typing-dot"></div>
+        <div class="typing-dot"></div>
+      </div>
+    `;
+
+    // Toggle UI generating state
+    setGeneratingState(true);
+
+    let accumulatedText = "";
+
+    try {
+      const responseData = await aiService.generateResponse({
+        messages: chatManager.getRecentMessages(state.memoryTurns),
+        persona: state.persona,
+        tone: state.tone,
+        temperature: state.temperature,
+        memoryTurns: state.memoryTurns,
+        onChunk: (chunk, acc) => {
+          accumulatedText = acc;
+          botContentElem.innerHTML = formatMarkdown(accumulatedText);
+          enhanceCodeBlocks(botRow);
+          scrollToBottom();
+        }
+      });
+
+      soundFx.playReceived();
+
+      // Update final message in state
+      chatManager.updateLastMessage(responseData.text, {
+        latencyMs: responseData.latencyMs,
+        tokens: responseData.tokens,
+        model: responseData.model
+      });
+
+      // Update telemetry display
+      DOM.telemetryLatency.textContent = `${responseData.latencyMs}ms`;
+      DOM.telemetryTokens.textContent = `~${responseData.tokens}`;
+      DOM.telemetryModel.textContent = responseData.model;
+
+      // Re-render message row to update footer actions & latency
+      botContentElem.innerHTML = formatMarkdown(responseData.text);
+      enhanceCodeBlocks(botRow);
+
+      const footer = botRow.querySelector(".message-footer");
+      if (footer) {
+        footer.innerHTML = `
+          <button class="msg-action-btn copy-msg-btn" title="Salin seluruh jawaban">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+            <span>Salin</span>
+          </button>
+          <span style="font-size: 0.7rem; color: var(--text-muted); font-family: var(--font-mono);">${responseData.latencyMs}ms</span>
+        `;
+        footer.querySelector(".copy-msg-btn").addEventListener("click", () => {
+          navigator.clipboard.writeText(responseData.text);
+          soundFx.playClick();
+          showToast("Teks jawaban berhasil disalin ke clipboard!");
+        });
+      }
+
+    } catch (err) {
+      soundFx.playError();
+      console.error("Chat Generation Error:", err);
+      const errorMsg = `> ⚠️ **Terjadi Kesalahan**: ${err.message || "Gagal menghasilkan respon."}`;
+      chatManager.updateLastMessage(errorMsg);
+      botContentElem.innerHTML = formatMarkdown(errorMsg);
+      showToast(err.message || "Terjadi kesalahan!", "error");
+    } finally {
+      setGeneratingState(false);
+      DOM.chatInput.focus();
+    }
+  }
+
+  function setGeneratingState(generating) {
+    state.isGenerating = generating;
+    if (generating) {
+      DOM.sendBtn.style.display = "none";
+      DOM.stopBtn.style.display = "flex";
+      DOM.chatInput.disabled = true;
+    } else {
+      DOM.sendBtn.style.display = "flex";
+      DOM.stopBtn.style.display = "none";
+      DOM.chatInput.disabled = false;
+    }
+  }
+
+  // =========================================================================
+  // Event Listeners & Helpers
+  // =========================================================================
+
+  function attachEventListeners() {
+    // Send & Stop
+    DOM.sendBtn.addEventListener("click", handleSendMessage);
+    DOM.stopBtn.addEventListener("click", () => {
+      aiService.abort();
+      setGeneratingState(false);
+      soundFx.playClear();
+      showToast("Generasi dihentikan");
+    });
+
+    // Textarea input & keyboard
+    DOM.chatInput.addEventListener("input", autoGrowTextarea);
+    DOM.chatInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+        handleSendMessage();
+      }
+    });
+
+    // New Chat Button
+    DOM.newChatBtn.addEventListener("click", () => {
+      if (state.isGenerating) return;
+      soundFx.playClear();
+      chatManager.createNewSession("Sesi Obrolan Baru");
+      renderSessions();
+      renderMessages();
+      DOM.chatInput.focus();
+      showToast("Sesi obrolan baru dimulai");
+    });
+
+    // Global Shortcut: Ctrl+K / Cmd+K for New Chat
+    window.addEventListener("keydown", (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        DOM.newChatBtn.click();
+      }
+    });
+
+    // Clear Current Chat
+    DOM.clearChatBtn.addEventListener("click", () => {
+      if (confirm("Bersihkan semua pesan dalam sesi obrolan ini?")) {
+        soundFx.playClear();
+        chatManager.clearActiveSession();
+        renderMessages();
+        showToast("Percakapan telah dibersihkan");
+      }
+    });
+
+    // Export Chat (Markdown)
+    DOM.exportBtn.addEventListener("click", () => {
+      soundFx.playClick();
+      chatManager.exportCurrentChat("markdown");
+      showToast("Percakapan diekspor ke format Markdown (.md)");
+    });
+
+    // Sound Toggle
+    DOM.soundToggleBtn.addEventListener("click", () => {
+      state.soundEnabled = !state.soundEnabled;
+      soundFx.setEnabled(state.soundEnabled);
+      localStorage.setItem(CONFIG.storageKeys.soundEnabled, state.soundEnabled.toString());
+      updateSoundUI();
+      if (state.soundEnabled) soundFx.playTone(600, "sine", 0.08);
+      showToast(`Efek suara: ${state.soundEnabled ? "Aktif" : "Nonaktif"}`);
+    });
+
+    // Sliders & Selects
+    DOM.tempSlider.addEventListener("input", (e) => {
+      state.temperature = parseFloat(e.target.value);
+      localStorage.setItem(CONFIG.storageKeys.temperature, state.temperature);
+      DOM.tempValDisplay.textContent = state.temperature.toFixed(1);
+      updateHeaderAndChips();
+    });
+
+    DOM.modelSelect.addEventListener("change", (e) => {
+      state.model = e.target.value;
+      aiService.setModel(state.model);
+      updateHeaderAndChips();
+      showToast(`Model AI aktif: ${state.model}`);
+    });
+
+    DOM.memorySelect.addEventListener("change", (e) => {
+      state.memoryTurns = parseInt(e.target.value);
+      localStorage.setItem(CONFIG.storageKeys.memoryTurns, state.memoryTurns);
+      updateHeaderAndChips();
+      showToast(`Konteks memory diubah: ${state.memoryTurns === 0 ? "Full" : state.memoryTurns + " turns"}`);
+    });
+
+    // Drawer Toggles (Mobile & Responsive)
+    DOM.sidebarToggleBtn.addEventListener("click", () => {
+      DOM.sidebar.classList.toggle("open");
+    });
+
+    DOM.paramsToggleBtn.addEventListener("click", () => {
+      DOM.paramsDrawer.classList.toggle("open");
+    });
+
+    DOM.closeParamsBtn.addEventListener("click", () => {
+      DOM.paramsDrawer.classList.remove("open");
+    });
+
+    // Settings Modal
+    DOM.openSettingsBtn.addEventListener("click", () => {
+      DOM.apiKeyInput.value = aiService.apiKey;
+      DOM.settingsModal.classList.add("open");
+      DOM.apiKeyInput.focus();
+    });
+
+    const closeModal = () => DOM.settingsModal.classList.remove("open");
+    DOM.closeSettingsBtn.addEventListener("click", closeModal);
+    DOM.cancelSettingsBtn.addEventListener("click", closeModal);
+
+    DOM.saveSettingsBtn.addEventListener("click", () => {
+      const key = DOM.apiKeyInput.value.trim();
+      aiService.setApiKey(key);
+      updateApiKeyBadge();
+      closeModal();
+      soundFx.playClick();
+      showToast(key ? "API Key berhasil disimpan!" : "API Key dihapus (menggunakan mode Mock)");
+    });
+
+    // Close modal on Escape
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && DOM.settingsModal.classList.contains("open")) {
+        closeModal();
+      }
+    });
+  }
+
+  function autoGrowTextarea() {
+    DOM.chatInput.style.height = "auto";
+    const newHeight = Math.min(DOM.chatInput.scrollHeight, 180);
+    DOM.chatInput.style.height = `${newHeight}px`;
+  }
+
+  function scrollToBottom() {
+    DOM.messagesContainer.scrollTop = DOM.messagesContainer.scrollHeight;
+  }
+
+  function showToast(message, type = "info") {
+    const toast = document.createElement("div");
+    toast.className = "toast";
+    const icon = type === "error" ? "⚠️" : "⚡";
+    toast.innerHTML = `<span>${icon}</span><span>${escapeHTML(message)}</span>`;
+    DOM.toastContainer.appendChild(toast);
+
+    setTimeout(() => {
+      toast.style.opacity = "0";
+      toast.style.transform = "translateX(50px)";
+      toast.style.transition = "all 0.25s ease";
+      setTimeout(() => toast.remove(), 250);
+    }, 2800);
+  }
+
+  function escapeHTML(str) {
+    return str
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+});
