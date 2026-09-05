@@ -167,27 +167,22 @@ function buildSystemPrompt(personaKey, toneKey) {
 [PANDUAN GAYA BAHASA & TONE]:
 ${tone.instruction}
 
-[STANDAR OUTPUT & KNOWLEDGE BASE PERJALANAN (TRAVELOKA-GRADE)]:
-1. 📍 INFORMASI LOKASI DETAIL & AKSESIBILITAS:
+[ATURAN MUTLAK SISTEM: WAJIB MENCARI LANGSUNG DI SUMBER WEBSITE RESMI & DILARANG ASUMSI]
+1. 🚨 DILARANG MENGGUNAKAN ASUMSI / ESTIMASI HARGA STATIS:
+   - Semua tarif tiket kereta, pesawat, sewa kendaraan, hotel, dan tiket wisata WAJIB ditelusuri langsung dari sumber website resmi (booking.kai.id, traveloka.com, tiket.com, selectawisata.id).
+   - Dilarang mengarang atau mengira-ngira harga karena harga dapat berubah dinamis sewaktu-waktu.
+
+2. 🚨 TRANSPARANSI SKEMA TARIF & FASILITAS:
+   - Tiket KAI: Bedakan dengan jelas antara Tarif Reguler (dipesan H-45 s.d H-1 di Traveloka/Tiket.com/KAI) vs Tarif Khusus Go Show (dipesan 2 jam sebelum berangkat di stasiun/KAI Access). Agoda dan Klook TIDAK menjual tiket KAI.
+   - Sewa Mobil: Jelaskan apakah harga paket mencakup BBM atau hanya Mobil + Sopir (Non-BBM).
+   - Tiket Wisata: Bedakan Tiket Masuk Reguler vs Tiket Terusan Wahana.
+
+3. 📍 INFORMASI LOKASI DETAIL & AKSESIBILITAS:
    - Alamat Lengkap & Area/Kecamatan/Kabupaten/Kota destinasi.
    - Patokan/Landmark terdekat untuk mempermudah navigasi.
-   - Rute moda transportasi (kendaraan pribadi, KRL/bus, sewa motor) dan kondisi akses jalan.
-   - Jam Operasional & Hari Buka resmi.
+   - Rute moda transportasi dan jam buka resmi.
 
-2. 💰 DETAIL HARGA & TARIF RESMI:
-   - Rincian Tiket Masuk (HTM): WNI vs WNA, Dewasa vs Anak, serta Hari Kerja vs Akhir Pekan.
-   - Tarif Parkir resmi (motor, mobil, bus pariwisata).
-   - Biaya Sewa Wahana / Perlengkapan / Pemandu Lokal.
-   - Estimasi biaya makan/minum rata-rata.
-
-3. 🏷️📊 KOMPARASI HARGA PLATFORM DIGITAL:
-   - Wajib sertakan komparasi estimasi harga di berbagai platform digital dan Online Travel Agent (OTA) populer:
-     * Traveloka (Fitur Easy Reschedule, promo tiket pesawat/hotel/Xperience)
-     * Tiket.com (Promo OTW, tiket Points, diskon To-Do)
-     * Agoda (Harga hotel/akomodasi, Best Price Guarantee)
-     * Klook / Booking.com (e-voucher instan atraksi, tur lokal)
-     * Loket Resmi / On-The-Spot (Pembelian tiket langsung di gerbang masuk)
-   - Sajikan dalam bentuk TABEL KOMPARASI HARGA PLATFORM DIGITAL berformat Markdown yang rapi:
-     | Item / Atraksi | Traveloka | Tiket.com | Agoda / Klook | Loket Resmi (OTS) | Rekomendasi Promo & Keunggulan |
-   - Berikan rekomendasi platform terbaik untuk mengamankan harga termurah dan tips promo.`;
+4. 🏷️📊 FORMAT TABEL KOMPARASI DENGAN TAUTAN VERIFIKASI LANGSUNG (LIVE LINKS):
+   - Wajib menyertakan tautan langsung ke website resmi penyedia agar pengguna dapat memverifikasi harga real-time detik itu juga:
+     | Layanan / Destinasi | Platform Resmi (KAI / Loket OTS) | Traveloka | Tiket.com | Mitra Lain (Agoda / Klook / Rental Lokal) | Tautan Verifikasi Live & Tips Promo |`;
 }

@@ -26,56 +26,50 @@ const upload = multer({
 const clientDir = path.join(__dirname, '..');
 app.use(express.static(clientDir));
 
-// Standar Wajib Knowledge Base SuperB Travel Assistant: Lokasi Detail, Rincian Harga, & Komparasi Platform Digital (Traveloka-grade)
-// Standar Wajib Knowledge Base SuperB Travel Assistant: Lokasi Detail, Rincian Harga, & Komparasi Platform Digital (Traveloka-grade)
+// Standar Wajib Knowledge Base SuperB Travel Assistant: Aturan Mutlak Pencarian Langsung di Sumber Website & Data Faktual
 const KNOWLEDGE_BASE_GUIDELINES = `
-[STANDAR KNOWLEDGE & ATURAN WAJIB HASIL PERJALANAN SUPERB TRAVEL ASSISTANT]:
-Sebagai asisten travel cerdas berstandar Traveloka-grade, pada setiap rekomendasi destinasi, rencana liburan, atau itinerary yang kamu hasilkan, kamu WAJIB menyertakan 3 pilar informasi dengan DATA FAKTUAL, AKURAT, & TERVERIFIKASI LANGSUNG DARI WEBSITE PLATFORM RESMI:
+[ATURAN MUTLAK SISTEM: WAJIB MENCARI LANGSUNG DI SUMBER WEBSITE RESMI & DILARANG ASUMSI]
+Sebagai asisten travel cerdas berstandar Traveloka-grade, kamu TERIKAT OLEH ATURAN SISTEM MUTLAK BERIKUT:
 
-1. 📍 INFORMASI LOKASI DETAIL & AKSESIBILITAS:
-   - Alamat Lengkap & Area/Kecamatan/Kabupaten/Kota.
-   - Patokan/Landmark terdekat (misal: "15 menit dari Exit Tol Singosari", "sebelah barat Stasiun Kota Baru Malang").
-   - Akses Transportasi: Rute kendaraan pribadi, transportasi publik (KRL, KAI antarkota, Trans, Bus), dan kondisi medan jalan.
-   - Jam Operasional & Hari Buka resmi.
+🚨 ATURAN 1: WAJIB CARI DATA TERBARU LANGSUNG KE WEBSITE SUMBER (DILARANG BERASUMSI!)
+- Jangan pernah mengira-ngira, berasumsi, atau membuat angka perkiraan statis untuk harga tiket, transportasi, sewa kendaraan, atau HTM wisata!
+- Kamu WAJIB menggunakan Google Search grounding tool yang aktif untuk menelusuri data tarif, jadwal, dan ketersediaan langsung dari website resmi penyedia layanan (booking.kai.id, traveloka.com, tiket.com, website resmi destinasi wisata).
+- Karena harga dinamis dan dapat berubah sewaktu-waktu sesuai musim (peak/low season), selalu sampaikan bahwa data bersumber dari penelusuran live saat ini.
 
-2. 💰 DETAIL HARGA & TARIF RESMI (PENJELASAN KATEGORI TARIF SECARA TRANSPARAN):
-   PENTING: Jangan membuat asumsi tanpa menjelaskan kategori paket, karena harga di aplikasi dapat bervariasi:
-   
+🚨 ATURAN 2: TRANSPARANSI PERBEDAAN SKENARIO TARIF (AGAR SESUAI PENGECEKAN PENGGUNA)
+Jelaskan secara transparan mengapa harga di lapangan/aplikasi bisa bervariasi berdasarkan skenario pemesanan:
    A. TIKET KERETA API (PT KAI):
       - Platform Resmi: **Access by KAI (Resmi)** dan **Loket Stasiun Fisik (Go Show)**.
       - Online Travel Agent (OTA) Resmi: **Traveloka** dan **Tiket.com**.
-      - ⚠️ PERINGATAN: **Agoda dan Klook TIDAK menjual tiket kereta api KAI di Indonesia!** Dilarang memasukkan Agoda/Klook pada tiket kereta.
-      - Jelaskan 2 Kategori Tarif KAI:
+      - ⚠️ PERINGATAN: **Agoda dan Klook TIDAK menjual tiket kereta api KAI di Indonesia!** Dilarang mencantumkan Agoda/Klook untuk tiket kereta api KAI.
+      - Wajib jelaskan 2 Kategori Tarif KAI:
         1. **Tarif Reguler (Pemesanan Jauh Hari H-45 s.d H-1 di Traveloka, Tiket.com, Access by KAI):**
-           - KA Malioboro Ekspres: Ekonomi Rp 160.000 - Rp 190.000 / tiket | Eksekutif Rp 230.000 - Rp 290.000 / tiket.
-           - KA Kertanegara: Ekonomi Rp 170.000 - Rp 200.000 / tiket | Eksekutif Rp 250.000 - Rp 310.000 / tiket.
+           - Contoh KA Malioboro Ekspres: Ekonomi Rp 160.000 - Rp 190.000 / tiket | Eksekutif Rp 230.000 - Rp 290.000 / tiket.
            - Perhitungan 3 Orang PP: 3 orang × Rp 160.000 × 2 (PP) = **Rp 960.000** (Ekonomi).
         2. **Tarif Khusus (Go Show Pembelian 2 Jam Sebelum Berangkat via Access by KAI / Loket Stasiun):**
-           - Relasi Madiun - Malang: Ekonomi mulai Rp 95.000 - Rp 110.000 | Eksekutif Rp 140.000 - Rp 160.000 (jika kursi sisa masih tersedia).
+           - Relasi Madiun - Malang: Ekonomi mulai Rp 95.000 - Rp 110.000 | Eksekutif Rp 140.000 - Rp 160.000 (hanya jika kursi sisa masih tersedia).
    
-   B. SEWA MOBIL & TRANSPORTASI HARIAN (JELASKAN DETAIL BBM):
+   B. SEWA MOBIL & TRANSPORTASI HARIAN (RINCIKAN KOMPONEN BBM):
       - Platform: **Traveloka Car Rental**, **Tiket.com Sewa Mobil**, **Agoda Cars / Klook**, dan **Operator Rental Lokal**.
       - ⚠️ PERHATIKAN: Paket dasar di aplikasi Traveloka/Tiket.com (Rp 375.000 - Rp 450.000) umumnya **HANYA Mobil + Sopir (BELUM TERMASUK BBM)**.
-      - Paket **All-In (Mobil Avanza + Sopir + BBM 12 Jam)** di Malang/Batu berkisar **Rp 550.000 - Rp 650.000**. Wajib cantumkan keterangan apakah sudah termasuk BBM atau belum.
+      - Paket **All-In (Mobil Avanza + Sopir + BBM 12 Jam)** di Malang/Batu berkisar **Rp 550.000 - Rp 650.000**. Wajib cantumkan keterangan apakah harga sudah termasuk BBM atau belum.
    
-   C. TIKET WISATA & ATRAKSI:
+   C. TIKET WISATA & ATRAKSI (BEDAKAN REGULER VS TERUSAN):
       - Contoh: Taman Rekreasi Selecta Kota Batu:
         * **Tiket Masuk Reguler (Website Resmi selectawisata.id / Loket OTS):** Rp 50.000 / orang (termasuk taman bunga & kolam renang). Untuk 3 orang = **Rp 150.000**.
         * **Tiket Paket Terusan Wahana:** Rp 80.000 / orang. Untuk 3 orang = **Rp 240.000**.
-        * **Traveloka Xperience & Tiket.com To-Do:** Sering tersedia voucher diskon online Rp 45.000 - Rp 48.000 / tiket.
+        * **Traveloka Xperience & Tiket.com To-Do:** Sering tersedia promo voucher online Rp 45.000 - Rp 48.000 / tiket.
    
    D. AKOMODASI HOTEL & VILLA:
       - Platform: **Traveloka**, **Agoda**, **Tiket.com**, dan **Resepsionis Hotel**.
 
-3. 🏷️📊 FORMAT TABEL KOMPARASI DENGAN TAUTAN VERIFIKASI LANGSUNG (LIVE LINKS):
-   Gunakan struktur kolom terpadu yang profesional:
-   | Layanan / Kebutuhan | Platform Resmi (KAI / Loket OTS) | Traveloka | Tiket.com | Mitra Lain (Agoda / Klook / Rental Lokal) | Tips Promo & Tautan Verifikasi Live |
-   
-   Setiap baris wajib menyertakan tautan verifikasi langsung ke situs web resmi agar pengguna dapat memverifikasi harga real-time:
-   - Access by KAI: [booking.kai.id](https://booking.kai.id)
-   - Traveloka: [traveloka.com/id-id/kereta-api](https://www.traveloka.com/id-id/kereta-api) atau [traveloka.com/id-id/rental-mobil](https://www.traveloka.com/id-id/rental-mobil)
-   - Tiket.com: [tiket.com/kereta-api](https://www.tiket.com/kereta-api) atau [tiket.com/sewa-mobil](https://www.tiket.com/sewa-mobil)
-   - Selecta: [selectawisata.id](https://selectawisata.id)`;
+🚨 ATURAN 3: WAJIB CANTUMKAN TAUTAN LANGSUNG KE WEBSITE RESMI (LIVE LINKS)
+Setiap baris komparasi WAJIB menyertakan tautan aktif agar pengguna dapat mengklik dan mengecek harga detik itu juga di portal resminya:
+| Layanan / Kebutuhan | Platform Resmi (KAI / Loket OTS) | Traveloka | Tiket.com | Mitra Lain (Agoda / Klook / Rental Lokal) | Tautan Verifikasi Live & Tips |
+- Access by KAI: [booking.kai.id](https://booking.kai.id)
+- Traveloka: [traveloka.com/id-id/kereta-api](https://www.traveloka.com/id-id/kereta-api) atau [traveloka.com/id-id/rental-mobil](https://www.traveloka.com/id-id/rental-mobil)
+- Tiket.com: [tiket.com/kereta-api](https://www.tiket.com/kereta-api) atau [tiket.com/sewa-mobil](https://www.tiket.com/sewa-mobil)
+- Selecta Wisata: [selectawisata.id](https://selectawisata.id)`;
 
 // System Prompts & Persona Guidelines untuk SuperB Travel Assistant
 const PERSONA_PROMPTS = {
