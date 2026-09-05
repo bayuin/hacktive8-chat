@@ -44,7 +44,12 @@
         </div>
       </div>
 
-      <div class="nav-right">
+        <!-- Theme Toggle (Dark / Light) -->
+        <button id="themeToggleBtn" class="btn btn-icon" aria-label="Toggle Tema" title="Ganti Tema (Dark / Light)">
+          <svg id="themeIconSun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+          <svg id="themeIconMoon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+        </button>
+
         <!-- Sound Effect Toggle -->
         <button id="soundToggleBtn" class="btn btn-icon" aria-label="Toggle Suara" title="Toggle Efek Suara Perjalanan (Aktif)">
           <svg id="soundIconOn" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
@@ -258,6 +263,24 @@
             <span style="font-size: 0.7rem; color: var(--text-muted); margin-top: 4px;">
               Mempertahankan preferensi liburan (alergi makanan, budget total, jumlah rombongan) dalam percakapan lanjutan.
             </span>
+          </div>
+
+          <!-- 6. Tema Tampilan (Mode) -->
+          <div class="param-section">
+            <div class="param-label-wrap">
+              <span class="param-label">6. Tema Tampilan (Mode)</span>
+              <span class="param-badge" id="activeThemeBadge">Dark Mode</span>
+            </div>
+            <div class="tone-grid" id="themeGrid">
+              <button class="tone-btn active" id="themeDarkBtn" type="button">
+                <span class="tone-name">🌙 Dark Mode</span>
+                <span class="tone-desc">Obsidian Night</span>
+              </button>
+              <button class="tone-btn" id="themeLightBtn" type="button">
+                <span class="tone-name">☀️ Light Mode</span>
+                <span class="tone-desc">Clean Daylight</span>
+              </button>
+            </div>
           </div>
 
         </div>

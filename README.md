@@ -16,8 +16,11 @@ Aplikasi ini mengintegrasikan **Google Gemini API** (`gemini-1.5-flash`, `gemini
 
 ## 📸 2. Tangkapan Layar Antarmuka (UI Screenshots)
 
-### Tampilan Utama (Main Workspace & Travel Conversation)
-![WanderWise AI Main Interface](screenshots/wanderwise_ui_main.jpg)
+### Tampilan Utama - Dark Mode (Main Workspace & Travel Conversation)
+![WanderWise AI Main Interface Dark](screenshots/wanderwise_ui_main.jpg)
+
+### Tampilan Utama - Light Mode (Clean Daylight Resort Aesthetic)
+![WanderWise AI Main Interface Light](screenshots/wanderwise_ui_light.jpg)
 
 ### Panel Parameter Kreatif (Creative Travel Parameters Drawer)
 ![WanderWise AI Creative Parameters](screenshots/wanderwise_ui_params.jpg)
@@ -34,7 +37,8 @@ Aplikasi ini memenuhi kriteria penugasan dengan menyediakan kontrol parameter kr
 | **2. Gaya Bahasa (Tone Switcher)** | ☕ **Santai & Akrab** (Travel Buddy)<br>👔 **Formal & Concierge** (Standar Eksekutif)<br>⚡ **Ringkas & To-The-Point** (Fast Planner)<br>🗺️ **Storyteller & Insider** (Nuansa Naratif) | Mengatur gaya komunikasi bot: *Santai* menggunakan gaya santai komunitas traveler Indonesia; *Formal* layaknya pramutamu hotel bintang lima; *Ringkas* langsung ke poin tempat dan biaya tanpa basa-basi; *Storyteller* menggunakan deskripsi naratif puitis. |
 | **3. Kreativitas Rute (Temperature)** | `0.0` s/d `1.0` (Interactive Slider) | Mengatur variasi generasi model: nilai rendah (`0.1 - 0.3`) menghasilkan rute logis dengan jadwal ketat; nilai tinggi (`0.7 - 1.0`) menghasilkan rekomendasi tempat *anti-mainstream* dan petualangan kreatif. |
 | **4. Konteks Preferensi Trip (Memory Depth)** | `2`, `4`, `8`, `16` Pesan, atau `Full Memory` | Mengontrol *sliding window* memori percakapan agar AI tetap mengingat preferensi traveler sebelumnya (misal: "saya alergi seafood", "budget 3 juta", "rombongan bawa anak kecil") secara hemat token. |
-| **5. Pilihan Model LLM** | `gemini-1.5-flash`, `gemini-1.5-pro`, `gemini-2.0-flash`, `mock-demo` | Fleksibilitas memilih engine AI sesuai kebutuhan kecepatan vs kompleksitas penalaran rute multi-kota. |
+| **5. Pilihan Model LLM** | **Gemini 3.5 Flash Lite** | Menggunakan model generasi terbaru dari Google AI yang ultra cepat, ringan, dan akurat. |
+| **6. Tema Tampilan (Theme Switcher)** | 🌙 **Dark Mode** & ☀️ **Light Mode** | Memberikan kebebasan visual bagi pengguna untuk memilih mode malam bertema *Obsidian Night* atau mode siang bertema *Clean Daylight Luxury Resort*. |
 
 ---
 

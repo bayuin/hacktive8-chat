@@ -15,7 +15,8 @@ const CONFIG = {
     memoryTurns: "wanderwise_memory_turns",
     soundEnabled: "wanderwise_sound_enabled",
     sessions: "wanderwise_chat_sessions",
-    activeSessionId: "wanderwise_active_session_id"
+    activeSessionId: "wanderwise_active_session_id",
+    theme: "wanderwise_theme"
   },
   models: [
     {
@@ -130,7 +131,8 @@ const CONFIG = {
     tone: "santai",
     temperature: 0.7,
     memoryTurns: 8,
-    soundEnabled: true
+    soundEnabled: true,
+    theme: "dark"
   }
 };
 

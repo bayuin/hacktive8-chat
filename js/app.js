@@ -17,6 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
     memoryTurns: parseInt(localStorage.getItem(CONFIG.storageKeys.memoryTurns)) || CONFIG.defaultSettings.memoryTurns,
     model: currentModel,
     soundEnabled: localStorage.getItem(CONFIG.storageKeys.soundEnabled) !== "false",
+    theme: localStorage.getItem(CONFIG.storageKeys.theme) || CONFIG.defaultSettings.theme,
     isGenerating: false
   };
 
@@ -47,6 +48,9 @@ document.addEventListener("DOMContentLoaded", () => {
     telemetryModel: document.getElementById("telemetryModel"),
     telemetryLatency: document.getElementById("telemetryLatency"),
     telemetryTokens: document.getElementById("telemetryTokens"),
+    themeToggleBtn: document.getElementById("themeToggleBtn"),
+    themeIconSun: document.getElementById("themeIconSun"),
+    themeIconMoon: document.getElementById("themeIconMoon"),
     soundToggleBtn: document.getElementById("soundToggleBtn"),
     soundIconOn: document.getElementById("soundIconOn"),
     soundIconOff: document.getElementById("soundIconOff"),
@@ -84,6 +88,9 @@ document.addEventListener("DOMContentLoaded", () => {
     memorySelect: document.getElementById("memorySelect"),
     activePersonaBadge: document.getElementById("activePersonaBadge"),
     activeToneBadge: document.getElementById("activeToneBadge"),
+    themeDarkBtn: document.getElementById("themeDarkBtn"),
+    themeLightBtn: document.getElementById("themeLightBtn"),
+    activeThemeBadge: document.getElementById("activeThemeBadge"),
 
     // Modal & Toast
     settingsModal: document.getElementById("settingsModal"),
@@ -93,6 +100,9 @@ document.addEventListener("DOMContentLoaded", () => {
     apiKeyInput: document.getElementById("apiKeyInput"),
     toastContainer: document.getElementById("toastContainer")
   };
+
+  // Initialize Theme
+  applyTheme(state.theme);
 
   // Initialize Sound
   soundFx.setEnabled(state.soundEnabled);
@@ -220,6 +230,36 @@ document.addEventListener("DOMContentLoaded", () => {
       DOM.apiKeyBtnText.textContent = "Set API Key";
       DOM.openSettingsBtn.classList.remove("btn-primary");
       DOM.openSettingsBtn.classList.add("btn-secondary");
+    }
+  }
+
+  function applyTheme(theme) {
+    state.theme = theme;
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem(CONFIG.storageKeys.theme, theme);
+
+    if (DOM.themeIconSun && DOM.themeIconMoon) {
+      if (theme === "light") {
+        DOM.themeIconSun.style.display = "none";
+        DOM.themeIconMoon.style.display = "block";
+      } else {
+        DOM.themeIconSun.style.display = "block";
+        DOM.themeIconMoon.style.display = "none";
+      }
+    }
+
+    if (DOM.themeDarkBtn && DOM.themeLightBtn) {
+      if (theme === "light") {
+        DOM.themeDarkBtn.classList.remove("active");
+        DOM.themeLightBtn.classList.add("active");
+      } else {
+        DOM.themeDarkBtn.classList.add("active");
+        DOM.themeLightBtn.classList.remove("active");
+      }
+    }
+
+    if (DOM.activeThemeBadge) {
+      DOM.activeThemeBadge.textContent = theme === "light" ? "Light Mode" : "Dark Mode";
     }
   }
 
@@ -636,6 +676,33 @@ document.addEventListener("DOMContentLoaded", () => {
       chatManager.exportCurrentChat("markdown");
       showToast("Itinerary diekspor ke format Markdown (.md)");
     });
+
+    // Theme Toggle (Header Button)
+    if (DOM.themeToggleBtn) {
+      DOM.themeToggleBtn.addEventListener("click", () => {
+        soundFx.playClick();
+        const next = state.theme === "light" ? "dark" : "light";
+        applyTheme(next);
+        showToast(`Tema diubah: ${next === "light" ? "Light Mode ☀️" : "Dark Mode 🌙"}`);
+      });
+    }
+
+    // Theme Selection (Drawer Buttons)
+    if (DOM.themeDarkBtn) {
+      DOM.themeDarkBtn.addEventListener("click", () => {
+        soundFx.playClick();
+        applyTheme("dark");
+        showToast("Tema diubah: Dark Mode 🌙");
+      });
+    }
+
+    if (DOM.themeLightBtn) {
+      DOM.themeLightBtn.addEventListener("click", () => {
+        soundFx.playClick();
+        applyTheme("light");
+        showToast("Tema diubah: Light Mode ☀️");
+      });
+    }
 
     DOM.soundToggleBtn.addEventListener("click", () => {
       state.soundEnabled = !state.soundEnabled;
