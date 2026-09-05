@@ -123,7 +123,8 @@ class AIService {
     const systemPrompt = buildSystemPrompt(persona, tone);
     const contents = this.formatGeminiContents(messages, memoryTurns);
 
-    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${this.currentModel}:streamGenerateContent?alt=sse&key=${this.apiKey}`;
+    let modelToUse = this.currentModel;
+    let endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${modelToUse}:streamGenerateContent?alt=sse&key=${this.apiKey}`;
 
     const requestBody = {
       contents,
@@ -143,12 +144,33 @@ class AIService {
       ]
     };
 
-    const response = await fetch(endpoint, {
+    let response = await fetch(endpoint, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(requestBody),
       signal
     });
+
+    // If model endpoint returned 404 (e.g. if google endpoint names it 2.0-flash-lite or 1.5-flash), try alias
+    if (!response.ok && response.status === 404) {
+      const fallbackModels = ["gemini-2.0-flash-lite", "gemini-1.5-flash"];
+      for (const fallback of fallbackModels) {
+        if (modelToUse === fallback) continue;
+        console.warn(`Model ${modelToUse} returned 404, attempting fallback to ${fallback}...`);
+        const altEndpoint = `https://generativelanguage.googleapis.com/v1beta/models/${fallback}:streamGenerateContent?alt=sse&key=${this.apiKey}`;
+        const altRes = await fetch(altEndpoint, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(requestBody),
+          signal
+        });
+        if (altRes.ok) {
+          response = altRes;
+          modelToUse = fallback;
+          break;
+        }
+      }
+    }
 
     if (!response.ok) {
       const errorJson = await response.json().catch(() => ({}));

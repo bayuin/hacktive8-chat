@@ -19,31 +19,10 @@ const CONFIG = {
   },
   models: [
     {
-      id: "gemini-1.5-flash",
-      name: "Gemini 1.5 Flash",
-      badge: "Fast & Smart",
-      description: "Model kilat dari Google AI, ideal untuk rekomendasi wisata & itinerary cepat.",
-      freeTier: true
-    },
-    {
-      id: "gemini-1.5-pro",
-      name: "Gemini 1.5 Pro",
-      badge: "Deep Reasoning",
-      description: "Model penalaran mendalam untuk perencanaan rute kompleks dan multi-city trip.",
-      freeTier: true
-    },
-    {
-      id: "gemini-2.0-flash",
-      name: "Gemini 2.0 Flash",
-      badge: "Next Gen Speed",
-      description: "Model generasi terbaru dengan respon ultra responsif.",
-      freeTier: true
-    },
-    {
-      id: "mock-demo",
-      name: "Interactive Demo (Mock)",
-      badge: "No API Key Required",
-      description: "Mode simulasi otomatis untuk pengujian langsung tanpa perlu API key.",
+      id: "gemini-2.5-flash-lite",
+      name: "Gemini 2.5 Flash Lite",
+      badge: "Fast & Lightweight",
+      description: "Model ringan dan super responsif dari Google AI untuk rekomendasi wisata & perencana itinerary.",
       freeTier: true
     }
   ],
@@ -146,7 +125,7 @@ const CONFIG = {
     }
   ],
   defaultSettings: {
-    model: "gemini-1.5-flash",
+    model: "gemini-2.5-flash-lite",
     persona: "backpacker",
     tone: "santai",
     temperature: 0.7,

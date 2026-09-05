@@ -4,13 +4,18 @@
  */
 
 document.addEventListener("DOMContentLoaded", () => {
+  const storedModel = localStorage.getItem(CONFIG.storageKeys.model);
+  const isValidModel = CONFIG.models.some(m => m.id === storedModel);
+  const currentModel = isValidModel ? storedModel : CONFIG.defaultSettings.model;
+  localStorage.setItem(CONFIG.storageKeys.model, currentModel);
+
   // Application State
   const state = {
     persona: localStorage.getItem(CONFIG.storageKeys.persona) || CONFIG.defaultSettings.persona,
     tone: localStorage.getItem(CONFIG.storageKeys.tone) || CONFIG.defaultSettings.tone,
     temperature: parseFloat(localStorage.getItem(CONFIG.storageKeys.temperature)) || CONFIG.defaultSettings.temperature,
     memoryTurns: parseInt(localStorage.getItem(CONFIG.storageKeys.memoryTurns)) || CONFIG.defaultSettings.memoryTurns,
-    model: localStorage.getItem(CONFIG.storageKeys.model) || CONFIG.defaultSettings.model,
+    model: currentModel,
     soundEnabled: localStorage.getItem(CONFIG.storageKeys.soundEnabled) !== "false",
     isGenerating: false
   };
@@ -659,16 +664,70 @@ document.addEventListener("DOMContentLoaded", () => {
       showToast(`Konteks preferensi diubah: ${state.memoryTurns === 0 ? "Full" : state.memoryTurns + " pesan"}`);
     });
 
-    DOM.sidebarToggleBtn.addEventListener("click", () => {
-      DOM.sidebar.classList.toggle("open");
+    // Drawer & Sidebar Toggles (Desktop & Mobile)
+    function toggleParamsDrawer(forceOpen = null) {
+      soundFx.playClick();
+      const isMobile = window.innerWidth <= 1024;
+      if (isMobile) {
+        if (forceOpen === false) {
+          DOM.paramsDrawer.classList.remove("open");
+        } else if (forceOpen === true) {
+          DOM.paramsDrawer.classList.add("open");
+        } else {
+          DOM.paramsDrawer.classList.toggle("open");
+        }
+      } else {
+        // Desktop: toggle .closed class
+        if (forceOpen === false) {
+          DOM.paramsDrawer.classList.add("closed");
+        } else if (forceOpen === true) {
+          DOM.paramsDrawer.classList.remove("closed");
+        } else {
+          DOM.paramsDrawer.classList.toggle("closed");
+        }
+      }
+      
+      const isClosed = DOM.paramsDrawer.classList.contains("closed") || 
+        (isMobile && !DOM.paramsDrawer.classList.contains("open"));
+      DOM.paramsToggleBtn.classList.toggle("active", !isClosed);
+    }
+
+    function toggleSidebar(forceOpen = null) {
+      soundFx.playClick();
+      const isMobile = window.innerWidth <= 768;
+      if (isMobile) {
+        if (forceOpen === false) {
+          DOM.sidebar.classList.remove("open");
+        } else if (forceOpen === true) {
+          DOM.sidebar.classList.add("open");
+        } else {
+          DOM.sidebar.classList.toggle("open");
+        }
+      } else {
+        // Desktop: toggle .closed class
+        if (forceOpen === false) {
+          DOM.sidebar.classList.add("closed");
+        } else if (forceOpen === true) {
+          DOM.sidebar.classList.remove("closed");
+        } else {
+          DOM.sidebar.classList.toggle("closed");
+        }
+      }
+    }
+
+    DOM.closeParamsBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      toggleParamsDrawer(false); // ALWAYS CLOSE
     });
 
-    DOM.paramsToggleBtn.addEventListener("click", () => {
-      DOM.paramsDrawer.classList.toggle("open");
+    DOM.paramsToggleBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      toggleParamsDrawer();
     });
 
-    DOM.closeParamsBtn.addEventListener("click", () => {
-      DOM.paramsDrawer.classList.remove("open");
+    DOM.sidebarToggleBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      toggleSidebar();
     });
 
     DOM.openSettingsBtn.addEventListener("click", () => {
