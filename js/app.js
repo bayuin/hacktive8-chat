@@ -14,7 +14,9 @@ document.addEventListener("DOMContentLoaded", () => {
     persona: localStorage.getItem(CONFIG.storageKeys.persona) || CONFIG.defaultSettings.persona,
     tone: localStorage.getItem(CONFIG.storageKeys.tone) || CONFIG.defaultSettings.tone,
     temperature: parseFloat(localStorage.getItem(CONFIG.storageKeys.temperature)) || CONFIG.defaultSettings.temperature,
-    memoryTurns: parseInt(localStorage.getItem(CONFIG.storageKeys.memoryTurns)) || CONFIG.defaultSettings.memoryTurns,
+    memoryTurns: (localStorage.getItem(CONFIG.storageKeys.memoryTurns) === null || localStorage.getItem(CONFIG.storageKeys.memoryTurns) === "8")
+      ? CONFIG.defaultSettings.memoryTurns
+      : parseInt(localStorage.getItem(CONFIG.storageKeys.memoryTurns), 10),
     model: currentModel,
     soundEnabled: localStorage.getItem(CONFIG.storageKeys.soundEnabled) !== "false",
     theme: localStorage.getItem(CONFIG.storageKeys.theme) || CONFIG.defaultSettings.theme,
@@ -88,9 +90,6 @@ document.addEventListener("DOMContentLoaded", () => {
     memorySelect: document.getElementById("memorySelect"),
     activePersonaBadge: document.getElementById("activePersonaBadge"),
     activeToneBadge: document.getElementById("activeToneBadge"),
-    themeDarkBtn: document.getElementById("themeDarkBtn"),
-    themeLightBtn: document.getElementById("themeLightBtn"),
-    activeThemeBadge: document.getElementById("activeThemeBadge"),
 
     // Modal & Toast
     settingsModal: document.getElementById("settingsModal"),
@@ -255,20 +254,6 @@ document.addEventListener("DOMContentLoaded", () => {
         DOM.themeIconSun.style.display = "block";
         DOM.themeIconMoon.style.display = "none";
       }
-    }
-
-    if (DOM.themeDarkBtn && DOM.themeLightBtn) {
-      if (theme === "light") {
-        DOM.themeDarkBtn.classList.remove("active");
-        DOM.themeLightBtn.classList.add("active");
-      } else {
-        DOM.themeDarkBtn.classList.add("active");
-        DOM.themeLightBtn.classList.remove("active");
-      }
-    }
-
-    if (DOM.activeThemeBadge) {
-      DOM.activeThemeBadge.textContent = theme === "light" ? "Light Mode" : "Dark Mode";
     }
   }
 
@@ -693,23 +678,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const next = state.theme === "light" ? "dark" : "light";
         applyTheme(next);
         showToast(`Tema diubah: ${next === "light" ? "Light Mode ☀️" : "Dark Mode 🌙"}`);
-      });
-    }
-
-    // Theme Selection (Drawer Buttons)
-    if (DOM.themeDarkBtn) {
-      DOM.themeDarkBtn.addEventListener("click", () => {
-        soundFx.playClick();
-        applyTheme("dark");
-        showToast("Tema diubah: Dark Mode 🌙");
-      });
-    }
-
-    if (DOM.themeLightBtn) {
-      DOM.themeLightBtn.addEventListener("click", () => {
-        soundFx.playClick();
-        applyTheme("light");
-        showToast("Tema diubah: Light Mode ☀️");
       });
     }
 

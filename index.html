@@ -155,7 +155,7 @@
                 <span>Kreativitas: <b id="chipTempText">0.7</b></span>
               </span>
               <span class="param-chip" title="Kedalaman Memory Konteks">
-                <span>Memory: <b id="chipMemoryText">8 Pesan</b></span>
+                <span>Memory: <b id="chipMemoryText">Full Memory</b></span>
               </span>
             </div>
 
@@ -255,33 +255,15 @@
               <span class="param-label">5. Konteks Preferensi Trip</span>
             </div>
             <select id="memorySelect" class="styled-select">
-              <option value="2">2 Pesan Terakhir</option>
-              <option value="4">4 Pesan Terakhir</option>
-              <option value="8" selected>8 Pesan Terakhir (Rekomendasi)</option>
+              <option value="0" selected>Semua Percakapan (Full Memory - Default)</option>
               <option value="16">16 Pesan Terakhir (Konteks Panjang)</option>
-              <option value="0">Semua Percakapan (Full Memory)</option>
+              <option value="8">8 Pesan Terakhir</option>
+              <option value="4">4 Pesan Terakhir</option>
+              <option value="2">2 Pesan Terakhir</option>
             </select>
             <span style="font-size: 0.7rem; color: var(--text-muted); margin-top: 4px;">
               Mempertahankan preferensi liburan (alergi makanan, budget total, jumlah rombongan) dalam percakapan lanjutan.
             </span>
-          </div>
-
-          <!-- 6. Tema Tampilan (Mode) -->
-          <div class="param-section">
-            <div class="param-label-wrap">
-              <span class="param-label">6. Tema Tampilan (Mode)</span>
-              <span class="param-badge" id="activeThemeBadge">Dark Mode</span>
-            </div>
-            <div class="tone-grid" id="themeGrid">
-              <button class="tone-btn active" id="themeDarkBtn" type="button">
-                <span class="tone-name">🌙 Dark Mode</span>
-                <span class="tone-desc">Obsidian Night</span>
-              </button>
-              <button class="tone-btn" id="themeLightBtn" type="button">
-                <span class="tone-name">☀️ Light Mode</span>
-                <span class="tone-desc">Clean Daylight</span>
-              </button>
-            </div>
           </div>
 
         </div>

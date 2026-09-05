@@ -130,7 +130,7 @@ const CONFIG = {
     persona: "backpacker",
     tone: "santai",
     temperature: 0.7,
-    memoryTurns: 8,
+    memoryTurns: 0,
     soundEnabled: true,
     theme: "dark"
   }
