@@ -21,6 +21,8 @@ document.addEventListener("DOMContentLoaded", () => {
     soundEnabled: localStorage.getItem(CONFIG.storageKeys.soundEnabled) !== "false",
     theme: localStorage.getItem(CONFIG.storageKeys.theme) || CONFIG.defaultSettings.theme,
     isGenerating: false,
+    isRecording: false,
+    recordingCancelled: false,
     attachedFile: null
   };
 
@@ -73,9 +75,9 @@ document.addEventListener("DOMContentLoaded", () => {
     sendBtn: document.getElementById("sendBtn"),
     stopBtn: document.getElementById("stopBtn"),
 
-    // Multimodal Attachment Elements (Gambar, Suara, Dokumen)
+    // Multimodal Attachment Elements (Foto, Rekam Suara Langsung, Dokumen)
     attachImageBtn: document.getElementById("attachImageBtn"),
-    attachAudioBtn: document.getElementById("attachAudioBtn"),
+    recordVoiceBtn: document.getElementById("recordVoiceBtn"),
     attachDocBtn: document.getElementById("attachDocBtn"),
     imageInput: document.getElementById("imageInput"),
     audioInput: document.getElementById("audioInput"),
@@ -85,6 +87,10 @@ document.addEventListener("DOMContentLoaded", () => {
     filePreviewName: document.getElementById("filePreviewName"),
     filePreviewMeta: document.getElementById("filePreviewMeta"),
     removeFileBtn: document.getElementById("removeFileBtn"),
+    recordingBar: document.getElementById("recordingBar"),
+    recordingTimer: document.getElementById("recordingTimer"),
+    stopRecordBtn: document.getElementById("stopRecordBtn"),
+    cancelRecordBtn: document.getElementById("cancelRecordBtn"),
 
     // Active Param Chips
     chipPersonaIcon: document.getElementById("chipPersonaIcon"),
@@ -165,7 +171,7 @@ document.addEventListener("DOMContentLoaded", () => {
         localStorage.setItem(CONFIG.storageKeys.persona, persona.id);
         renderPersonaOptions();
         updateHeaderAndChips();
-        showToast(`Gaya wisata diubah: ${persona.name}`);
+        showToast(`Persona: ${persona.name}`);
       });
 
       DOM.personaGrid.appendChild(card);
@@ -180,7 +186,7 @@ document.addEventListener("DOMContentLoaded", () => {
       btn.dataset.toneId = tone.id;
       btn.innerHTML = `
         <span class="tone-name">${tone.name}</span>
-        <span class="tone-desc">${tone.badge}</span>
+        <span class="tone-desc">${tone.desc || tone.badge}</span>
       `;
 
       btn.addEventListener("click", () => {
@@ -189,7 +195,7 @@ document.addEventListener("DOMContentLoaded", () => {
         localStorage.setItem(CONFIG.storageKeys.tone, tone.id);
         renderToneOptions();
         updateHeaderAndChips();
-        showToast(`Gaya bahasa diubah: ${tone.name}`);
+        showToast(`Tone: ${tone.name}`);
       });
 
       DOM.toneGrid.appendChild(btn);
@@ -222,8 +228,8 @@ document.addEventListener("DOMContentLoaded", () => {
     DOM.activeTonePill.textContent = tone.name.split(" ")[0];
 
     // Badges in Drawer
-    DOM.activePersonaBadge.textContent = persona.name.split(" ")[0];
-    DOM.activeToneBadge.textContent = tone.name.split(" ")[0];
+    DOM.activePersonaBadge.textContent = persona.name;
+    DOM.activeToneBadge.textContent = tone.name;
     DOM.tempValDisplay.textContent = state.temperature.toFixed(1);
     DOM.tempSlider.value = state.temperature;
 
@@ -232,7 +238,7 @@ document.addEventListener("DOMContentLoaded", () => {
     DOM.chipPersonaText.textContent = persona.name;
     DOM.chipToneText.textContent = tone.name;
     DOM.chipTempText.textContent = state.temperature.toFixed(1);
-    DOM.chipMemoryText.textContent = state.memoryTurns === 0 ? "Full Memory" : `${state.memoryTurns} Pesan`;
+    DOM.chipMemoryText.textContent = state.memoryTurns === 0 ? "Full" : `${state.memoryTurns}P`;
 
     // Telemetry
     DOM.telemetryModel.textContent = state.model;
@@ -362,7 +368,7 @@ document.addEventListener("DOMContentLoaded", () => {
       <div class="hero-glow-logo">✈️</div>
       <h2 class="hero-title">WanderWise <span>Smart Travel Assistant</span></h2>
       <p class="hero-subtitle">
-        Asisten kecerdasan buatan untuk merancang itinerary liburan impian, estimasi budget, dan kurasi kuliner otentik. Dilengkapi kendali parameter kreatif & integrasi LLM API.
+        Rancang liburan impian, estimasi budget, dan kurasi tempat terbaik dengan kendali parameter instan.
       </p>
 
       <div class="quick-prompts-grid" id="quickPromptsGrid">
@@ -548,11 +554,152 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // =========================================================================
-  // Multimodal File Attachment Helpers (Gambar, Suara, Dokumen)
+  // Multimodal File Attachment & Live Voice Recording
   // =========================================================================
+
+  let mediaRecorder = null;
+  let audioChunks = [];
+  let recordingInterval = null;
+  let recordingSeconds = 0;
+  let mediaStream = null;
+
+  async function startLiveVoiceRecording() {
+    if (state.isRecording) return;
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      showToast("Browser tidak mendukung perekaman langsung. Membuka pemilih berkas...", "error");
+      if (DOM.audioInput) DOM.audioInput.click();
+      return;
+    }
+
+    try {
+      mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      audioChunks = [];
+      recordingSeconds = 0;
+
+      let mimeType = 'audio/webm';
+      if (typeof MediaRecorder !== "undefined") {
+        if (!MediaRecorder.isTypeSupported('audio/webm')) {
+          if (MediaRecorder.isTypeSupported('audio/ogg')) mimeType = 'audio/ogg';
+          else if (MediaRecorder.isTypeSupported('audio/mp4')) mimeType = 'audio/mp4';
+          else mimeType = '';
+        }
+      }
+
+      mediaRecorder = mimeType ? new MediaRecorder(mediaStream, { mimeType }) : new MediaRecorder(mediaStream);
+
+      mediaRecorder.ondataavailable = (e) => {
+        if (e.data && e.data.size > 0) {
+          audioChunks.push(e.data);
+        }
+      };
+
+      mediaRecorder.onstop = () => {
+        if (state.recordingCancelled) {
+          state.recordingCancelled = false;
+          return;
+        }
+
+        const blobType = mediaRecorder.mimeType || 'audio/webm';
+        const audioBlob = new Blob(audioChunks, { type: blobType });
+        const ext = blobType.includes('ogg') ? 'ogg' : blobType.includes('mp4') ? 'mp4' : 'webm';
+        const audioFile = new File([audioBlob], `rekaman-suara-${Date.now()}.${ext}`, { type: blobType });
+
+        handleFileSelected(audioFile, "audio");
+      };
+
+      mediaRecorder.start(250);
+      state.isRecording = true;
+      state.recordingCancelled = false;
+
+      if (DOM.recordingBar) DOM.recordingBar.style.display = "flex";
+      if (DOM.recordVoiceBtn) DOM.recordVoiceBtn.classList.add("recording");
+      if (DOM.recordingTimer) DOM.recordingTimer.textContent = "00:00";
+
+      recordingInterval = setInterval(() => {
+        recordingSeconds++;
+        const mins = String(Math.floor(recordingSeconds / 60)).padStart(2, "0");
+        const secs = String(recordingSeconds % 60).padStart(2, "0");
+        if (DOM.recordingTimer) DOM.recordingTimer.textContent = `${mins}:${secs}`;
+      }, 1000);
+
+      soundFx.playClick();
+      showToast("Sedang merekam suara langsung...");
+    } catch (err) {
+      console.warn("Microphone access error:", err);
+      showToast("Akses mikrofon tidak diizinkan. Membuka pemilih berkas...", "error");
+      if (DOM.audioInput) DOM.audioInput.click();
+    }
+  }
+
+  function stopLiveVoiceRecording() {
+    if (!state.isRecording || !mediaRecorder) return;
+    clearInterval(recordingInterval);
+    recordingInterval = null;
+
+    state.isRecording = false;
+    if (DOM.recordingBar) DOM.recordingBar.style.display = "none";
+    if (DOM.recordVoiceBtn) DOM.recordVoiceBtn.classList.remove("recording");
+
+    if (mediaRecorder.state !== "inactive") {
+      mediaRecorder.stop();
+    }
+    if (mediaStream) {
+      mediaStream.getTracks().forEach(track => track.stop());
+      mediaStream = null;
+    }
+
+    soundFx.playClick();
+  }
+
+  function cancelLiveVoiceRecording() {
+    if (!state.isRecording) return;
+    state.recordingCancelled = true;
+    clearInterval(recordingInterval);
+    recordingInterval = null;
+
+    state.isRecording = false;
+    audioChunks = [];
+    if (DOM.recordingBar) DOM.recordingBar.style.display = "none";
+    if (DOM.recordVoiceBtn) DOM.recordVoiceBtn.classList.remove("recording");
+
+    if (mediaRecorder && mediaRecorder.state !== "inactive") {
+      mediaRecorder.stop();
+    }
+    if (mediaStream) {
+      mediaStream.getTracks().forEach(track => track.stop());
+      mediaStream = null;
+    }
+
+    soundFx.playClear();
+    showToast("Rekaman dibatalkan");
+  }
 
   function handleFileSelected(file, type) {
     if (!file) return;
+
+    // Filter ketat sesuai tipe berkas
+    if (type === "image") {
+      const isImg = file.type.startsWith("image/") || /\.(jpg|jpeg|png|webp|gif|svg)$/i.test(file.name);
+      if (!isImg) {
+        showToast("Harap pilih berkas gambar (JPG, PNG, WebP)", "error");
+        return;
+      }
+    } else if (type === "document") {
+      const isDoc = /\.(pdf|doc|docx|txt|csv|xls|xlsx)$/i.test(file.name) ||
+                    file.type.includes("pdf") || file.type.includes("word") ||
+                    file.type.includes("document") || file.type.includes("sheet") ||
+                    file.type.includes("text") || file.type.includes("msword");
+      if (!isDoc) {
+        showToast("Harap pilih berkas dokumen (PDF, Word, TXT, Excel)", "error");
+        return;
+      }
+    } else if (type === "audio") {
+      const isAudio = file.type.startsWith("audio/") || /\.(mp3|wav|ogg|m4a|webm|aac)$/i.test(file.name);
+      if (!isAudio) {
+        showToast("Harap gunakan rekaman suara atau berkas audio", "error");
+        return;
+      }
+    }
 
     if (file.size > 25 * 1024 * 1024) {
       showToast("Ukuran berkas maksimal 25 MB", "error");
@@ -588,11 +735,11 @@ document.addEventListener("DOMContentLoaded", () => {
       if (DOM.attachedFilePreview) DOM.attachedFilePreview.style.display = "flex";
 
       if (DOM.attachImageBtn) DOM.attachImageBtn.classList.toggle("active", type === "image");
-      if (DOM.attachAudioBtn) DOM.attachAudioBtn.classList.toggle("active", type === "audio");
+      if (DOM.recordVoiceBtn) DOM.recordVoiceBtn.classList.toggle("active", type === "audio");
       if (DOM.attachDocBtn) DOM.attachDocBtn.classList.toggle("active", type === "document");
 
       soundFx.playClick();
-      showToast(`Berkas ${file.name} siap dikirim!`);
+      showToast(`${file.name} siap dikirim!`);
       DOM.chatInput.focus();
     };
 
@@ -606,7 +753,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (DOM.docInput) DOM.docInput.value = "";
     if (DOM.attachedFilePreview) DOM.attachedFilePreview.style.display = "none";
     if (DOM.attachImageBtn) DOM.attachImageBtn.classList.remove("active");
-    if (DOM.attachAudioBtn) DOM.attachAudioBtn.classList.remove("active");
+    if (DOM.recordVoiceBtn) DOM.recordVoiceBtn.classList.remove("active");
     if (DOM.attachDocBtn) DOM.attachDocBtn.classList.remove("active");
   }
 
@@ -769,7 +916,7 @@ document.addEventListener("DOMContentLoaded", () => {
       showToast("Penyusunan rute dihentikan");
     });
 
-    // Multimodal Attachment Button Listeners (Foto, Suara, Dokumen)
+    // Multimodal Attachment Button Listeners (Foto, Rekam Suara Langsung, Dokumen)
     if (DOM.attachImageBtn && DOM.imageInput) {
       DOM.attachImageBtn.addEventListener("click", () => DOM.imageInput.click());
       DOM.imageInput.addEventListener("change", (e) => {
@@ -779,8 +926,25 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
 
-    if (DOM.attachAudioBtn && DOM.audioInput) {
-      DOM.attachAudioBtn.addEventListener("click", () => DOM.audioInput.click());
+    if (DOM.recordVoiceBtn) {
+      DOM.recordVoiceBtn.addEventListener("click", () => {
+        if (state.isRecording) {
+          stopLiveVoiceRecording();
+        } else {
+          startLiveVoiceRecording();
+        }
+      });
+    }
+
+    if (DOM.stopRecordBtn) {
+      DOM.stopRecordBtn.addEventListener("click", stopLiveVoiceRecording);
+    }
+
+    if (DOM.cancelRecordBtn) {
+      DOM.cancelRecordBtn.addEventListener("click", cancelLiveVoiceRecording);
+    }
+
+    if (DOM.audioInput) {
       DOM.audioInput.addEventListener("change", (e) => {
         if (e.target.files && e.target.files[0]) {
           handleFileSelected(e.target.files[0], "audio");
@@ -801,7 +965,7 @@ document.addEventListener("DOMContentLoaded", () => {
       DOM.removeFileBtn.addEventListener("click", () => {
         clearAttachedFile();
         soundFx.playClear();
-        showToast("Lampiran berkas dibatalkan");
+        showToast("Lampiran dibatalkan");
       });
     }
 
