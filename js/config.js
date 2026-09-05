@@ -19,8 +19,8 @@ const CONFIG = {
   },
   models: [
     {
-      id: "gemini-2.5-flash-lite",
-      name: "Gemini 2.5 Flash Lite",
+      id: "gemini-3.5-flash-lite",
+      name: "Gemini 3.5 Flash Lite",
       badge: "Fast & Lightweight",
       description: "Model ringan dan super responsif dari Google AI untuk rekomendasi wisata & perencana itinerary.",
       freeTier: true
@@ -125,7 +125,7 @@ const CONFIG = {
     }
   ],
   defaultSettings: {
-    model: "gemini-2.5-flash-lite",
+    model: "gemini-3.5-flash-lite",
     persona: "backpacker",
     tone: "santai",
     temperature: 0.7,

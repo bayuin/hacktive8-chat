@@ -151,12 +151,12 @@ class AIService {
       signal
     });
 
-    // If model endpoint returned 404 (e.g. if google endpoint names it 2.0-flash-lite or 1.5-flash), try alias
-    if (!response.ok && response.status === 404) {
-      const fallbackModels = ["gemini-2.0-flash-lite", "gemini-1.5-flash"];
+    // If model endpoint returned error (e.g. 404 not found or 400 deprecated), try alternate models
+    if (!response.ok && (response.status === 404 || response.status === 400)) {
+      const fallbackModels = ["gemini-3.5-flash-lite", "gemini-2.0-flash", "gemini-1.5-flash"];
       for (const fallback of fallbackModels) {
         if (modelToUse === fallback) continue;
-        console.warn(`Model ${modelToUse} returned 404, attempting fallback to ${fallback}...`);
+        console.warn(`Model ${modelToUse} returned ${response.status}, attempting fallback to ${fallback}...`);
         const altEndpoint = `https://generativelanguage.googleapis.com/v1beta/models/${fallback}:streamGenerateContent?alt=sse&key=${this.apiKey}`;
         const altRes = await fetch(altEndpoint, {
           method: "POST",
