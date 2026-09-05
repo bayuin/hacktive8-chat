@@ -20,7 +20,8 @@ document.addEventListener("DOMContentLoaded", () => {
     model: currentModel,
     soundEnabled: localStorage.getItem(CONFIG.storageKeys.soundEnabled) !== "false",
     theme: localStorage.getItem(CONFIG.storageKeys.theme) || CONFIG.defaultSettings.theme,
-    isGenerating: false
+    isGenerating: false,
+    attachedFile: null
   };
 
   // Configure marked with highlight.js
@@ -71,6 +72,19 @@ document.addEventListener("DOMContentLoaded", () => {
     chatInput: document.getElementById("chatInput"),
     sendBtn: document.getElementById("sendBtn"),
     stopBtn: document.getElementById("stopBtn"),
+
+    // Multimodal Attachment Elements (Gambar, Suara, Dokumen)
+    attachImageBtn: document.getElementById("attachImageBtn"),
+    attachAudioBtn: document.getElementById("attachAudioBtn"),
+    attachDocBtn: document.getElementById("attachDocBtn"),
+    imageInput: document.getElementById("imageInput"),
+    audioInput: document.getElementById("audioInput"),
+    docInput: document.getElementById("docInput"),
+    attachedFilePreview: document.getElementById("attachedFilePreview"),
+    filePreviewIcon: document.getElementById("filePreviewIcon"),
+    filePreviewName: document.getElementById("filePreviewName"),
+    filePreviewMeta: document.getElementById("filePreviewMeta"),
+    removeFileBtn: document.getElementById("removeFileBtn"),
 
     // Active Param Chips
     chipPersonaIcon: document.getElementById("chipPersonaIcon"),
@@ -405,6 +419,32 @@ document.addEventListener("DOMContentLoaded", () => {
       formattedContent = formatMarkdown(msg.content);
     }
 
+    let attachmentHTML = "";
+    if (msg.attachment) {
+      if (msg.attachment.type === "image" && msg.attachment.dataUrl) {
+        attachmentHTML = `
+          <div class="msg-attachment">
+            <img src="${msg.attachment.dataUrl}" class="msg-attachment-img" alt="${escapeHTML(msg.attachment.name || 'Foto Destinasi')}">
+          </div>
+        `;
+      } else if (msg.attachment.type === "audio" && msg.attachment.dataUrl) {
+        attachmentHTML = `
+          <div class="msg-attachment">
+            <audio controls src="${msg.attachment.dataUrl}" class="msg-attachment-audio"></audio>
+          </div>
+        `;
+      } else if (msg.attachment.type === "document") {
+        attachmentHTML = `
+          <div class="msg-attachment">
+            <div class="msg-attachment-doc">
+              <span style="font-size: 1.25rem;">📄</span>
+              <span><b>${escapeHTML(msg.attachment.name || 'Dokumen')}</b> (${msg.attachment.sizeFormatted || "Dokumen"})</span>
+            </div>
+          </div>
+        `;
+      }
+    }
+
     row.innerHTML = `
       <div class="avatar ${isUser ? "user" : "bot"}">${avatarContent}</div>
       <div class="message-bubble">
@@ -414,6 +454,7 @@ document.addEventListener("DOMContentLoaded", () => {
           <span>${timeStr}</span>
         </div>
         <div class="message-content">
+          ${attachmentHTML}
           ${formattedContent}
         </div>
         ${!isUser ? `
@@ -507,16 +548,92 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // =========================================================================
+  // Multimodal File Attachment Helpers (Gambar, Suara, Dokumen)
+  // =========================================================================
+
+  function handleFileSelected(file, type) {
+    if (!file) return;
+
+    if (file.size > 25 * 1024 * 1024) {
+      showToast("Ukuran berkas maksimal 25 MB", "error");
+      return;
+    }
+
+    const sizeFormatted = formatFileSize(file.size);
+    let icon = "📄";
+    let metaText = `Dokumen • ${sizeFormatted}`;
+
+    if (type === "image") {
+      icon = "🖼️";
+      metaText = `Foto Destinasi • ${sizeFormatted}`;
+    } else if (type === "audio") {
+      icon = "🎙️";
+      metaText = `Rekaman Suara • ${sizeFormatted}`;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      state.attachedFile = {
+        file: file,
+        type: type,
+        name: file.name,
+        size: file.size,
+        sizeFormatted: sizeFormatted,
+        dataUrl: e.target.result
+      };
+
+      if (DOM.filePreviewIcon) DOM.filePreviewIcon.textContent = icon;
+      if (DOM.filePreviewName) DOM.filePreviewName.textContent = file.name;
+      if (DOM.filePreviewMeta) DOM.filePreviewMeta.textContent = metaText;
+      if (DOM.attachedFilePreview) DOM.attachedFilePreview.style.display = "flex";
+
+      if (DOM.attachImageBtn) DOM.attachImageBtn.classList.toggle("active", type === "image");
+      if (DOM.attachAudioBtn) DOM.attachAudioBtn.classList.toggle("active", type === "audio");
+      if (DOM.attachDocBtn) DOM.attachDocBtn.classList.toggle("active", type === "document");
+
+      soundFx.playClick();
+      showToast(`Berkas ${file.name} siap dikirim!`);
+      DOM.chatInput.focus();
+    };
+
+    reader.readAsDataURL(file);
+  }
+
+  function clearAttachedFile() {
+    state.attachedFile = null;
+    if (DOM.imageInput) DOM.imageInput.value = "";
+    if (DOM.audioInput) DOM.audioInput.value = "";
+    if (DOM.docInput) DOM.docInput.value = "";
+    if (DOM.attachedFilePreview) DOM.attachedFilePreview.style.display = "none";
+    if (DOM.attachImageBtn) DOM.attachImageBtn.classList.remove("active");
+    if (DOM.attachAudioBtn) DOM.attachAudioBtn.classList.remove("active");
+    if (DOM.attachDocBtn) DOM.attachDocBtn.classList.remove("active");
+  }
+
+  function formatFileSize(bytes) {
+    if (bytes < 1024) return bytes + " B";
+    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + " KB";
+    return (bytes / (1024 * 1024)).toFixed(1) + " MB";
+  }
+
+  // =========================================================================
   // Send & Stream Message Logic
   // =========================================================================
 
   async function handleSendMessage() {
     const text = DOM.chatInput.value.trim();
-    if (!text || state.isGenerating) return;
+    const hasAttachment = Boolean(state.attachedFile);
+    if ((!text && !hasAttachment) || state.isGenerating) return;
 
     soundFx.playSent();
 
-    const userMsg = chatManager.addMessage("user", text);
+    const currentAttachment = state.attachedFile ? { ...state.attachedFile } : null;
+    clearAttachedFile();
+
+    const displayPrompt = text || (currentAttachment ? `Analisis berkas ${currentAttachment.name}` : "");
+    const userMsg = chatManager.addMessage("user", displayPrompt, {
+      attachment: currentAttachment
+    });
     appendMessageToDOM(userMsg, true);
 
     // Capture conversation history ending with user message (Gemini API requires request to end with a user turn)
@@ -547,19 +664,40 @@ document.addEventListener("DOMContentLoaded", () => {
     let accumulatedText = "";
 
     try {
-      const responseData = await aiService.generateResponse({
-        messages: historyForAI,
-        persona: state.persona,
-        tone: state.tone,
-        temperature: state.temperature,
-        memoryTurns: state.memoryTurns,
-        onChunk: (chunk, acc) => {
-          accumulatedText = acc;
-          botContentElem.innerHTML = formatMarkdown(accumulatedText);
-          enhanceCodeBlocks(botRow);
-          scrollToBottom();
-        }
-      });
+      let responseData;
+
+      if (currentAttachment) {
+        // Panggil endpoint multimodal sesuai tipe berkas (/generate-from-image, /generate-from-audio, /generate-from-document)
+        responseData = await aiService.generateFromMedia({
+          file: currentAttachment.file,
+          mediaType: currentAttachment.type,
+          prompt: text,
+          persona: state.persona,
+          tone: state.tone,
+          temperature: state.temperature,
+          onChunk: (chunk, acc) => {
+            accumulatedText = acc;
+            botContentElem.innerHTML = formatMarkdown(accumulatedText);
+            enhanceCodeBlocks(botRow);
+            scrollToBottom();
+          }
+        });
+      } else {
+        // Panggil endpoint percakapan standar (/api/chat)
+        responseData = await aiService.generateResponse({
+          messages: historyForAI,
+          persona: state.persona,
+          tone: state.tone,
+          temperature: state.temperature,
+          memoryTurns: state.memoryTurns,
+          onChunk: (chunk, acc) => {
+            accumulatedText = acc;
+            botContentElem.innerHTML = formatMarkdown(accumulatedText);
+            enhanceCodeBlocks(botRow);
+            scrollToBottom();
+          }
+        });
+      }
 
       soundFx.playReceived();
 
@@ -630,6 +768,42 @@ document.addEventListener("DOMContentLoaded", () => {
       soundFx.playClear();
       showToast("Penyusunan rute dihentikan");
     });
+
+    // Multimodal Attachment Button Listeners (Foto, Suara, Dokumen)
+    if (DOM.attachImageBtn && DOM.imageInput) {
+      DOM.attachImageBtn.addEventListener("click", () => DOM.imageInput.click());
+      DOM.imageInput.addEventListener("change", (e) => {
+        if (e.target.files && e.target.files[0]) {
+          handleFileSelected(e.target.files[0], "image");
+        }
+      });
+    }
+
+    if (DOM.attachAudioBtn && DOM.audioInput) {
+      DOM.attachAudioBtn.addEventListener("click", () => DOM.audioInput.click());
+      DOM.audioInput.addEventListener("change", (e) => {
+        if (e.target.files && e.target.files[0]) {
+          handleFileSelected(e.target.files[0], "audio");
+        }
+      });
+    }
+
+    if (DOM.attachDocBtn && DOM.docInput) {
+      DOM.attachDocBtn.addEventListener("click", () => DOM.docInput.click());
+      DOM.docInput.addEventListener("change", (e) => {
+        if (e.target.files && e.target.files[0]) {
+          handleFileSelected(e.target.files[0], "document");
+        }
+      });
+    }
+
+    if (DOM.removeFileBtn) {
+      DOM.removeFileBtn.addEventListener("click", () => {
+        clearAttachedFile();
+        soundFx.playClear();
+        showToast("Lampiran berkas dibatalkan");
+      });
+    }
 
     DOM.chatInput.addEventListener("input", autoGrowTextarea);
     DOM.chatInput.addEventListener("keydown", (e) => {

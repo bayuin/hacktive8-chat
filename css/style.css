@@ -1120,6 +1120,78 @@ body {
   color: var(--text-primary);
 }
 
+/* Attached File Preview Card */
+.attached-file-preview {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 14px;
+  background: rgba(1, 148, 243, 0.1);
+  border: 1.5px solid rgba(1, 148, 243, 0.35);
+  border-radius: var(--radius-md);
+  margin-bottom: 6px;
+  animation: fadeInMsg 0.2s ease;
+}
+
+[data-theme="light"] .attached-file-preview {
+  background: #E8F5FD;
+  border-color: #0194F3;
+}
+
+.file-preview-content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  overflow: hidden;
+}
+
+.file-preview-icon {
+  font-size: 1.25rem;
+}
+
+.file-preview-details {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.file-preview-name {
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 400px;
+}
+
+[data-theme="light"] .file-preview-name {
+  color: #0064D2;
+}
+
+.file-preview-meta {
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+}
+
+.remove-file-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+
+.remove-file-btn:hover {
+  background: rgba(244, 63, 94, 0.15);
+  color: var(--accent-rose);
+}
+
 /* Main Textarea Box */
 .input-box-wrapper {
   background: var(--bg-input);
@@ -1135,7 +1207,86 @@ body {
 
 .input-box-wrapper:focus-within {
   border-color: var(--accent-indigo);
-  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2), var(--shadow-glow);
+  box-shadow: 0 0 0 2px rgba(1, 148, 243, 0.2), var(--shadow-glow);
+}
+
+/* Media Attachment Buttons (Foto, Suara, Dokumen) */
+.media-buttons-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding-bottom: 2px;
+  flex-shrink: 0;
+}
+
+.media-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 10px;
+  border-radius: var(--radius-md);
+  background: rgba(1, 148, 243, 0.08);
+  border: 1px solid rgba(1, 148, 243, 0.25);
+  color: #0194F3;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+[data-theme="light"] .media-btn {
+  background: #EDF6FD;
+  border-color: #BEE3F8;
+  color: #0064D2;
+}
+
+.media-btn:hover {
+  background: #0194F3;
+  border-color: #0194F3;
+  color: #FFFFFF;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(1, 148, 243, 0.3);
+}
+
+.media-btn.active {
+  background: #0194F3;
+  color: #FFFFFF;
+  border-color: #0064D2;
+}
+
+/* Chat Message Attachment Preview */
+.msg-attachment {
+  margin-bottom: 8px;
+}
+
+.msg-attachment-img {
+  max-width: 320px;
+  max-height: 220px;
+  border-radius: var(--radius-md);
+  object-fit: cover;
+  border: 1.5px solid rgba(255, 255, 255, 0.2);
+  display: block;
+  box-shadow: var(--shadow-sm);
+}
+
+.msg-attachment-audio {
+  width: 100%;
+  max-width: 300px;
+  display: block;
+  border-radius: var(--radius-md);
+}
+
+.msg-attachment-doc {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  font-size: 0.82rem;
+  font-weight: 500;
 }
 
 .chat-textarea {

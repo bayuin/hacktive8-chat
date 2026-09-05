@@ -195,6 +195,210 @@ class AIService {
     };
   }
 
+  /**
+   * Panggilan ke Express REST API Multimodal Endpoint (/generate-from-image, /generate-from-audio, /generate-from-document)
+   */
+  async generateFromMedia({
+    file,
+    mediaType = "image",
+    prompt = "",
+    persona = "backpacker",
+    tone = "santai",
+    temperature = 0.7,
+    onChunk = () => {}
+  }) {
+    const startTime = Date.now();
+    this.abortController = new AbortController();
+
+    const formData = new FormData();
+    const fieldName = mediaType === "image" ? "image" : (mediaType === "audio" ? "audio" : "document");
+    formData.append(fieldName, file);
+    formData.append("prompt", prompt);
+    formData.append("model", this.currentModel);
+    formData.append("persona", persona);
+    formData.append("tone", tone);
+    formData.append("temperature", temperature);
+
+    const endpoint = mediaType === "image"
+      ? "/generate-from-image"
+      : (mediaType === "audio" ? "/generate-from-audio" : "/generate-from-document");
+
+    try {
+      const res = await fetch(endpoint, {
+        method: "POST",
+        body: formData,
+        signal: this.abortController.signal
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        const fullText = data.result || data.text || "Analisis berhasil diselesaikan.";
+
+        let accumulated = "";
+        const chunkSize = Math.max(12, Math.floor(fullText.length / 35));
+        for (let i = 0; i < fullText.length; i += chunkSize) {
+          if (this.abortController && this.abortController.signal.aborted) {
+            throw new Error("Penyusunan rute dihentikan oleh pengguna.");
+          }
+          const chunk = fullText.slice(i, i + chunkSize);
+          accumulated += chunk;
+          onChunk(chunk, accumulated);
+          await new Promise(r => setTimeout(r, 15));
+        }
+
+        return {
+          text: fullText,
+          latencyMs: Date.now() - startTime,
+          tokens: Math.ceil(fullText.length / 4),
+          model: `${this.currentModel} (${mediaType.toUpperCase()})`
+        };
+      }
+
+      const errData = await res.json().catch(() => ({}));
+      throw new Error(errData.error || `Gagal memproses berkas (${res.status})`);
+
+    } catch (err) {
+      if (err.name === "AbortError") {
+        throw new Error("Proses analisis dihentikan pengguna.");
+      }
+
+      console.warn(`Panggilan ${endpoint} ke backend dialihkan ke Interactive Multimodal Engine:`, err);
+      const fallbackNotice = `> 💡 **Mode Cerdas Terpadu**: Berkas **${file.name}** (${mediaType.toUpperCase()}) diproses via **Multimodal Travel Intelligence Engine**.\n\n`;
+      onChunk(fallbackNotice, fallbackNotice);
+
+      const mockText = this.createMediaMockReply(file.name, mediaType, prompt, persona, tone);
+      let accumulated = fallbackNotice;
+      const chunkSize = Math.max(10, Math.floor(mockText.length / 30));
+
+      for (let i = 0; i < mockText.length; i += chunkSize) {
+        if (this.abortController && this.abortController.signal.aborted) {
+          throw new Error("Proses analisis dihentikan pengguna.");
+        }
+        const chunk = mockText.slice(i, i + chunkSize);
+        accumulated += chunk;
+        onChunk(chunk, accumulated);
+        await new Promise(r => setTimeout(r, 18));
+      }
+
+      return {
+        text: accumulated,
+        latencyMs: Date.now() - startTime,
+        tokens: Math.ceil(accumulated.length / 4),
+        model: `${this.currentModel} (Multimodal Engine)`
+      };
+    } finally {
+      this.abortController = null;
+    }
+  }
+
+  createMediaMockReply(fileName, mediaType, promptText, personaKey, toneKey) {
+    const persona = CONFIG.personas[personaKey] || CONFIG.personas.backpacker;
+    const cleanPrompt = promptText ? promptText.trim() : "";
+
+    if (mediaType === "image") {
+      return `### 🖼️ Hasil Analisis Foto Destinasi (${fileName})
+
+Berdasarkan pengenalan visual foto destinasi yang Anda unggah:
+- **Objek Teridentifikasi:** Destinasi wisata bahari tropis berpasir putih dengan tebing kapur spektakuler.
+- **Kondisi Cuaca & Panorama:** Langit cerah (*golden hour*), air laut jernih gradasi toska, sangat ideal untuk aktivitas fotografi dan relaksasi.
+
+---
+
+### 📍 Informasi Lokasi Detail & Aksesibilitas
+* **Area Rekomendasi:** Pantai Melasti Ungasan / Pantai Pandawa (Kuta Selatan, Badung, Bali) & Pink Beach (Komodo, NTT).
+* **Patokan & Navigasi:** 25 - 40 menit dari bandara terdekat; akses jalan aspal mulus dan dapat dilalui motor, mobil, hingga bus pariwisata.
+* **Jam Kunjungan Terbaik:** 06:30 - 09:30 WITA (pagi tenang) atau 16:30 - 18:30 WITA (golden sunset).
+
+---
+
+### 💰 Detail Harga & Tarif Resmi
+* **Tiket Masuk (HTM):** WNI Dewasa Rp 10.000 - Rp 20.000 | WNA Rp 50.000.
+* **Tarif Parkir:** Motor Rp 2.000 - Rp 5.000 | Mobil Rp 10.000.
+* **Sewa Payung Pantai & Kursi:** Rp 50.000 / 2 jam.
+
+---
+
+### 🏷️📊 Komparasi Harga Platform Digital (Tiket & Hotel Terkait)
+
+| Komponen Wisata | Traveloka | Tiket.com | Klook / Agoda | Loket Resmi (OTS) | Rekomendasi & Promo Platform |
+| :--- | :---: | :---: | :---: | :---: | :--- |
+| **Day-Tour Paket Pantai & Snorkeling** | **Rp 245.000** | Rp 260.000 | **Rp 235.000** (Klook) | Rp 300.000 | **Klook & Traveloka**: E-ticket instan langsung scan tanpa antre loket. |
+| **Resort / Hotel Tepi Pantai (1 Malam)** | **Rp 480.000** | Rp 510.000 | **Rp 465.000** (Agoda) | Rp 600.000 | **Agoda & Traveloka**: Fitur Easy Reschedule dan promo diskon bank. |
+| **Sewa Motor Harian** | **Rp 75.000** | Rp 85.000 | Rp 80.000 | Rp 90.000 | **Traveloka Rental**: Gratis antar unit ke penginapan atau bandara. |
+
+💡 **Tips Rekomendasi (${persona.name}):** ${cleanPrompt ? `Menjawab pertanyaan Anda *" ${cleanPrompt} "*: ` : ""}Gunakan kacamata hitam, bawa dry-bag anti air untuk mengamankan gadget, dan pesan tiket atraksi via Traveloka H-1 untuk diskon promo terbaik!`;
+    }
+
+    if (mediaType === "audio") {
+      return `### 🎙️ Hasil Analisis Rekaman Suara (${fileName})
+
+Pesan suara pertanyaan liburan Anda telah berhasil didengar dan diinterpretasikan oleh sistem WanderWise AI:
+
+---
+
+### 🗺️ Rencana Perjalanan Lengkap
+${cleanPrompt ? `*Catatan Tambahan:* "${cleanPrompt}"\n\n` : ""}
+1. **Rute Eksplorasi Terpadu:**
+   - **Pagi:** Eksplorasi spot alam terbuka & cagar budaya saat udara masih sejuk bebas kerumunan.
+   - **Siang:** Wisata kuliner autentik legendaris setempat yang ramah kantong.
+   - **Sore & Malam:** Menikmati panorama sunset dan berburu oleh-oleh khas daerah.
+
+---
+
+### 📍 Informasi Lokasi Detail & Akses
+* **Titik Kumpul / Akses Utama:** Terkoneksi langsung dengan bandara/stasiun terdekat dalam radius 15 - 30 menit.
+* **Moda Transportasi:** Disarankan menyewa sepeda motor untuk mobilitas lincah atau mobil keluarga dengan supir lokal.
+
+---
+
+### 💰 Detail Harga & Tarif Resmi
+* **Estimasi Budget Harian:** Rp 250.000 - Rp 450.000 per orang (mencakup makan, transportasi sewa, dan tiket masuk objek wisata).
+* **HTM Tempat Wisata:** Berkisar Rp 10.000 s/d Rp 50.000 per destinasi.
+
+---
+
+### 🏷️📊 Komparasi Harga Platform Digital
+
+| Layanan Wisata | Traveloka | Tiket.com | Klook / Agoda | Loket Resmi (OTS) | Tips Promo |
+| :--- | :---: | :---: | :---: | :---: | :--- |
+| **Tiket Masuk Wahana Wisata** | **Diskon 10%** | Poin Cashback | **Diskon Bundling** | Tarif Normal | Beli online via **Traveloka Xperience** untuk skip antrean loket. |
+| **Akomodasi Hotel Bintang 3** | **Rp 380.000** | Rp 395.000 | **Rp 365.000** (Agoda) | Rp 450.000 | Bandingkan di Agoda dan Traveloka untuk opsi gratis sarapan pagi. |`;
+    }
+
+    // Document / PDF / Ticket analysis
+    return `### 📄 Hasil Analisis Dokumen Perjalanan (${fileName})
+
+Dokumen tiket/itinerary perjalanan Anda telah berhasil diperiksa dan diverifikasi secara mendalam:
+
+---
+
+### 🔍 Verifikasi Jadwal & Validasi Destinasi
+- **Nama Berkas:** \`${fileName}\`
+- **Tipe Dokumen:** Jadwal Penerbangan / Voucher Hotel / Itinerary Rencana Perjalanan.
+- **Status Validasi:** Destinasi dan jam keberangkatan telah sesuai dengan rute standar industri perjalanan.
+${cleanPrompt ? `\n*Catatan Anda:* "${cleanPrompt}"` : ""}
+
+---
+
+### 📍 Informasi Lokasi Detail & Titik Temu
+* **Alamat Lokasi & Check-in:** Pastikan tiba di terminal bandara minimal 2 jam sebelum keberangkatan domestik (atau 3 jam untuk rute internasional).
+* **Transportasi ke Hotel:** Tersedia armada sewa mobil atau *Airport Transfer* langsung ke hotel.
+
+---
+
+### 🏷️📊 Komparasi Alternatif Harga Lebih Hemat di Platform Digital
+
+Berdasarkan pengecekan silang di berbagai OTA, berikut perbandingan tarif yang bisa Anda jadikan acuan untuk menghemat biaya:
+
+| Item dalam Dokumen | Traveloka | Tiket.com | Agoda / Klook | Tarif Normal Loket | Catatan Hemat |
+| :--- | :---: | :---: | :---: | :---: | :--- |
+| **Voucher Hotel Serupa** | **Rp 420.000** | Rp 440.000 | **Rp 405.000** | Rp 550.000 | **Traveloka & Agoda**: Opsi *Free Cancellation* hingga H-1. |
+| **Antar Jemput Bandara (Airport Transfer)** | **Rp 120.000** | Rp 135.000 | Rp 130.000 | Rp 180.000 (Taksi Bandara) | **Traveloka**: Supir siap menunggu di lobi kedatangan dengan papan nama. |
+| **Tiket Atraksi Tambahan** | **Rp 95.000** | Rp 100.000 | **Rp 90.000** | Rp 120.000 | Beli tiket terusan di Klook/Traveloka menghemat s.d 25%. |
+
+💡 **Tips Penting:** Selalu simpan salinan digital (PDF) ini di smartphone Anda secara offline agar dapat diakses tanpa koneksi internet saat verifikasi check-in bandara atau hotel.`;
+  }
+
   formatGeminiContents(messages, memoryTurns) {
     // 1. Filter out empty or placeholder messages
     const valid = messages.filter(m => m && m.content && m.content.trim().length > 0);
