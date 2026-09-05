@@ -485,6 +485,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const userMsg = chatManager.addMessage("user", text);
     appendMessageToDOM(userMsg, true);
 
+    // Capture conversation history ending with user message (Gemini API requires request to end with a user turn)
+    const historyForAI = chatManager.getRecentMessages(state.memoryTurns);
+
     DOM.chatInput.value = "";
     autoGrowTextarea();
     renderSessions();
@@ -511,7 +514,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     try {
       const responseData = await aiService.generateResponse({
-        messages: chatManager.getRecentMessages(state.memoryTurns),
+        messages: historyForAI,
         persona: state.persona,
         tone: state.tone,
         temperature: state.temperature,

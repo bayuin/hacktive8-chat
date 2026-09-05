@@ -103,10 +103,21 @@ class AIService {
   }
 
   formatGeminiContents(messages, memoryTurns) {
-    const recentMessages = messages.slice(-memoryTurns);
+    // 1. Filter out empty or placeholder messages
+    const valid = messages.filter(m => m && m.content && m.content.trim().length > 0);
+
+    // 2. Slice according to memoryTurns limit
+    let recentMessages = memoryTurns > 0 ? valid.slice(-memoryTurns) : valid;
+
+    // 3. Ensure the payload ends with a 'user' turn (Gemini API strictly disallows requests ending with 'model')
+    while (recentMessages.length > 0 && (recentMessages[recentMessages.length - 1].role === "assistant" || recentMessages[recentMessages.length - 1].role === "model")) {
+      recentMessages.pop();
+    }
+
+    // 4. Map to Gemini format
     return recentMessages.map(msg => ({
       role: msg.role === "assistant" ? "model" : "user",
-      parts: [{ text: msg.content }]
+      parts: [{ text: msg.content.trim() }]
     }));
   }
 
@@ -228,7 +239,8 @@ class AIService {
     onChunk,
     signal
   }) {
-    const lastMessage = messages[messages.length - 1]?.content || "";
+    const userMessages = messages.filter(m => m && m.role === "user" && m.content && m.content.trim().length > 0);
+    const lastMessage = userMessages.length > 0 ? userMessages[userMessages.length - 1].content : (messages[messages.length - 1]?.content || "");
     const mockContent = this.createMockReply(lastMessage, persona, tone, temperature);
 
     let accumulated = "";
