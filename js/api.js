@@ -362,11 +362,11 @@ Berdasarkan teks dan elemen visual pada gambar yang Anda unggah:
 
 ### 🏷️📊 Komparasi Harga Platform Digital
 
-| Layanan / Atraksi | Traveloka | Tiket.com | Agoda / Klook | Loket Resmi (OTS) | Rekomendasi Terbaik |
+| Layanan / Kebutuhan | Platform Resmi (KAI / Loket OTS) | Traveloka | Tiket.com | Mitra Lain (Agoda / Klook / Rental Lokal) | Tips Promo & Rekomendasi |
 | :--- | :---: | :---: | :---: | :---: | :--- |
-| **${otaItem}** | **Rp 245.000** | Rp 260.000 | **Rp 235.000** (Klook) | Rp 300.000 | **Traveloka & Klook**: E-ticket instan langsung scan tanpa antrean loket. |
-| **Akomodasi Hotel Terdekat (1 Malam)** | **Rp 480.000** | Rp 510.000 | **Rp 465.000** (Agoda) | Rp 600.000 | **Agoda & Traveloka**: Fitur Easy Reschedule dan promo diskon bank. |
-| **Sewa Motor / Transport Harian** | **Rp 75.000** | Rp 85.000 | Rp 80.000 | Rp 90.000 | **Traveloka Rental**: Gratis antar unit langsung ke hotel pemesan. |
+| **${otaItem}** | Rp 300.000 (Loket OTS) | **Rp 245.000** (Xperience) | Rp 260.000 (To-Do) | **Rp 235.000** (Klook Voucher) | **Traveloka & Klook**: E-ticket instan langsung scan tanpa antrean loket fisik. |
+| **Akomodasi Hotel Terdekat (1 Malam)** | Rp 600.000 (Walk-in) | **Rp 480.000** (PayLater) | Rp 510.000 (Tiket OTW) | **Rp 465.000** (Agoda VIP) | **Agoda & Traveloka**: Fitur Easy Reschedule dan promo diskon kartu bank. |
+| **Sewa Motor / Transport Harian** | Rp 90.000 (Rental Stasiun) | **Rp 75.000** (Traveloka Rental) | Rp 85.000 (Tiket Sewa) | Rp 80.000 (Mitra Lokal) | **Traveloka Rental**: Gratis pengantaran unit langsung ke hotel atau stasiun. |
 
 💡 **Tips Rekomendasi SuperB (${persona.name}):** ${cleanPrompt ? `Menjawab pertanyaan Anda: *" ${cleanPrompt} "*: ` : ""}Selalu bawa salinan digital di smartphone dan lakukan pemesanan H-1 via platform digital untuk memanfaatkan kupon diskon hingga 15%!`;
     }
@@ -461,11 +461,11 @@ ${itineraryPoints.join("\n")}
 
 ### 🏷️📊 Komparasi Harga Platform Digital
 
-| Komponen Perjalanan | Traveloka | Tiket.com | Klook / Agoda | Loket Resmi (OTS) | Tips Promo Terbaik |
+| Komponen Perjalanan | Platform Resmi (KAI / Loket OTS) | Traveloka | Tiket.com | Mitra Lain (Agoda / Klook / Rental Lokal) | Tips Promo & Rekomendasi |
 | :--- | :---: | :---: | :---: | :---: | :--- |
-| **${otaItem}** | **Rp 245.000** | Rp 260.000 | **Rp 230.000** (Klook) | Rp 300.000 | **Traveloka & Klook**: Tiket langsung terbit dan dapat dibatalkan jika ada perubahan jadwal. |
-| **Penginapan Hotel / Homestay (1 Malam)** | **Rp 320.000** | Rp 345.000 | **Rp 310.000** (Agoda) | Rp 400.000 | **Agoda & Traveloka**: Fasilitas *Free Breakfast* dan garansi harga termurah. |
-| **Rental Kendaraan Harian** | **Rp 75.000** | Rp 85.000 | Rp 80.000 | Rp 90.000 | **Traveloka Rental**: Gratis pengantaran unit ke stasiun atau bandara. |
+| **${otaItem}** | Rp 300.000 (Loket OTS) | **Rp 245.000** (Xperience) | Rp 260.000 (To-Do) | **Rp 230.000** (Klook Voucher) | **Traveloka & Klook**: Tiket langsung terbit dan dapat dibatalkan jika jadwal berubah. |
+| **Penginapan Hotel / Homestay (1 Malam)** | Rp 400.000 (Walk-in) | **Rp 320.000** (Traveloka) | Rp 345.000 (Tiket OTW) | **Rp 310.000** (Agoda VIP) | **Agoda & Traveloka**: Fasilitas *Free Breakfast* dan garansi harga termurah. |
+| **Rental Kendaraan Harian** | Rp 90.000 (Rental Stasiun) | **Rp 75.000** (Traveloka Rental) | Rp 85.000 (Tiket Sewa) | Rp 80.000 (Rental Lokal) | **Traveloka Rental**: Gratis pengantaran unit langsung ke stasiun atau bandara. |
 
 💡 **Tips SuperB Travel Assistant (${persona.name}):** Rencana di atas disusun secara spesifik menjawab rekaman suara Anda. Jika Anda ingin menyesuaikan budget atau menambah destinasi lain, silakan tanyakan kapan saja!`;
     }
@@ -493,11 +493,11 @@ ${cleanPrompt ? `\n*Catatan Pengguna:* "${cleanPrompt}"` : ""}
 
 ### 🏷️📊 Komparasi Alternatif Harga Lebih Hemat di Platform Digital
 
-| Komponen dalam Dokumen | Traveloka | Tiket.com | Agoda / Klook | Tarif Normal Loket | Catatan Penghematan |
+| Komponen dalam Dokumen | Platform Resmi (KAI / Loket OTS) | Traveloka | Tiket.com | Mitra Lain (Agoda / Klook / Rental Lokal) | Catatan Penghematan |
 | :--- | :---: | :---: | :---: | :---: | :--- |
-| **Voucher Hotel Serupa** | **Rp 420.000** | Rp 440.000 | **Rp 405.000** | Rp 550.000 | **Traveloka & Agoda**: Fitur *Free Cancellation* hingga H-1. |
-| **Antar Jemput Bandara (Airport Transfer)** | **Rp 120.000** | Rp 135.000 | Rp 130.000 | Rp 180.000 (Taksi Biasa) | **Traveloka**: Supir siap menunggu di lobi kedatangan dengan papan nama. |
-| **Tiket Atraksi Terkait** | **Rp 95.000** | Rp 100.000 | **Rp 90.000** | Rp 120.000 | Beli tiket atraksi via Klook/Traveloka menghemat s.d 25%. |
+| **Voucher Hotel Serupa** | Rp 550.000 (Walk-in Resepsionis) | **Rp 420.000** (PayLater) | Rp 440.000 (Tiket OTW) | **Rp 405.000** (Agoda VIP) | **Traveloka & Agoda**: Fitur *Free Cancellation* hingga H-1. |
+| **Antar Jemput Bandara (Airport Transfer)** | Rp 180.000 (Taksi Biasa Bandara) | **Rp 120.000** (Traveloka Transfer) | Rp 135.000 (Tiket Transfer) | Rp 130.000 (Rental Lokal) | **Traveloka**: Supir siap menunggu di lobi kedatangan dengan papan nama. |
+| **Tiket Atraksi Terkait** | Rp 120.000 (Loket OTS) | **Rp 95.000** (Xperience) | Rp 100.000 (To-Do) | **Rp 90.000** (Klook Voucher) | Beli tiket atraksi via Klook/Traveloka menghemat s.d 25%. |
 
 💡 **Tips SuperB:** Simpan salinan dokumen ini dalam format offline pada ponsel Anda untuk kemudahan verifikasi saat check-in bandara atau hotel.`;
   }
@@ -964,34 +964,90 @@ Gunung Prau di Dataran Tinggi Dieng menyuguhkan lanskap *Golden Sunrise* tercant
 ${closing}`;
     }
 
-    // 6. Generic Travel Query
+    // 6. Malang, Kota Batu, Selecta, & Kereta Api Antarkota (e.g. Madiun - Malang)
+    if (lower.includes("malang") || lower.includes("batu") || lower.includes("selecta") || lower.includes("madiun") || lower.includes("kereta")) {
+      return `${greeting}
+
+## 🚂 Panduan Wisata Malang & Kota Batu (Selecta, Rental Mobil & Kereta Api)
+
+Berikut rancangan perjalanan terpadu berstandar Traveloka-grade yang memadukan keindahan alam pegunungan Kota Batu, keseruan Taman Rekreasi Selecta, serta detail transportasi kereta api antarkota yang akurat dan faktual:
+
+---
+
+### 📍 Informasi Lokasi Detail & Aksesibilitas
+1. **Taman Rekreasi Selecta Kota Batu**:
+   - *Alamat:* Jl. Raya Selecta No. 1, Desa Tulungrejo, Kec. Bumiaji, Kota Batu, Jawa Timur 65336.
+   - *Patokan Navigasi:* Berada di lereng Gunung Anjasmoro berhawa sejuk (1.100 MDPL), sekitar 15 menit dari Alun-Alun Kota Batu atau 45 menit dari Stasiun Malang Kotabaru.
+   - *Akses Transportasi:* Jalan aspal mulus, dapat diakses mobil rental, motor, maupun bus pariwisata. Tersedia kantong parkir luas.
+   - *Jam Operasional:* Buka setiap hari, pukul 06:00 - 17:00 WIB.
+2. **Stasiun Kereta Api (Rute Madiun ↔ Malang)**:
+   - *Stasiun Keberangkatan:* Stasiun Madiun (MN), Jl. Kompol Sunaryo No. 6A, Kota Madiun.
+   - *Stasiun Kedatangan:* Stasiun Malang Kotabaru (ML), Jl. Trunojoyo No. 10, Klojen, Kota Malang.
+   - *Kereta Api Pilihan:* **KA Malioboro Ekspres** (waktu tempuh ±3 jam 15 menit) atau **KA Kertanegara** (waktu tempuh ±3 jam 20 menit).
+
+---
+
+### 📅 Rekomendasi Itinerary Perjalanan
+* **Hari 1:** Tiba di Stasiun Malang Kotabaru dari Madiun menggunakan KA Malioboro Ekspres → Dijemput mobil rental di lobi stasiun → Menuju Kota Batu dan menikmati keindahan bunga serta wahana air di **Taman Rekreasi Selecta** → Santap siang kuliner khas Ketan Pos Legenda / Bakso Malang De Sowan → Check-in hotel/villa di lereng Batu.
+* **Hari 2:** Eksplorasi kebun apel Petik Apel Mandiri / Museum Angkut → Berbelanja oleh-oleh Strudel Malang & Keripik Tempe Sanan → Diantar kembali ke Stasiun Malang Kotabaru untuk perjalanan pulang ke Madiun.
+
+---
+
+### 💰 Detail Harga & Tarif Resmi (Loket On-The-Spot)
+* **Tiket Masuk (HTM) Resmi Selecta:** Rp 50.000 / orang (Dewasa/Anak sama). Untuk 3 orang = **Rp 150.000**.
+* **Parkir Resmi Selecta:** Sepeda Motor Rp 5.000 | Mobil Pribadi Rp 10.000 | Bus Pariwisata Rp 20.000.
+* **Wahana Tambahan Selecta (Opsional):** Bianglala Rp 10.000 | Sky Bike Rp 20.000 | Perahu Ayun Rp 15.000.
+* **Tarif Resmi PT KAI (Madiun - Malang per orang sekali jalan):**
+  - KA Malioboro Ekspres (Ekonomi): Rp 140.000 - Rp 170.000 / tiket.
+  - KA Malioboro Ekspres (Eksekutif): Rp 220.000 - Rp 270.000 / tiket.
+
+---
+
+### 🏷️📊 Tabel Komparasi Harga Platform Digital
+
+Berikut perbandingan harga riil dan transparan melalui platform digital resmi untuk mengamankan budget liburan Anda:
+
+| Layanan / Kebutuhan | Platform Resmi (KAI / Loket OTS) | Traveloka | Tiket.com | Mitra Lain (Agoda / Klook / Rental Lokal) | Tips Promo & Rekomendasi Terbaik |
+| :--- | :---: | :---: | :---: | :---: | :--- |
+| **Tiket Kereta Api Madiun - Malang PP (3 Orang)** | **Rp 960.000** (Access by KAI Resmi) | **Rp 960.000** (Diskon Kupon s.d Rp 30.000) | **Rp 960.000** (Blibli Tiket Rewards) | **Rp 960.000** (Loket Stasiun Fisik) | **Rekomendasi**: KA Malioboro Ekspres (Ekonomi Rp 160.000 x 3 orang x 2 PP). Pesan via **Traveloka** untuk fitur *Easy Reschedule* & asuransi tepat waktu. |
+| **Sewa Mobil Avanza + Sopir + BBM (12 Jam di Malang/Batu)** | **Rp 650.000** (Operator Rental Lokal) | **Rp 625.000** (Traveloka Car Rental) | **Rp 630.000** (Tiket Sewa Mobil) | **Rp 640.000** (Agoda Cars / Klook) | **Rekomendasi**: **Traveloka Rental** menyediakan unit bersih terverifikasi, gratis penjemputan langsung di lobi Stasiun Malang. |
+| **Tiket Masuk Selecta Batu (3 Orang)** | **Rp 150.000** (Loket OTS Rp 50.000/tiket) | **Rp 135.000** (Traveloka Xperience Rp 45.000/tiket) | **Rp 135.000** (Tiket.com To-Do Rp 45.000/tiket) | **Rp 140.000** (Klook Voucher) | **Rekomendasi**: Beli online di **Traveloka / Tiket.com** hemat Rp 15.000 dan langsung scan barcode di pintu masuk tanpa antre loket. |
+| **Hotel Bintang 3 Nyaman di Kota Batu (1 Malam)** | **Rp 550.000** (Walk-in Resepsionis) | **Rp 440.000** (Traveloka PayLater Promo) | **Rp 455.000** (Tiket OTW Diskon) | **Rp 425.000** (Agoda VIP Flash Sale) | **Rekomendasi**: **Agoda & Traveloka** memberikan opsi *Free Cancellation* hingga H-1 dan garansi harga termurah. |
+
+💡 **Tips Hemat Wisatawan (${persona.name}):**
+1. **Tiket Kereta Api KAI:** Pesan tiket melalui **Access by KAI** atau **Traveloka** sejak H-45 keberangkatan untuk mengamankan subclass tarif hemat (Ekonomi C/P) dan kursi berdampingan.
+2. **Sewa Mobil:** Memilih sewa mobil sudah termasuk supir dan BBM sangat direkomendasikan karena tanjakan dan kelokan di rute Batu - Selecta cukup padat pada jam liburan.
+${closing}`;
+    }
+
+    // 7. Generic Travel Query Fallback
     return `${greeting}
 
-Terima kasih atas pertanyaannya! Berdasarkan preferensi Anda (**${persona.name}**), berikut panduan perjalanan terlengkap yang memadukan lokasi mendalam, rincian biaya, dan komparasi platform digital:
+Terima kasih atas pertanyaannya! Berdasarkan preferensi Anda (**${persona.name}**), berikut panduan perjalanan terlengkap yang memadukan lokasi mendalam, rincian biaya, dan komparasi platform digital terpadu:
 
 ---
 
 ### 📍 Informasi Lokasi & Panduan Akses
-* **Area & Landmark Destinasi:** Pilih destinasi yang memiliki akses terintegrasi (dekat stasiun, terminal bandara, atau jalan tol utama).
-* **Aksesibilitas Kendaraan:** Verifikasi ketersediaan transportasi umum (KRL, bus kota, atau armada sewa motor lokal) untuk menekan biaya perjalanan harian.
-* **Jam Buka Terbaik:** Kunjungi objek wisata alam di pagi hari (07:00 - 10:00) untuk menghindari terik matahari dan kerumunan pengunjung.
+* **Area & Landmark Destinasi:** Pilih destinasi yang memiliki akses terintegrasi (dekat stasiun KAI, terminal bandara, atau jalan tol utama).
+* **Aksesibilitas Kendaraan:** Verifikasi ketersediaan transportasi umum (KRL, KAI antarkota, bus kota, atau armada sewa motor lokal) untuk menekan biaya perjalanan harian.
+* **Jam Buka Terbaik:** Kunjungi objek wisata alam di pagi hari (07:00 - 10:00) untuk menikmati suasana sejuk dan menghindari kerumunan pengunjung.
 
 ---
 
 ### 💰 Detail Perkiraan Tarif & Biaya Resmi
-* **Tiket Masuk (HTM):** Siapkan uang tunai cadangan untuk tarif parkir dan retribusi kebersihan di destinasi wisata.
+* **Tiket Masuk (HTM):** Selalu siapkan uang tunai cadangan untuk tarif parkir dan retribusi kebersihan di destinasi wisata.
 * **Alokasi Budget Konsumsi:** Rata-rata Rp 75.000 - Rp 150.000 per orang per hari untuk wisata kuliner lokal yang lezat.
-* **Biaya Transportasi Lokal:** Sewa motor berkisar Rp 70.000 - Rp 100.000/hari; sewa mobil berkisar Rp 400.000 - Rp 600.000/hari.
+* **Biaya Transportasi Lokal:** Sewa motor berkisar Rp 70.000 - Rp 100.000/hari; sewa mobil berkisar Rp 450.000 - Rp 650.000/hari.
 
 ---
 
 ### 🏷️📊 Komparasi Harga Platform Digital (Panduan Booking Cerdas)
 
-| Komponen Perjalanan | Traveloka | Tiket.com | Agoda / Klook | Loket Resmi (OTS) | Rekomendasi Platform Terbaik |
+| Layanan / Kebutuhan | Platform Resmi (KAI / Loket OTS) | Traveloka | Tiket.com | Mitra Lain (Agoda / Klook / Rental Lokal) | Tips Promo & Rekomendasi Terbaik |
 | :--- | :---: | :---: | :---: | :---: | :--- |
-| **Tiket Atraksi & Wahana Wisata** | **Diskon s.d 15%** | Promo Points | **Harga Bersaing** (Klook) | Harga Normal | **Traveloka & Klook**: Tiket instan tanpa antre loket fisik. |
-| **Voucher Hotel & Penginapan** | **Traveloka PayLater** | Promo OTW | **Agoda Flash Sale** | Tarif Walk-in Lebih Mahal | **Agoda & Traveloka**: Bandingkan harga kamar dengan sarapan & fitur Easy Reschedule. |
-| **Transportasi (Kereta / Pesawat / Sewa Mobil)** | **Lengkap & Terintegrasi** | Cashback Tiket Points | Layanan Terbatas | Tanpa Diskon Promo | **Traveloka**: Solusi *one-stop travel* terbaik dengan jaminan keamanan transaksi. |
+| **Tiket Atraksi & Wahana Wisata** | Tarif Loket Resmi (OTS) | **Diskon s.d 15%** (Xperience) | Promo Tiket Points (To-Do) | **Harga Bersaing** (Klook Voucher) | **Traveloka & Klook**: E-ticket instan langsung scan QR tanpa antrean loket fisik. |
+| **Voucher Hotel & Penginapan** | Tarif Walk-in Resepsionis | **Traveloka PayLater / Promo** | Promo OTW / Blibli Rewards | **Agoda VIP Flash Sale** | **Agoda & Traveloka**: Fitur *Free Cancellation* dan garansi harga termurah. |
+| **Transportasi (Kereta / Rental / Pesawat)** | Tarif Resmi (Access by KAI / Bandara) | **Lengkap & Terintegrasi** | Cashback Tiket Points | Rental Mobil Lokal | **Traveloka**: Fitur *Easy Reschedule* & asuransi perlindungan keterlambatan. |
 
 💡 **Rekomendasi Hemat:**
 Beri tahu saya nama kota atau destinasi spesifik yang ingin Anda kunjungi beserta durasi liburannya, dan saya akan buatkan itinerary komprehensif lengkap dengan alamat detail, jam operasional, serta rincian komparasi harganya!

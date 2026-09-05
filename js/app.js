@@ -486,6 +486,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     enhanceCodeBlocks(row);
+    enhanceTables(row);
 
     DOM.messagesContainer.appendChild(row);
 
@@ -551,6 +552,25 @@ document.addEventListener("DOMContentLoaded", () => {
       pre.parentNode.insertBefore(wrapper, pre);
       wrapper.appendChild(header);
       wrapper.appendChild(pre);
+    });
+  }
+
+  function enhanceTables(container) {
+    const tables = container.querySelectorAll("table");
+    tables.forEach(table => {
+      if (table.parentElement && table.parentElement.classList.contains("table-wrapper")) return;
+
+      const wrapper = document.createElement("div");
+      wrapper.className = "table-wrapper";
+      table.parentNode.insertBefore(wrapper, table);
+      wrapper.appendChild(table);
+
+      // Pastikan angka mata uang dan harga tidak terpotong di tengah jalan
+      table.querySelectorAll("td").forEach(td => {
+        if (/Rp\s*[\d\.\,]+/i.test(td.textContent)) {
+          td.style.fontVariantNumeric = "tabular-nums";
+        }
+      });
     });
   }
 
@@ -903,6 +923,7 @@ document.addEventListener("DOMContentLoaded", () => {
             accumulatedText = acc;
             botContentElem.innerHTML = formatMarkdown(accumulatedText);
             enhanceCodeBlocks(botRow);
+            enhanceTables(botRow);
             scrollToBottom();
           }
         });
@@ -918,6 +939,7 @@ document.addEventListener("DOMContentLoaded", () => {
             accumulatedText = acc;
             botContentElem.innerHTML = formatMarkdown(accumulatedText);
             enhanceCodeBlocks(botRow);
+            enhanceTables(botRow);
             scrollToBottom();
           }
         });
@@ -937,6 +959,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       botContentElem.innerHTML = formatMarkdown(responseData.text);
       enhanceCodeBlocks(botRow);
+      enhanceTables(botRow);
 
       const footer = botRow.querySelector(".message-footer");
       if (footer) {
