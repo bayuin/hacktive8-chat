@@ -207,7 +207,7 @@ class AIService {
     signal
   }) {
     const lastMessage = messages[messages.length - 1]?.content || "";
-    const mockContent = this.createMockReply(lastMessage, persona, tone);
+    const mockContent = this.createMockReply(lastMessage, persona, tone, temperature);
 
     let accumulated = "";
     const chunkSize = Math.max(10, Math.floor(mockContent.length / 32));
@@ -236,7 +236,7 @@ class AIService {
     };
   }
 
-  createMockReply(prompt, personaKey, toneKey) {
+  createMockReply(prompt, personaKey, toneKey, temperature = 0.7) {
     const lower = prompt.toLowerCase();
     const persona = CONFIG.personas[personaKey] || CONFIG.personas.backpacker;
 
