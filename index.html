@@ -308,13 +308,13 @@
               autocomplete="off"
             >
             <p class="form-hint">
-              Dapatkan Google Gemini API Key secara gratis di <a href="https://aistudio.google.com/app/apikey" target="_blank" class="footer-link">Google AI Studio ↗</a>.
-              Kunci API tersimpan dengan aman hanya pada <code>localStorage</code> peramban Anda.
+              Dapatkan Google Gemini API Key gratis di <a href="https://aistudio.google.com/app/apikey" target="_blank" class="footer-link">Google AI Studio ↗</a>.<br>
+              Simpan kunci di file <code>server/.env</code> (<code>GEMINI_API_KEY=...</code>) atau masukkan langsung di sini.
             </p>
           </div>
 
           <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.2); padding: 12px; border-radius: 8px; font-size: 0.8rem;">
-            <b style="color: var(--accent-emerald);">💡 Pengujian Mandiri (Demo Mode):</b> Jika penguji atau instruktur Hacktiv8 menguji tanpa memasukkan API key, sistem otomatis mengaktifkan <b>Interactive Demo Travel Engine</b> dengan pengetikan streaming dan itinerary lengkap.
+            <b style="color: var(--accent-emerald);">💡 Mode Fleksibel:</b> REST API Express terhubung dengan <b>@google/genai SDK</b>. Jika belum mengisi API key di <code>server/.env</code>, sistem otomatis mengaktifkan <b>Interactive Demo Travel Engine</b> dengan pengetikan streaming dan itinerary lengkap.
           </div>
         </div>
         <div class="modal-footer">

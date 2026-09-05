@@ -70,82 +70,147 @@ Aplikasi ini memenuhi kriteria penugasan dengan menyediakan kontrol parameter kr
 
 ---
 
-## 📁 5. Struktur Direktori Proyek
+## 📁 5. Struktur Direktori Proyek (Client & Express REST API Architecture)
+
+Sesuai silabus dan standar Hacktiv8, proyek ini menggunakan arsitektur modular dengan backend REST API Express dan SDK resmi `@google/genai`:
 
 ```
 c:\Freelance\Hacktive8\
-├── index.html               # Struktur antarmuka semantik HTML5 dengan drawer parameter
-├── package.json             # Konfigurasi npm script untuk local development
-├── README.md                # Dokumentasi komprehensif untuk pengumpulan tugas
-├── .env.example             # Template variabel lingkungan untuk API key
-├── .gitignore               # Aturan ignore git
+├── server/                              # Backend REST API Server
+│   ├── node_modules/                    # Dependensi terinstal (express, @google/genai, dotenv, multer, cors)
+│   ├── .env                             # File penyimpanan aman API Key (GEMINI_API_KEY=...)
+│   ├── .env.example                     # Template variabel lingkungan
+│   ├── package.json                     # Konfigurasi dependensi server (Express & @google/genai)
+│   ├── package-lock.json                # Lockfile dependensi npm
+│   └── index.js                         # REST API server Express dengan @google/genai SDK & Multer
 ├── css/
-│   └── style.css            # Desain kustom glassmorphism, travel theme, table & responsive layout
+│   └── style.css                        # Desain kustom glassmorphism, Dark/Light mode, responsive layout
 ├── js/
-│   ├── config.js            # Konfigurasi gaya wisata, tone, quick prompts & system prompt builder
-│   ├── audio.js             # Web Audio API synthesizer efek suara
-│   ├── api.js               # Service integrasi Gemini REST API & Travel Mock Engine
-│   ├── chat.js              # State manager sesi perjalanan & fungsi ekspor berkas
-│   └── app.js               # Event controller penghubung UI, slider, dan streaming text
-└── screenshots/
-    ├── wanderwise_ui_main.jpg   # Screenshot tampilan utama percakapan itinerary
-    └── wanderwise_ui_params.jpg # Screenshot panel pengaturan parameter kreatif
+│   ├── config.js                        # Konfigurasi persona wisata, tone, model & quick prompts
+│   ├── audio.js                         # Web Audio API synthesizer efek suara perjalanan
+│   ├── api.js                           # Client API yang memanggil Express REST API & Fallback Mock Engine
+│   ├── chat.js                          # State manager multi-session perjalanan & ekspor berkas
+│   └── app.js                           # UI Controller, drawer parameter, dan rendering streaming
+├── screenshots/
+│   ├── wanderwise_ui_main.jpg           # Screenshot tampilan utama Dark Mode
+│   ├── wanderwise_ui_light.jpg          # Screenshot tampilan utama Light Mode
+│   └── wanderwise_ui_params.jpg         # Screenshot panel pengaturan parameter kreatif
+├── index.html                           # Antarmuka frontend semantik HTML5
+├── package.json                         # Root launcher scripts (npm start, npm run dev)
+├── README.md                            # Dokumentasi teknis komprehensif
+├── .env.example                         # Template root env
+└── .gitignore                           # Aturan ignore git (menjaga .env dan node_modules tetap aman)
 ```
 
 ---
 
 ## 🛠️ 6. Panduan Menjalankan Aplikasi (Getting Started)
 
-Aplikasi dibangun menggunakan teknologi web standar (Vanilla HTML5, CSS3, dan Modern JavaScript ES6+) sehingga sangat ringan dan dapat dijalankan tanpa kompilasi build tools yang rumit.
+### Persyaratan:
+- **Node.js** (v18 ke atas disarankan)
+- **NPM**
 
-### Cara 1: Menggunakan NPM (Direkomendasikan)
+### Langkah Menjalankan:
+
+#### 1. Setup Environment API Key di Server
+Buka file `server/.env` dan masukkan Google Gemini API Key Anda:
+```env
+PORT=3000
+GEMINI_API_KEY=AIzaSyYourGeminiApiKeyHere...
+DEFAULT_MODEL=gemini-2.0-flash
+```
+*(Dapatkan API key gratis di [Google AI Studio](https://aistudio.google.com/app/apikey))*
+
+#### 2. Jalankan Server Express
+Bisa dijalankan langsung dari root direktori proyek:
 ```bash
-# 1. Buka terminal di direktori proyek
-cd Hacktive8
-
-# 2. Jalankan server lokal
+# Dari root c:\Freelance\Hacktive8
 npm start
-# atau
-npm run dev
-
-# 3. Buka browser di alamat:
-http://localhost:3000
 ```
-
-### Cara 2: Menggunakan Python Server
+Atau masuk ke folder `server`:
 ```bash
-python -m http.server 3000
-# Buka http://localhost:3000 pada peramban
+cd server
+npm start
 ```
 
-### Cara 3: Langsung Buka File HTML (Standalone)
-Cukup klik ganda (*double click*) file `index.html` pada File Explorer Anda untuk langsung menjalankan aplikasi secara lokal di peramban apa pun!
+Server akan aktif di:
+```
+=======================================================
+🚀 WanderWise AI Express Server berjalan!
+📍 URL: http://localhost:3000
+🔑 Gemini API Key: Terpasang
+📦 Model Default: gemini-2.0-flash
+=======================================================
+```
+
+#### 3. Buka di Peramban (Browser)
+Akses alamat:
+👉 **`http://localhost:3000`**
 
 ---
 
-## 🔑 7. Konfigurasi API Key (Opsional)
+## 🔌 7. Spesifikasi Backend REST API (`server/index.js`)
 
-1. Buka aplikasi di peramban.
-2. Klik tombol **API Key** di pojok kanan atas.
-3. Masukkan Google Gemini API Key Anda (dapatkan gratis di [Google AI Studio](https://aistudio.google.com/app/apikey)).
-4. Klik **Simpan Pengaturan**.
-> *Catatan: Jika Anda tidak memiliki API Key, Anda tetap dapat mencoba seluruh prompt dan fitur melalui **Interactive Demo Travel Engine** bawaan.*
+REST API dibangun menggunakan **Express.js** dengan integrasi SDK generasi terbaru Google:
+
+1. **`GET /api/health`**
+   - Mengecek status server dan konfigurasi API key.
+   - Response:
+     ```json
+     {
+       "status": "online",
+       "service": "WanderWise AI REST API (Express + @google/genai)",
+       "hasApiKey": true,
+       "defaultModel": "gemini-2.0-flash"
+     }
+     ```
+
+2. **`POST /api/chat`**
+   - Memproses obrolan itinerary via SDK `@google/genai` (`ai.models.generateContent`).
+   - Request Body:
+     ```json
+     {
+       "messages": [
+         { "role": "user", "content": "Rekomendasi liburan 3H2M di Bali budget 3 juta" }
+       ],
+       "persona": "backpacker",
+       "tone": "santai",
+       "temperature": 0.7,
+       "model": "gemini-2.0-flash"
+     }
+     ```
+   - Response:
+     ```json
+     {
+       "success": true,
+       "text": "## 🌴 Itinerary 3 Hari 2 Malam: Eksplorasi Bali...",
+       "model": "gemini-2.0-flash",
+       "latencyMs": 850,
+       "tokens": 420
+     }
+     ```
+
+3. **`POST /api/upload`**
+   - Menangani proses unggah berkas (gambar, audio, dokumen) menggunakan middleware **`multer`**.
 
 ---
 
 ## 📋 8. Check-list Deliverables Hacktiv8
 
-- [x] **Chatbot Berbasis AI**: Memproses bahasa alami (NLP/LLM) untuk memberikan respon itinerary dan rekomendasi wisata yang relevan.
-- [x] **Use Case Kreatif**: **Smart Travel Assistant** (*WanderWise AI*).
+- [x] **Chatbot Berbasis AI**: Memproses bahasa alami (NLP/LLM) untuk itinerary dan rekomendasi wisata relevan.
+- [x] **Arsitektur Server Express**: Terstruktur dalam folder `server/` dengan `node_modules/`, `package.json`, dan `index.js`.
+- [x] **File `.env`**: Menyimpan `GEMINI_API_KEY` secara aman menggunakan library `dotenv`.
+- [x] **Google GenAI SDK**: Terhubung ke Gemini API menggunakan paket resmi `@google/genai`.
+- [x] **Multer Upload Support**: Menangani upload gambar, audio, dan dokumen.
 - [x] **Parameter Kreatif**:
   - [x] Domain & Gaya Wisatawan (Backpacker, Luxury, Adventure, Culture & Culinary).
   - [x] Gaya Bahasa / Tone (Santai akrab, Formal concierge, Ringkas to-the-point, Storyteller).
   - [x] Slider Tingkat Kreativitas Rute / Temperature (`0.0` s/d `1.0`).
   - [x] Context Memory Window selector.
-- [x] **Integrasi AI API**: Google Gemini REST API v1beta + Smart Interactive Mock Fallback.
-- [x] **Fitur Tambahan**: Ekspor rencana perjalanan ke Markdown/JSON, multi-session local storage, tabel estimasi budget, code/itinerary copy button, quick prompts.
+  - [x] Pilihan Tema: Dark Mode (Obsidian) dan Light Mode (Clean Daylight).
+- [x] **Fitur Ekspor & Penyimpanan**: Ekspor rencana perjalanan ke Markdown/JSON, multi-session local storage, live telemetry bar.
 - [x] **Screenshots User Interface**: Tersedia di folder `screenshots/` dan terdokumentasi di `README.md`.
-- [x] **Repositori GitHub**: Siap dipublikasikan dengan struktur bersih dan `.gitignore`.
+- [x] **Repositori GitHub**: Siap dipublikasikan dengan `.gitignore` rapi dan aman.
 
 ---
 

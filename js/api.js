@@ -36,7 +36,22 @@ class AIService {
   }
 
   /**
-   * Send chat request to Gemini API or fallback Mock
+   * Check Express Server status and API Key configuration
+   */
+  async checkServerHealth() {
+    try {
+      const res = await fetch("/api/health");
+      if (res.ok) {
+        return await res.json();
+      }
+    } catch (e) {
+      console.warn("Express server healthcheck error:", e);
+    }
+    return { status: "offline", hasApiKey: false };
+  }
+
+  /**
+   * Send chat request to Express REST API (@google/genai) or fallback Mock
    */
   async generateResponse({
     messages,
@@ -49,7 +64,7 @@ class AIService {
     const startTime = Date.now();
     this.abortController = new AbortController();
 
-    const shouldUseMock = this.currentModel === "mock-demo" || !this.hasApiKey();
+    const shouldUseMock = this.currentModel === "mock-demo";
 
     if (shouldUseMock) {
       return await this.generateMockResponse({
@@ -64,7 +79,8 @@ class AIService {
     }
 
     try {
-      return await this.callGeminiAPI({
+      // 1. Prioritaskan panggilan ke Express REST API backend (@google/genai)
+      return await this.callBackendAPI({
         messages,
         persona,
         tone,
@@ -78,7 +94,7 @@ class AIService {
       if (err.name === "AbortError") {
         throw new Error("Penyusunan itinerary dihentikan oleh pengguna.");
       }
-      console.warn("Gemini API call failed, falling back to Interactive Mock Engine:", err);
+      console.warn("Express / Gemini API call failed, falling back to Interactive Mock Engine:", err);
       const fallbackNotice = `> ⚠️ **Catatan Sistem**: Panggilan Gemini API mengalami kendala (${err.message || 'Koneksi/Kunci API'}). Beralih otomatis ke **Interactive Travel Demo Engine**.\n\n`;
       onChunk(fallbackNotice, fallbackNotice);
 
@@ -100,6 +116,83 @@ class AIService {
     } finally {
       this.abortController = null;
     }
+  }
+
+  /**
+   * Panggilan ke Express REST API Endpoint: POST /api/chat
+   */
+  async callBackendAPI({
+    messages,
+    persona,
+    tone,
+    temperature,
+    memoryTurns,
+    startTime,
+    onChunk,
+    signal
+  }) {
+    const valid = messages.filter(m => m && m.content && m.content.trim().length > 0);
+    let recentMessages = memoryTurns > 0 ? valid.slice(-memoryTurns) : valid;
+
+    while (recentMessages.length > 0 && (recentMessages[recentMessages.length - 1].role === "assistant" || recentMessages[recentMessages.length - 1].role === "model")) {
+      recentMessages.pop();
+    }
+
+    const payload = {
+      messages: recentMessages.map(m => ({
+        role: m.role === "assistant" ? "model" : "user",
+        content: m.content.trim()
+      })),
+      persona,
+      tone,
+      temperature: Number(temperature),
+      model: this.currentModel
+    };
+
+    const headers = {
+      "Content-Type": "application/json"
+    };
+
+    if (this.hasApiKey()) {
+      headers["x-gemini-api-key"] = this.apiKey;
+    }
+
+    const response = await fetch("/api/chat", {
+      method: "POST",
+      headers,
+      body: JSON.stringify(payload),
+      signal
+    });
+
+    if (!response.ok) {
+      const errorJson = await response.json().catch(() => ({}));
+      const errMsg = errorJson.error || errorJson.hint || `HTTP ${response.status}: ${response.statusText}`;
+      throw new Error(errMsg);
+    }
+
+    const result = await response.json();
+    const fullText = result.text || "";
+
+    // Berikan efek streaming visual agar nyaman dibaca
+    let accumulated = "";
+    const chunkSize = Math.max(8, Math.floor(fullText.length / 28));
+
+    for (let i = 0; i < fullText.length; i += chunkSize) {
+      if (signal && signal.aborted) {
+        throw new Error("Penyusunan itinerary dihentikan oleh pengguna.");
+      }
+      const chunk = fullText.slice(i, i + chunkSize);
+      accumulated += chunk;
+      onChunk(chunk, accumulated);
+      await new Promise(resolve => setTimeout(resolve, 16));
+    }
+
+    return {
+      text: fullText,
+      latencyMs: result.latencyMs || (Date.now() - startTime),
+      tokens: result.tokens || Math.ceil(fullText.length / 4),
+      model: result.model || this.currentModel
+    };
   }
 
   formatGeminiContents(messages, memoryTurns) {

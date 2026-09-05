@@ -2,10 +2,11 @@
   "name": "hacktiv8-smart-travel-assistant",
   "version": "1.0.0",
   "description": "WanderWise AI - Smart Travel Assistant & Perencana Liburan Berbasis AI (Hacktiv8 Final Project)",
-  "main": "index.html",
+  "main": "server/index.js",
   "scripts": {
-    "start": "npx -y serve . -p 3000",
-    "dev": "npx -y serve . -p 3000"
+    "start": "node server/index.js",
+    "dev": "node --watch server/index.js",
+    "server": "npm start --prefix server"
   },
   "keywords": [
     "hacktiv8",

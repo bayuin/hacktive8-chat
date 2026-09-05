@@ -221,8 +221,13 @@ document.addEventListener("DOMContentLoaded", () => {
     DOM.telemetryModel.textContent = state.model;
   }
 
-  function updateApiKeyBadge() {
-    if (aiService.hasApiKey()) {
+  async function updateApiKeyBadge() {
+    const health = await aiService.checkServerHealth();
+    if (health.hasApiKey) {
+      DOM.apiKeyBtnText.textContent = "API Key (.env)";
+      DOM.openSettingsBtn.classList.remove("btn-secondary");
+      DOM.openSettingsBtn.classList.add("btn-primary");
+    } else if (aiService.hasApiKey()) {
       DOM.apiKeyBtnText.textContent = "API Key Active";
       DOM.openSettingsBtn.classList.remove("btn-secondary");
       DOM.openSettingsBtn.classList.add("btn-primary");
