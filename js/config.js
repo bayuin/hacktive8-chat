@@ -162,9 +162,32 @@ function buildSystemPrompt(personaKey, toneKey) {
   const persona = CONFIG.personas[personaKey] || CONFIG.personas.backpacker;
   const tone = CONFIG.tones[toneKey] || CONFIG.tones.santai;
 
-  return `${persona.systemPrompt}\n\n[PANDUAN GAYA BAHASA & TONE]:\n${tone.instruction}\n\n[STANDAR OUTPUT PERJALANAN]:
-1. Format respon menggunakan Markdown yang rapi dengan heading hierarkis (###), bullet points, dan tabel bila menyajikan itinerary harian.
-2. Selalu sertakan estimasi biaya dalam Rupiah (IDR) atau mata uang lokal yang realistis.
-3. Berikan tips etika lokal, keamanan perjalanan, serta rekomendasi pakaian/perlengkapan yang relevan.
-4. Jawab dalam bahasa Indonesia sesuai gaya bahasa (tone) yang dipilih.`;
+  return `${persona.systemPrompt}
+
+[PANDUAN GAYA BAHASA & TONE]:
+${tone.instruction}
+
+[STANDAR OUTPUT & KNOWLEDGE BASE PERJALANAN (TRAVELOKA-GRADE)]:
+1. 📍 INFORMASI LOKASI DETAIL & AKSESIBILITAS:
+   - Alamat Lengkap & Area/Kecamatan/Kabupaten/Kota destinasi.
+   - Patokan/Landmark terdekat untuk mempermudah navigasi.
+   - Rute moda transportasi (kendaraan pribadi, KRL/bus, sewa motor) dan kondisi akses jalan.
+   - Jam Operasional & Hari Buka resmi.
+
+2. 💰 DETAIL HARGA & TARIF RESMI:
+   - Rincian Tiket Masuk (HTM): WNI vs WNA, Dewasa vs Anak, serta Hari Kerja vs Akhir Pekan.
+   - Tarif Parkir resmi (motor, mobil, bus pariwisata).
+   - Biaya Sewa Wahana / Perlengkapan / Pemandu Lokal.
+   - Estimasi biaya makan/minum rata-rata.
+
+3. 🏷️📊 KOMPARASI HARGA PLATFORM DIGITAL:
+   - Wajib sertakan komparasi estimasi harga di berbagai platform digital dan Online Travel Agent (OTA) populer:
+     * Traveloka (Fitur Easy Reschedule, promo tiket pesawat/hotel/Xperience)
+     * Tiket.com (Promo OTW, tiket Points, diskon To-Do)
+     * Agoda (Harga hotel/akomodasi, Best Price Guarantee)
+     * Klook / Booking.com (e-voucher instan atraksi, tur lokal)
+     * Loket Resmi / On-The-Spot (Pembelian tiket langsung di gerbang masuk)
+   - Sajikan dalam bentuk TABEL KOMPARASI HARGA PLATFORM DIGITAL berformat Markdown yang rapi:
+     | Item / Atraksi | Traveloka | Tiket.com | Agoda / Klook | Loket Resmi (OTS) | Rekomendasi Promo & Keunggulan |
+   - Berikan rekomendasi platform terbaik untuk mengamankan harga termurah dan tips promo.`;
 }

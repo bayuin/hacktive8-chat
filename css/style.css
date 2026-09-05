@@ -106,17 +106,28 @@
 
 [data-theme="light"] .message-content table {
   background: #FFFFFF;
-  border: 1px solid #E5EBF2;
+  border: 1px solid #D8E2EC;
+  box-shadow: 0 2px 12px rgba(1, 148, 243, 0.06);
 }
 
 [data-theme="light"] .message-content th {
-  background: #F1F6FB;
+  background: #E8F5FD;
   color: #0064D2;
+  font-weight: 700;
+  border-bottom: 2px solid #CCE7FA;
 }
 
 [data-theme="light"] .message-content td {
-  border-bottom: 1px solid #E5EBF2;
-  color: #1E293B;
+  border-bottom: 1px solid #EDF2F7;
+  color: #0F172A;
+}
+
+[data-theme="light"] .message-content tr:hover td {
+  background: #F8FAFC;
+}
+
+[data-theme="light"] .message-content td strong {
+  color: #0064D2;
 }
 
 [data-theme="light"] .code-wrapper {
@@ -896,34 +907,37 @@ body {
   font-size: 0.88rem;
 }
 
-/* Travel Itinerary Tables */
+/* Travel Itinerary & Price Comparison Tables */
 .message-content table {
   width: 100%;
   border-collapse: collapse;
-  margin: 14px 0;
-  font-size: 0.85rem;
+  margin: 16px 0;
+  font-size: 0.88rem;
   background: rgba(10, 15, 26, 0.6);
   border-radius: var(--radius-md);
   overflow: hidden;
   border: 1px solid var(--border-subtle);
   box-shadow: var(--shadow-sm);
+  display: table;
 }
 
 .message-content th {
-  background: rgba(6, 182, 212, 0.12);
+  background: rgba(1, 148, 243, 0.16);
   color: var(--accent-cyan);
   text-transform: uppercase;
-  font-size: 0.75rem;
+  font-size: 0.76rem;
   letter-spacing: 0.04em;
-  padding: 10px 14px;
+  font-weight: 700;
+  padding: 11px 14px;
   text-align: left;
   border-bottom: 1px solid var(--border-subtle);
 }
 
 .message-content td {
-  padding: 10px 14px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  padding: 11px 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   color: var(--text-primary);
+  line-height: 1.5;
 }
 
 .message-content tr:last-child td {
@@ -931,7 +945,11 @@ body {
 }
 
 .message-content tr:hover td {
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(1, 148, 243, 0.05);
+}
+
+.message-content td strong {
+  color: var(--accent-cyan);
 }
 
 /* Checklists */

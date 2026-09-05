@@ -391,66 +391,94 @@ class AIService {
 **Destinasi:** Bali Selatan & Ubud (3 Hari 2 Malam)  
 **Estimasi Total Budget:** Rp 2.850.000 / orang
 
-### Jadwal Singkat:
-- **Hari 1 (Kedatangan & Sunset):** Pantai Melasti → GWK Cultural Park → Sunset Seafood Dinner di Jimbaran.
-- **Hari 2 (Pesona Ubud):** Tegalalang Rice Terrace → Campuhan Ridge Walk → Monkey Forest → Pasar Seni Ubud.
-- **Hari 3 (Water Activity & Oleh-oleh):** Pantai Pandawa / Tanjung Benoa → Belanja di Krisna Oleh-Oleh → Bandara Ngurah Rai.
+### 📍 Ringkasan Lokasi & Akses:
+- **Pantai Melasti:** Jl. Melasti Ungasan, Kuta Selatan, Badung (25 mnt dari Bandara via Tol Bali Mandara). Buka: 07:00 - 19:00 WITA.
+- **Pura Uluwatu:** Pecatu, Kuta Selatan, Badung. Buka: 07:00 - 19:00 WITA (Tari Kecak jam 18:00).
+- **Sacred Monkey Forest:** Jl. Monkey Forest, Ubud, Gianyar. Buka: 09:00 - 18:00 WITA.
 
-### Rincian Biaya Cepat:
-- Penginapan (2 malam di guesthouse/hotel): Rp 900.000
-- Sewa Motor + Bensin (3 hari): Rp 270.000
-- Makan & Minum (3 hari): Rp 750.000
-- Tiket Masuk Wisata: Rp 430.000
-- Cadangan / Parkir: Rp 500.000`;
+### 💰 Rincian Biaya Cepat:
+- Penginapan (2 malam hotel/guesthouse): Rp 900.000
+- Sewa Motor Vario + Bensin (3 hari): Rp 270.000
+- Tiket Wisata & Pertunjukan: Rp 480.000
+- Konsumsi & Kuliner Lokal: Rp 750.000
+- Cadangan / Parkir: Rp 450.000
+
+### 🏷️ Komparasi Harga Platform Digital:
+| Komponen Wisata | Traveloka | Tiket.com | Klook / Agoda | Loket Resmi (OTS) | Catatan Promo |
+| :--- | :---: | :---: | :---: | :---: | :--- |
+| **Tiket Kecak Uluwatu** | Rp 135.000 | Rp 138.000 | Rp 132.000 (Klook) | Rp 150.000 | **Klook & Traveloka**: E-ticket instan bebas antre loket fisik. |
+| **Hotel Seminyak (2 Mlm)** | Rp 820.000 | Rp 840.000 | Rp 790.000 (Agoda) | Rp 950.000 | **Agoda**: Best Price Guarantee; **Traveloka**: Gratis pembatalan/reschedule. |
+| **Sewa Motor 3 Hari** | Rp 210.000 | Rp 225.000 | Rp 215.000 | Rp 240.000 | **Traveloka Rental**: Gratis antar-jemput di Bandara Ngurah Rai. |`;
       }
 
       return `${greeting}
 
-## 🌴 Itinerary 3 Hari 2 Malam: Eksplorasi Bali Indah & Hemat
+## 🌴 Itinerary 3 Hari 2 Malam: Eksplorasi Bali Indah, Budaya & Hemat
 
-Berikut rancangan rencana perjalanan yang dirancang khusus untuk kenyamanan dan efisiensi waktu perjalanan Anda:
-
----
-
-### 📅 Jadwal Perjalanan Harian
-
-#### Hari 1: Sunset & Kehangatan Bali Selatan
-* **10:00 - 12:00**: Mendarat di Bandara I Gusti Ngurah Rai, ambil sewa motor/kendaraan dan check-in penginapan di area Kuta/Seminyak.
-* **13:00 - 15:30**: Menikmati panorama tebing kapur spektakuler di **Pantai Melasti** (Ungasan).
-* **16:30 - 18:30**: Menyaksikan golden sunset memukau di atas tebing **Pura Uluwatu** sambil menikmati pertunjukan Tari Kecak.
-* **19:30 - 21:00**: Makan malam seafood segar di tepi pasir pantai **Teluk Jimbaran**.
-
-#### Hari 2: Kesejukan Alam & Seni Tradisional Ubud
-* **07:30 - 09:00**: Sarapan lokal dan perjalanan menuju Ubud.
-* **09:30 - 11:30**: Berfoto dan jalan pagi di undakan sawah hijau **Tegalalang Rice Terrace**.
-* **12:00 - 13:30**: Santap siang Nasi Ayam Kedewatan Ibu Mangku yang legendaris.
-* **14:00 - 16:00**: Berjalan santai menikmati udara asri di **Bukit Campuhan (Campuhan Ridge Walk)**.
-* **16:30 - 18:00**: Mengunjungi **Sacred Monkey Forest Sanctuary** dan belanja suvenir di Pasar Seni Ubud.
-* **19:30**: Kembali ke hotel dan istirahat.
-
-#### Hari 3: Pantai Pasir Putih & Suvenir Khas Bali
-* **08:30 - 11:00**: Santai dan berenang di **Pantai Pandawa** atau mencoba watersport di Tanjung Benoa.
-* **12:00 - 14:00**: Berburu oleh-oleh khas (Pia Legong, Kacang Disco, Kemeja Pantai) di **Krisna Oleh-Oleh**.
-* **14:30**: Menuju bandara untuk penerbangan kembali ke kota asal.
+Berikut rencana perjalanan komprehensif berstandar Traveloka, dilengkapi detail lokasi, estimasi anggaran resmi, dan komparasi harga platform digital:
 
 ---
 
-### 💰 Estimasi Rincian Anggaran (Budget Breakdown)
-
-| Kategori | Deskripsi | Estimasi Biaya (IDR) |
-| :--- | :--- | :--- |
-| **Akomodasi** | Guesthouse / Hotel Estetik 2 Malam | Rp 900.000 |
-| **Transportasi** | Sewa Motor Nmax/Vario (3 Hari) + Bensin | Rp 270.000 |
-| **Konsumsi** | Makan lokal, kafe kelapa, & Jimbaran seafood | Rp 850.000 |
-| **Tiket Wisata** | Tiket Melasti, Uluwatu + Tari Kecak, Monkey Forest | Rp 480.000 |
-| **Oleh-oleh & Tak Terduga** | Pie Susu, kopi kintamani, dana darurat | Rp 450.000 |
-| **TOTAL ESTIMASI** | **Pengeluaran per orang** | **± Rp 2.950.000** |
+### 📍 Informasi Lokasi Detail & Aksesibilitas
+1. **Pantai Melasti Ungasan**:
+   - *Alamat:* Jl. Melasti, Desa Ungasan, Kec. Kuta Selatan, Kab. Badung, Bali 80361.
+   - *Patokan Navigasi:* Berada di balik tebing kapur spektakuler, 25 menit dari Bandara I Gusti Ngurah Rai via Tol Bali Mandara & Jl. Bypass Ngurah Rai.
+   - *Akses Transportasi:* Jalan aspal lebar dan mulus, dapat dilalui motor, mobil keluarga, hingga bus pariwisata.
+   - *Jam Operasional:* Setiap hari, pukul 07:00 - 19:00 WITA.
+2. **Pura Luhur Uluwatu**:
+   - *Alamat:* Desa Pecatu, Kec. Kuta Selatan, Kab. Badung, Bali.
+   - *Patokan Navigasi:* Berada di ujung barat daya tebing karang semenanjung Bukit Peninsula setinggi 70 meter di atas Samudra Hindia.
+   - *Jam Operasional:* 07:00 - 19:00 WITA (Pertunjukan Tari Kecak & Api: 18:00 - 19:00 WITA).
+3. **Sacred Monkey Forest Sanctuary**:
+   - *Alamat:* Jl. Monkey Forest, Ubud, Kec. Ubud, Kab. Gianyar, Bali 80571.
+   - *Jam Operasional:* Setiap hari, pukul 09:00 - 18:00 WITA (penjualan tiket terakhir 17:00 WITA).
 
 ---
 
-### 🎒 Tips & Rekomendasi Penting:
-1. **Etika Pura**: Kenakan kain sarung dan selendang saat memasuki area suci Pura Uluwatu (disediakan di loket tiket).
-2. **Hindari Kemacetan**: Jalur Canggu dan Sunset Road kerap padat pada pukul 17:00 - 19:00, prioritaskan penggunaan sepeda motor untuk mobilitas lincah.
+### 📅 Jadwal Perjalanan Harian (Itinerary)
+
+#### Hari 1: Pesona Tebing Kapur & Sunset Magis Bali Selatan
+* **10:00 - 12:00**: Tiba di Bandara Ngurah Rai, klaim sewa motor di area kedatangan, lalu check-in penginapan di Kuta/Seminyak.
+* **13:00 - 15:30**: Menikmati keindahan pantai berpasir putih dan tebing terbelah di **Pantai Melasti**.
+* **16:30 - 18:30**: Menyaksikan golden sunset di atas tebing **Pura Uluwatu** dilanjutkan menonton Tari Kecak berlatar senja.
+* **19:30 - 21:00**: Makan malam seafood bakar lezat di pinggir pantai **Teluk Jimbaran**.
+
+#### Hari 2: Kesejukan Sawah Berundak & Budaya Tradisional Ubud
+* **08:00 - 09:30**: Menuju kawasan asri Ubud.
+* **09:30 - 11:30**: Berfoto di terasering sawah hijau **Tegalalang Rice Terrace** dan mencoba ayunan raksasa (Bali Swing).
+* **12:00 - 13:30**: Makan siang Nasi Ayam Kedewatan Ibu Mangku khas Ubud.
+* **14:00 - 16:00**: Trekking santai menikmati udara segar di **Campuhan Ridge Walk (Bukit Campuhan)**.
+* **16:30 - 18:00**: Berinteraksi dengan kera suci di **Monkey Forest Ubud** dan berbelanja cinderamata di Pasar Seni Ubud.
+* **19:30**: Kembali ke hotel dan relaksasi.
+
+#### Hari 3: Rekreasi Air & Belanja Oleh-Oleh Khas
+* **08:30 - 11:00**: Bermain watersport (banana boat/parasailing) di **Tanjung Benoa** atau santai di **Pantai Pandawa**.
+* **12:00 - 14:00**: Belanja oleh-oleh (Pie Susu, Kacang Disco, Kopi Kintamani) di **Krisna Oleh-Oleh Khas Bali**.
+* **14:30**: Pengembalian motor di bandara dan persiapan penerbangan pulang.
+
+---
+
+### 💰 Detail Harga & Tarif Resmi (On-the-Spot)
+* **Pantai Melasti:** HTM WNI Rp 10.000 (Anak Rp 3.000) | WNA Rp 20.000 | Parkir Motor Rp 2.000, Mobil Rp 5.000.
+* **Pura Uluwatu:** HTM WNI Rp 30.000 (Anak Rp 20.000) | WNA Rp 50.000 | Tiket Tari Kecak Rp 150.000/orang.
+* **Monkey Forest Ubud:** HTM WNI Rp 60.000 (Weekend Rp 80.000) | WNA Rp 80.000 (Weekend Rp 100.000).
+* **Sewa Motor (Vario/Scoopy):** Rata-rata Rp 70.000 - Rp 90.000 / hari.
+
+---
+
+### 🏷️📊 Komparasi Harga Platform Digital (OTA Comparison)
+
+| Komponen Perjalanan | Traveloka | Tiket.com | Klook / Agoda | Loket Resmi (OTS) | Rekomendasi & Keunggulan Booking |
+| :--- | :---: | :---: | :---: | :---: | :--- |
+| **Tiket Tari Kecak Uluwatu** | **Rp 135.000** | Rp 138.000 | **Rp 132.000** (Klook) | Rp 150.000 | **Klook & Traveloka Termurah**: Tiket digital langsung scan QR code di gate khusus tanpa antre loket. |
+| **Tiket GWK Cultural Park** | **Rp 115.000** | Rp 115.000 | Rp 120.000 | Rp 125.000 | **Traveloka Xperience**: Sering tersedia voucher diskon tambahan s.d Rp 20.000 dengan kode promo event. |
+| **Hotel Bintang 3 Seminyak (2 Mlm)** | Rp 820.000 | Rp 845.000 | **Rp 785.000** (Agoda) | Rp 950.000 | **Agoda**: Paling ekonomis dengan Best Price Guarantee; **Traveloka**: Unggul dalam fitur Easy Reschedule & PayLater. |
+| **Sewa Motor Vario 125 (3 Hari)** | **Rp 210.000** | Rp 225.000 | Rp 215.000 | Rp 240.000 | **Traveloka Rental**: Jaminan unit terverifikasi & gratis antar-jemput di Bandara Ngurah Rai. |
+| **Paket Watersport Tanjung Benoa** | Rp 175.000 | Rp 180.000 | **Rp 165.000** (Klook) | Rp 250.000 | **Pesan Online jauh lebih murah**: Diskon s.d 40% dibanding memesan langsung di pantai. |
+
+💡 **Tips Cerdas Booking Hemat:**
+1. **Tiket Atraksi (Kecak & GWK):** Beli H-1 via Traveloka Xperience atau Klook untuk mendapatkan diskon hingga 15% dan mengamankan kuota kursi Tari Kecak yang kerap ludes di akhir pekan.
+2. **Akomodasi:** Bandingkan Traveloka dan Agoda; jika Anda membutuhkan fleksibilitas tanggal perjalanan, Traveloka menawarkan proteksi reschedule paling fleksibel di Indonesia.
 ${closing}`;
     }
 
@@ -460,30 +488,53 @@ ${closing}`;
 
 ## 🍜 Panduan Wisata Kuliner Legendaris & Pusaka Yogyakarta (2 Hari)
 
-Yogyakarta bukan sekadar kota, melainkan denyut kehangatan rasa dan sejarah yang abadi:
+Yogyakarta menyajikan harmoni rasa otentik dan warisan budaya adiluhung. Berikut panduan lengkap beserta detail lokasi, jam buka, dan perbandingan harga platform:
 
 ---
 
-### 🗺️ Rute Kuliner Harian
-
-#### Hari 1: Denyut Tradisi Mataram
-* **06:30 - 08:30 | Sarapan Legendaris**: **Lupis & Cenil Mbah Satinem** (Jl. Bumijo). Lupis kenyal bersiram kuah gula aren kental yang pernah masuk liputan Netflix Street Food. *Buka mulai 06:00, ambil nomor antrean!*
-* **10:00 - 12:00 | Pusaka Budaya**: Menjelajahi keindahan arsitektur air **Taman Sari** dan **Keraton Ngayogyakarta Hadiningrat**.
-* **12:30 - 14:00 | Makan Siang Otentik**: **Gudeg Yu Djum Wijilan 167**. Nikmati gudeg kering manis gurih dengan krecek pedas dan telur bebek bacem.
-* **16:00 - 18:00 | Sore Tenang**: Menikmati kopi rempah dan pisang goreng di bantaran sawah **Kopi Klotok Pakem**.
-* **20:00 - 22:00 | Malam Hangat**: **Kopi Joss Angkringan Lik Man** dekat Stasiun Tugu. Sensasi kopi tubruk yang dicemplungi arang membara menyala!
-
-#### Hari 2: Eksplorasi Rasa Selatan & Malam Romantis
-* **08:00 - 10:00 | Sarapan Gurih**: **Soto Bathok Mbah Katro** di dekat Candi Sambisari. Disajikan dalam tempurung kelapa dengan tempe mendoan hangat.
-* **13:00 - 15:00 | Heritage Jalanan**: Menikmati es dawet ngudi rasa Pasar Beringharjo dan hunting batik tulis.
-* **18:00 - 20:00 | Santap Malam Spektakuler**: **Sate Klatak Pak Pong** di Imogiri. Daging kambing muda empuk dipanggang menggunakan jeruji besi sepeda dengan kuah gulai gurih melimpah.
-* **20:30 - 22:30**: **Bakmi Jawa Mbah Gito** Kotagede. Menikmati bakmi godhog di bangunan kayu jati bernuansa pedesaan Jawa.
+### 📍 Informasi Lokasi Detail & Aksesibilitas
+1. **Gudeg Yu Djum Wijilan 167**:
+   - *Alamat:* Jl. Wijilan No. 167, Panembahan, Kraton, Kota Yogyakarta 55131.
+   - *Patokan:* Sentra Gudeg Wijilan, 300 meter sebelah timur Plengkung Tarunasura (Plengkung Wijilan). 10 menit dari Malioboro.
+   - *Jam Operasional:* 06:00 - 22:00 WIB setiap hari.
+2. **Sate Klatak Pak Pong**:
+   - *Alamat:* Jl. Sultan Agung No. 18, Jejeran II, Wonokromo, Kec. Pleret, Kab. Bantul, DIY 55791.
+   - *Patokan:* Dekat perempatan Jejeran Imogiri Timur (sekitar 25 menit ke arah selatan dari pusat kota Yogyakarta).
+   - *Jam Operasional:* 09:00 - 23:00 WIB.
+3. **Kopi Klotok Pakem**:
+   - *Alamat:* Jl. Kaliurang KM 16, Area Sawah, Pakembinangun, Kec. Pakem, Kab. Sleman, DIY 55582.
+   - *Jam Operasional:* 07:00 - 21:30 WIB (Datang sebelum jam 15:30 agar tidak kehabisan lauk telur krispi).
+4. **Candi Prambanan**:
+   - *Alamat:* Jl. Raya Solo - Yogyakarta KM 16, Bokoharjo, Kec. Prambanan, Kab. Sleman, DIY 55571.
+   - *Jam Operasional:* 06:30 - 17:00 WIB (Kawasan taman tutup pukul 17:30 WIB).
 
 ---
 
-### 💡 Tips Warga Lokal (Insider Tips):
-1. **Pecel & Angkringan**: Tanyakan harga menu terlebih dahulu bila jajan di tenda sekitar Malioboro untuk menghindari getok harga.
-2. **Waktu Terbaik**: Datanglah ke Kopi Klotok sebelum jam 16:00 untuk menghindari kehabisan sayur lodeh dan telur krispi andalan.
+### 📅 Rute Kuliner Harian
+* **Hari 1 (Budaya & Sentra Mataram):** Sarapan Lupis Mbah Satinem (Jl. Bumijo, 06:00 WIB) → Menjelajah Keraton & Taman Sari → Makan siang Gudeg Yu Djum Wijilan 167 → Menikmati sore di Kopi Klotok Pakem → Malam hangat mencicipi Kopi Joss Lik Man di Stasiun Tugu.
+* **Hari 2 (Rasa Otentik Selatan & Candi):** Sarapan Soto Bathok Mbah Katro (dekat Candi Sambisari) → Eksplorasi Candi Prambanan → Hunting batik di Pasar Beringharjo → Makan malam Sate Klatak Pak Pong di Imogiri → Menutup malam dengan Bakmi Jawa Mbah Gito Kotagede.
+
+---
+
+### 💰 Detail Harga & Tarif Resmi
+* **HTM Candi Prambanan:** WNI Dewasa Rp 50.000 (Anak Rp 25.000) | WNA Dewasa $25 (~Rp 395.000) | Parkir Mobil Rp 10.000, Motor Rp 3.000.
+* **HTM Taman Sari:** WNI Rp 15.000 | Tiket Izin Kamera Rp 3.000 | Jasa Guide Sukarela ± Rp 30.000 - Rp 50.000.
+* **Porsi Nasi Gudeg Komplit (Ayam Suwir + Telur Bebek Bacem + Krecek):** Rp 35.000 - Rp 45.000.
+* **Porsi Sate Klatak Pak Pong (2 tusuk jeruji besi + kuah gulai):** Rp 28.000 - Rp 35.000.
+
+---
+
+### 🏷️📊 Komparasi Harga Platform Digital (OTA Comparison)
+
+| Item / Layanan Wisata | Traveloka | Tiket.com | Klook / Agoda | Loket Resmi (OTS) | Tips Promo & Keunggulan |
+| :--- | :---: | :---: | :---: | :---: | :--- |
+| **Tiket Masuk Candi Prambanan** | **Rp 47.500** | Rp 48.000 | **Rp 46.500** (Klook) | Rp 50.000 | **Klook & Traveloka**: E-ticket instan langsung scan barcode di pintu putar barat. |
+| **Sewa Mobil Avanza + Supir (12 Jam)** | **Rp 450.000** | Rp 475.000 | Rp 490.000 | Rp 500.000 | **Traveloka Car Rental**: Termasuk bensin dan supir ramah berlisensi lokal. |
+| **Hotel Butik Area Prawirotaman (2 Mlm)** | Rp 620.000 | Rp 650.000 | **Rp 590.000** (Agoda) | Rp 750.000 | **Agoda**: Kupon promo member; **Traveloka**: Pilihan pembayaran Traveloka PayLater / cicilan. |
+| **Tiket Kereta Api Jakarta - Jogja (Eksekutif)** | **Rp 420.000** | Rp 420.000 | - | Rp 420.000 | **Traveloka & Tiket.com**: Cashback koin points dan asuransi keterlambatan kereta. |
+
+💡 **Tips Hemat Wisatawan:**
+Pesan sewa mobil dan tiket masuk Candi Prambanan via Traveloka minimal 2 hari sebelumnya untuk memanfaatkan voucher diskon kategori *To-Do & Transportasi*.
 ${closing}`;
     }
 
@@ -493,33 +544,38 @@ ${closing}`;
 
 ## 🍁 Panduan Lengkap Solo Traveling ke Jepang (Tokyo - Kyoto - Osaka)
 
-Menjelajahi Negeri Sakura seorang diri saat musim gugur (autumn foliage) adalah pengalaman yang sangat aman, efisien, dan memesona.
+Menjelajahi Negeri Sakura seorang diri saat musim gugur (autumn foliage) dengan efisiensi rute, navigasi tepat, dan perbandingan harga platform:
 
 ---
 
-### 🚅 1. Navigasi Transportasi
-* **IC Card Digital (Suica / Pasmo / ICOCA)**: Tambahkan kartu Suica ke Apple Wallet / Google Wallet di smartphone Anda. Sangat praktis untuk subway, kereta komuter, bus, bahkan belanja di kombini (7-Eleven/Lawson).
-* **Shinkansen (Peluru Cepat)**: Tiket Shinkansen Tokaido (Tokyo ke Kyoto ~2 jam 15 menit) dapat dipesan langsung via aplikasi *SmartEX* untuk mendapatkan diskon early bird.
-* **Aplikasi Wajib**: Download aplikasi **Japan Travel by NAVITIME** atau **Google Maps** yang sangat akurat menunjukkan platform kereta, gerbong transfer, dan tarif.
+### 📍 Lokasi Detail & Navigasi Transportasi
+1. **Tokyo (Shibuya, Shinjuku, Asakusa)**:
+   - *Pusat Akses:* Stasiun Shinjuku & Tokyo Station.
+   - *Navigasi Subway:* Menggunakan Tokyo Metro & Toei Subway dengan kartu IC Card (Suica/Pasmo) atau Tokyo Subway Pass.
+2. **Kyoto (Arashiyama, Gion, Fushimi Inari)**:
+   - *Akses dari Tokyo:* Naik Shinkansen Tokaido (Nozomi: 2 jam 15 menit, Hikari: 2 jam 40 menit) berangkat dari Tokyo Station menuju Kyoto Station.
+   - *Fushimi Inari Taisha:* Beralamat di 68 Fukakusa Yabunouchicho, Fushimi Ward, Kyoto 612-0882 (Persis di depan Stasiun JR Inari). Buka 24 jam bebas biaya masuk (HTM Gratis).
 
 ---
 
-### 📶 2. Konektivitas & Internet
-* **eSIM / Pocket WiFi**: Beli eSIM (misal: Airalo, Ubigi, atau Klook) sebelum keberangkatan. Pastikan kuota minimal 2GB/hari atau unlimited agar lancar navigasi GPS.
+### 💰 Detail Biaya Esensial Jepang
+* **Tiket Shinkansen Tokyo ↔ Kyoto (One-way Reserved):** ¥14,170 (~Rp 1.490.000).
+* **Tokyo Subway Ticket (72 Jam Bebas Naik Metro):** ¥1,500 (~Rp 158.000).
+* **Makan Harian (Kombini / Ramen / Yoshinoya):** ¥2.500 - ¥4.000 (~Rp 260.000 - Rp 420.000) / hari.
 
 ---
 
-### 🏮 3. Rekomendasi Rute Autumn Foliage
-1. **Tokyo**: Meiji Jingu Gaien (Icho Namiki / Ginkgo Avenue berdaun kuning keemasan), Shinjuku Gyoen, Shibuya Sky saat senja.
-2. **Kyoto**: Kuil Tofukuji (lautan daun momiji merah), Kiyomizu-dera, Arashiyama Bamboo Grove, dan Fushimi Inari Taisha di pagi hari (pukul 07:00 bebas kerumunan).
-3. **Osaka**: Dotonbori street food (Takoyaki & Okonomiyaki) dan Osaka Castle Park.
+### 🏷️📊 Komparasi Harga Platform Digital (Platform Comparison)
 
----
+| Kebutuhan Traveling Jepang | Klook | Traveloka | Tiket.com | Pembelian Langsung (JR/Stasiun) | Catatan & Tips Hemat |
+| :--- | :---: | :---: | :---: | :---: | :--- |
+| **Tokyo Subway Pass 72 Jam** | **Rp 155.000** | Rp 160.000 | Rp 162.000 | ¥1,500 (~Rp 158.000) | **Klook & Traveloka**: Ambil QR voucher di mesin tiket otomatis stasiun Tokyo Metro. |
+| **Shinkansen Ticket Tokyo - Kyoto** | **Rp 1.510.000** | Rp 1.540.000 | Rp 1.550.000 | ¥14,170 (Aplikasi SmartEX) | Klook & Traveloka mempermudah pembayaran via Rupiah (QRIS/BCA/Mandiri) tanpa konversi valas kartu kredit. |
+| **eSIM Jepang Unlimited 7 Hari** | **Rp 120.000** | Rp 135.000 | Rp 140.000 | ¥3.500 (~Rp 365.000) | **Beli online via Klook/Traveloka jauh lebih hemat 65%** dibanding membeli SIM fisik di Bandara Narita/Haneda. |
+| **Tiket SHIBUYA SKY Observation** | **Rp 240.000** | Rp 245.000 | Rp 250.000 | ¥2.500 (~Rp 262.000) | Wajib reservasi slot jam sunset 2-3 minggu sebelumnya karena tiket on-the-spot hampir selalu sold-out. |
 
-### 🤝 4. Etika Krusial di Jepang
-* **Dilarang Menelepon di Kereta**: Kereta di Jepang sangat hening; ubah ponsel ke mode senyap (*manner mode*).
-* **Sampah Pribadi**: Jarang sekali tempat sampah umum di jalanan. Siapkan kantong plastik kecil di tas untuk membawa sampah Anda kembali ke hotel.
-* **Tidak Ada Budaya Tip**: Jangan meninggalkan uang tip di restoran, hal tersebut dianggap tidak sopan karena pelayanan prima sudah merupakan standar kewajiban mereka.
+💡 **Tips Solo Traveler:**
+Beli eSIM dan tiket Tokyo Subway Pass sekaligus via **Klook** atau **Traveloka Xperience** sebelum terbang dari Indonesia agar langsung terhubung internet sesaat setelah mendarat di bandara.
 ${closing}`;
     }
 
@@ -529,32 +585,36 @@ ${closing}`;
 
 ## ⛵ Panduan Sailing Trip Liveaboard 4D3N di Labuan Bajo & Taman Nasional Komodo
 
-Merasakan sensasi tidur di atas kapal pinisi phinisi mengarungi laut flores bertabur bintang:
+Pengalaman berlayar menakjubkan mengelilingi perairan surga Flores dengan kapal phinisi:
 
 ---
 
-### 🗺️ Rute & Destinasi Utama
-* **Pulau Kelor**: Trekking pemanasan dengan panorama laut gradasi toska.
-* **Pulau Padar**: Ikonik dengan 3 teluk berpasir berbeda (putih, merah muda, hitam). Trekking 800 anak tangga saat subuh untuk sunrise magis!
-* **Pink Beach**: Snorkeling bersama terumbu karang warna-warni di atas pasir merah muda alami.
-* **Pulau Komodo / Rinca**: Trekking bersama Ranger TN Komodo mengamati habitat asli satwa purba Komodo Dragon.
-* **Manta Point**: Berenang bebas (snorkeling) berdampingan dengan Manta Ray raksasa.
-* **Pulau Kalong**: Menonton jutaan kelelawar buah raksasa terbang melintasi langit senja saat sunset.
+### 📍 Lokasi Detail & Titik Kumpul (Meeting Point)
+* **Pelabuhan Marina Labuan Bajo**:
+   - *Alamat:* Jl. Soekarno Hatta, Labuan Bajo, Kec. Komodo, Kab. Manggarai Barat, Nusa Tenggara Timur 86554.
+   - *Patokan:* Kawasan Marina Waterfront Terpadu, hanya 10 menit dari Bandara Komodo (LBJ).
+   - *Jadwal Keberangkatan:* Umumnya open trip berangkat setiap hari Jumat pukul 10:00 WITA dan kembali Minggu siang.
+* **Destinasi Pulau Utama**: Pulau Padar (Trekking 818 anak tangga), Pink Beach (Pantai Merah), Pulau Komodo/Loh Liang, Manta Point, dan Taka Makassar.
 
 ---
 
-### 🎒 Checklist Wajib Bawa:
-- [x] Sandal/Sepatu trekking dengan grip kuat (jalur Padar licin berkerikil).
-- [x] Dry bag tahan air (10L - 15L) untuk melindungi gadget di dinghy boat.
-- [x] Reef-safe sunscreen (bebas bahan kimia Oxybenzone untuk melindungi terumbu karang).
-- [x] Obat anti-mabuk laut (diminum 30 menit sebelum berlayar).
-- [x] Kacamata hitam & topi bertepi lebar.
+### 💰 Detail Tarif Resmi Balai Taman Nasional Komodo
+* **Karcis Masuk TN Komodo (WNI):** Rp 5.000 (Hari Kerja) / Rp 7.500 (Hari Libur).
+* **Tiket Aktivitas Snorkeling:** Rp 15.000 / orang.
+* **Jasa Ranger Pemandu Komodo:** Rp 120.000 / grup (maksimal 5 orang).
+* **Retribusi Daerah Manggarai Barat:** ± Rp 50.000 - Rp 100.000 / orang.
 
 ---
 
-### 💰 Estimasi Biaya Phinisi Sharing:
-* **Paket Open Trip Phinisi Standard**: Rp 2.500.000 - Rp 3.500.000 / orang (termasuk makan 3x sehari di kapal, alat snorkel, kabin AC).
-* **Tiket Masuk TN Komodo**: ± Rp 250.000 - Rp 350.000 (WNI) / Rp 500.000+ (WNA).
+### 🏷️📊 Komparasi Harga Platform Digital (OTA Comparison)
+
+| Paket Wisata / Layanan | Traveloka | Tiket.com | Klook | Agen Lokal di Pelabuhan | Keunggulan & Rekomendasi |
+| :--- | :---: | :---: | :---: | :---: | :--- |
+| **Open Trip Phinisi Superior 3D2N** | **Rp 2.650.000** | Rp 2.750.000 | **Rp 2.600.000** | Rp 2.800.000 | **Traveloka & Klook**: Review dan foto kabin AC asli terverifikasi, serta jaminan proteksi refund jika cuaca buruk. |
+| **Speedboat Full Day Tour 6 Spot** | **Rp 1.350.000** | Rp 1.400.000 | **Rp 1.320.000** | Rp 1.450.000 | Termasuk makan siang box, alat snorkeling, dan antar-jemput hotel. |
+| **Hotel Transit Bintang 4 Marina (1 Mlm)** | Rp 680.000 | Rp 710.000 | **Rp 650.000** (Agoda) | Rp 850.000 | **Agoda & Traveloka**: Lokasi strategis jalan kaki ke dermaga pelabuhan marina. |
+
+💡 **Tips Hemat:** Pesan paket Sailing Phinisi di Traveloka saat promo tanggal kembar (Payday Sale) untuk mengklaim diskon hingga Rp 300.000 per booking.
 ${closing}`;
     }
 
@@ -564,60 +624,70 @@ ${closing}`;
 
 ## ⛰️ Panduan Pendakian Gunung Prau (2.565 MDPL) via Jalur Patak Banteng
 
-Gunung Prau di Dataran Tinggi Dieng terkenal sebagai salah satu gunung dengan panorama *Golden Sunrise* terbaik di Asia Tenggara.
+Gunung Prau di Dataran Tinggi Dieng menyuguhkan lanskap *Golden Sunrise* tercantik berlatar Gunung Sindoro dan Sumbing.
 
 ---
 
-### ⏱️ Estimasi Waktu & Jalur
-* **Basecamp ke Pos 1**: 20 menit (bisa naik ojek hemat waktu).
-* **Pos 1 ke Pos 2**: 30 menit (jalur tanah dan undakan batu).
-* **Pos 2 ke Pos 3**: 45 menit (mulai menanjak terjal, akar pohon).
-* **Pos 3 ke Sunrise Camp (Puncak)**: 45 menit (tanjakan curam 'patahan').
-* *Total durasi naik pendakian santai: 2.5 s/d 3.5 jam.*
+### 📍 Informasi Lokasi Detail & Akses Basecamp
+* **Basecamp Patak Banteng**:
+  - *Alamat:* Jl. Dieng KM 24, Desa Patakbanteng, Kec. Kejajar, Kab. Wonosobo, Jawa Tengah 56354.
+  - *Patokan:* Berada di pinggir jalan raya utama Wonosobo - Dieng, sekitar 45 menit dari Terminal Mendolo Wonosobo.
+  - *Akses Transportasi:* Bisa menggunakan bus mikro jurusan Wonosobo-Dieng (turun persis di depan gapura Basecamp) atau kendaraan pribadi (tersedia penitipan motor & mobil 24 jam).
+  - *Jam Operasional Registrasi:* Buka 24 jam (pembukaan jalur pendakian setiap hari).
 
 ---
 
-### ❄️ Suhu Udara & Pakaian
-Suhu di puncak Gunung Prau pada malam hari berkisar **5°C s/d 10°C** (bahkan bisa mencapai 0°C dengan embun es / bun upas di bulan Juli-Agustus).
-* **Gunakan Sistem Layering**:
-  1. Base layer: Thermal baselayer / pakaian dry-fit (jangan katun biasa).
-  2. Mid layer: Jaket fleece / sweater wol hangat.
-  3. Outer layer: Jaket windproof / waterproof tebal berpenutup kepala.
-  4. Wajib: Sarung tangan hangat, kupluk, dan kaus kaki cadangan.
+### 💰 Detail Tarif Resmi & Logistik
+* **Tiket Simaksi Resmi Gn. Prau:** Rp 30.000 / pendaki (sudah termasuk asuransi dan fasilitas basecamp).
+* **Tarif Parkir Basecamp:** Motor Rp 10.000 | Mobil Rp 25.000.
+* **Ojek Basecamp ke Pos 1 (Opsional):** Rp 25.000 / orang (menghemat waktu tanjakan awal 20 menit).
+* **Sewa Tenda Dome Kapasitas 4 Orang di Basecamp:** Rp 60.000 - Rp 80.000 / malam.
 
 ---
 
-### 📝 Perizinan & Tiket Simaksi:
-* Tiket simaksi resmi: Rp 30.000 / orang.
-* Siapkan fotokopi KTP / identitas diri.
-* Wajib membawa turun kembali seluruh sampah logistik pendakian!
+### 🏷️📊 Komparasi Harga Platform Digital (Akomodasi & Transportasi)
+
+| Komponen Perjalanan | Traveloka | Tiket.com | Mitra Lokal / On-The-Spot | Tips & Rekomendasi |
+| :--- | :---: | :---: | :---: | :--- |
+| **Tiket Bus Jakarta - Wonosobo (Sinar Jaya/Rosalia)** | **Rp 140.000** | Rp 145.000 | Rp 150.000 (Agen Terminal) | **Traveloka**: Praktis pilih kursi sleeper/executive dari aplikasi. |
+| **Homestay Nyaman di Dieng (1 Malam)** | **Rp 180.000** | Rp 195.000 | Rp 220.000 | **Traveloka**: Pilihan homestay berpenghangat air (*water heater*) melimpah. |
+| **Sewa Tenda & Matras Camping** | - | - | **Rp 80.000** (Rental Basecamp) | Sewa langsung di Basecamp Patak Banteng untuk menghemat beban ransel dari rumah. |
+
+💡 **Tips Pendakian:** Suhu malam hari di puncak bisa mencapai 5°C; siapkan jaket windproof tebal, sarung tangan, kupluk, dan sleeping bag berkualitas.
 ${closing}`;
     }
 
     // 6. Generic Travel Query
     return `${greeting}
 
-Terima kasih atas pertanyaannya! Berdasarkan pengaturan parameter asisten saat ini:
-- **Spesialisasi**: ${persona.name} (${persona.tagline})
-- **Gaya Bahasa**: ${CONFIG.tones[toneKey]?.name || toneKey}
-- **Tingkat Kreativitas**: ${temperature}
+Terima kasih atas pertanyaannya! Berdasarkan preferensi Anda (**${persona.name}**), berikut panduan perjalanan terlengkap yang memadukan lokasi mendalam, rincian biaya, dan komparasi platform digital:
 
-Berikut rekomendasi dan panduan perjalanan terbaik untuk Anda:
+---
 
-### 🌟 Rekomendasi Utama:
-1. **Waktu Terbaik Berkunjung**: Pilih musim peralihan (*shoulder season*) untuk menikmati cuaca cerah dengan keramaian turis yang lebih minim dan harga penginapan bersahabat.
-2. **Akomodasi Strategis**: Pilih penginapan yang dekat dengan akses transportasi publik atau stasiun utama agar mobilitas hemat waktu.
-3. **Eksplorasi Rasa Lokal**: Selalu luangkan satu waktu makan untuk mencoba kuliner khas pasar tradisional atau warung legendaris warga lokal.
+### 📍 Informasi Lokasi & Panduan Akses
+* **Area & Landmark Destinasi:** Pilih destinasi yang memiliki akses terintegrasi (dekat stasiun, terminal bandara, atau jalan tol utama).
+* **Aksesibilitas Kendaraan:** Verifikasi ketersediaan transportasi umum (KRL, bus kota, atau armada sewa motor lokal) untuk menekan biaya perjalanan harian.
+* **Jam Buka Terbaik:** Kunjungi objek wisata alam di pagi hari (07:00 - 10:00) untuk menghindari terik matahari dan kerumunan pengunjung.
 
-\`\`\`markdown
-Contoh Format Rencana Harian:
-- Pagi (08:00 - 11:00) : Eksplorasi spot alam & fotografi
-- Siang (12:00 - 14:00): Wisata kuliner khas daerah
-- Sore (16:00 - 18:30): Menikmati matahari terbenam (sunset point)
-- Malam (19:30 - selesai): Wisata belanja malam / relaksasi
-\`\`\`
+---
 
-Beri tahu saya destinasi yang ingin Anda tuju, durasi hari liburan, serta perkiraan budget, dan saya akan buatkan itinerary kustom secara instan!
+### 💰 Detail Perkiraan Tarif & Biaya Resmi
+* **Tiket Masuk (HTM):** Siapkan uang tunai cadangan untuk tarif parkir dan retribusi kebersihan di destinasi wisata.
+* **Alokasi Budget Konsumsi:** Rata-rata Rp 75.000 - Rp 150.000 per orang per hari untuk wisata kuliner lokal yang lezat.
+* **Biaya Transportasi Lokal:** Sewa motor berkisar Rp 70.000 - Rp 100.000/hari; sewa mobil berkisar Rp 400.000 - Rp 600.000/hari.
+
+---
+
+### 🏷️📊 Komparasi Harga Platform Digital (Panduan Booking Cerdas)
+
+| Komponen Perjalanan | Traveloka | Tiket.com | Agoda / Klook | Loket Resmi (OTS) | Rekomendasi Platform Terbaik |
+| :--- | :---: | :---: | :---: | :---: | :--- |
+| **Tiket Atraksi & Wahana Wisata** | **Diskon s.d 15%** | Promo Points | **Harga Bersaing** (Klook) | Harga Normal | **Traveloka & Klook**: Tiket instan tanpa antre loket fisik. |
+| **Voucher Hotel & Penginapan** | **Traveloka PayLater** | Promo OTW | **Agoda Flash Sale** | Tarif Walk-in Lebih Mahal | **Agoda & Traveloka**: Bandingkan harga kamar dengan sarapan & fitur Easy Reschedule. |
+| **Transportasi (Kereta / Pesawat / Sewa Mobil)** | **Lengkap & Terintegrasi** | Cashback Tiket Points | Layanan Terbatas | Tanpa Diskon Promo | **Traveloka**: Solusi *one-stop travel* terbaik dengan jaminan keamanan transaksi. |
+
+💡 **Rekomendasi Hemat:**
+Beri tahu saya nama kota atau destinasi spesifik yang ingin Anda kunjungi beserta durasi liburannya, dan saya akan buatkan itinerary komprehensif lengkap dengan alamat detail, jam operasional, serta rincian komparasi harganya!
 ${closing}`;
   }
 }

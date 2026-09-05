@@ -26,6 +26,34 @@ const upload = multer({
 const clientDir = path.join(__dirname, '..');
 app.use(express.static(clientDir));
 
+// Standar Wajib Knowledge Base WanderWise AI: Lokasi Detail, Rincian Harga, & Komparasi Platform Digital (Traveloka-grade)
+const KNOWLEDGE_BASE_GUIDELINES = `
+[STANDAR KNOWLEDGE & ATURAN WAJIB HASIL PERJALANAN WANDERWISE AI]:
+Sebagai asisten travel cerdas berstandar Traveloka, pada setiap rekomendasi destinasi, rencana liburan, atau itinerary yang kamu hasilkan, kamu WAJIB menyertakan 3 pilar informasi:
+
+1. 📍 INFORMASI LOKASI DETAIL & AKSESIBILITAS:
+   - Alamat Lengkap & Area/Kecamatan/Kabupaten/Kota.
+   - Patokan/Landmark terdekat (misal: "10 menit dari exit tol X", "sebelah barat stasiun Y").
+   - Akses Transportasi: Rute kendaraan pribadi, transportasi publik (KRL, Trans, Bus), dan kondisi jalan.
+   - Jam Operasional & Hari Buka resmi.
+
+2. 💰 DETAIL HARGA & TARIF RESMI:
+   - Tiket Masuk (HTM): Rincian harga WNI vs WNA, Dewasa vs Anak, serta Weekday vs Weekend.
+   - Tarif Parkir resmi (motor, mobil, bus pariwisata).
+   - Biaya Sewa Wahana / Peralatan / Pemandu Lokal.
+   - Estimasi biaya makan/minum di sekitar lokasi.
+
+3. 🏷️📊 KOMPARASI HARGA PLATFORM DIGITAL:
+   - Bandingkan estimasi harga di berbagai platform digital dan Online Travel Agent (OTA) populer:
+     * Traveloka (fitur Easy Reschedule, promo tiket pesawat/hotel/Xperience)
+     * Tiket.com (promo OTW, tiket Points, diskon atraksi To-Do)
+     * Agoda (harga akomodasi hotel, Best Price Guarantee)
+     * Klook / Booking.com (e-voucher instan, skip-the-line pass atraksi)
+     * Loket Resmi / On-The-Spot (pembelian tiket langsung di lokasi)
+   - Tampilkan TABEL KOMPARASI HARGA PLATFORM DIGITAL berformat Markdown yang rapi:
+     | Item / Atraksi | Traveloka | Tiket.com | Agoda / Klook | Loket Resmi (OTS) | Tips Promo & Keunggulan |
+   - Berikan rekomendasi platform terbaik untuk mengamankan harga termurah.`;
+
 // System Prompts & Persona Guidelines untuk WanderWise AI
 const PERSONA_PROMPTS = {
   backpacker: 'Kamu adalah WanderWise, asisten travel cerdas spesialis Backpacker & Hemat Budget. Berikan rekomendasi penginapan terjangkau (hostel/guesthouse), transportasi umum termurah, kuliner kaki lima autentik, serta tips menghemat pengeluaran tanpa mengurangi keseruan liburan.',
@@ -37,7 +65,7 @@ const PERSONA_PROMPTS = {
 const TONE_GUIDES = {
   santai: 'Gunakan gaya bahasa santai, hangat, akrab, dan bersahabat seperti mengobrol dengan sahabat seperjalanan.',
   formal: 'Gunakan gaya bahasa profesional, sopan, terstruktur rapi, dan informatif layaknya konsultan wisata berlisensi.',
-  ringkas: 'Berikan jawaban to-the-point, ringkas, gunakan poin-poin singkat padat tanpa basa-basi yang panjang.',
+  ringkas: 'Berikan jawaban to-the-point, ringkas, gunakan poin-poin singkat padat tanpa basa-basi yang panjang namun tetap sertakan tabel komparasi harga & lokasi.',
   storyteller: 'Gunakan gaya narasi deskriptif yang memikat (storytelling), gambarkan suasana tempat, aroma, dan panorama secara imajinatif.'
 };
 
@@ -125,7 +153,9 @@ const handleGenerateText = async (req, res) => {
     }
 
     const ai = getGenAI(req);
-    const response = await generateContentWithFallback(ai, model, prompt);
+    const response = await generateContentWithFallback(ai, model, prompt, {
+      systemInstruction: `Kamu adalah WanderWise AI, asisten travel cerdas Traveloka-grade.\n${KNOWLEDGE_BASE_GUIDELINES}`
+    });
     res.status(200).json({ result: response.text });
   } catch (error) {
     console.error('Error generating text:', error);
@@ -149,11 +179,12 @@ const handleGenerateFromImage = async (req, res) => {
     const base64Image = req.file.buffer.toString('base64');
     const ai = getGenAI(req);
 
+    const defaultImgPrompt = 'Jelaskan gambar destinasi wisata ini, sertakan informasi lokasi detail & aksesibilitas, rincian harga/HTM, serta tabel komparasi harga platform digital (Traveloka, Tiket.com, Agoda, Klook, Loket Resmi):';
     const contents = [
       {
         role: 'user',
         parts: [
-          { text: prompt || 'Jelaskan gambar destinasi wisata ini dan berikan rekomendasi itinerary serta tips liburan:' },
+          { text: prompt || defaultImgPrompt },
           {
             inlineData: {
               mimeType: req.file.mimetype || 'image/jpeg',
@@ -164,7 +195,9 @@ const handleGenerateFromImage = async (req, res) => {
       }
     ];
 
-    const response = await generateContentWithFallback(ai, model, contents);
+    const response = await generateContentWithFallback(ai, model, contents, {
+      systemInstruction: `Kamu adalah WanderWise AI, asisten travel cerdas Traveloka-grade.\n${KNOWLEDGE_BASE_GUIDELINES}`
+    });
     res.status(200).json({ result: response.text });
   } catch (error) {
     console.error('Error generating from image:', error);
@@ -187,11 +220,12 @@ const handleGenerateFromAudio = async (req, res) => {
     const base64Audio = req.file.buffer.toString('base64');
     const ai = getGenAI(req);
 
+    const defaultAudioPrompt = 'Dengarkan rekaman suara pertanyaan wisata ini dan berikan jawaban lengkap mencakup lokasi detail & akses, rincian tarif/HTM resmi, serta tabel komparasi harga platform digital:';
     const contents = [
       {
         role: 'user',
         parts: [
-          { text: prompt || 'Dengarkan rekaman suara ini dan berikan ringkasan rencana perjalanan/pertanyaan wisata:' },
+          { text: prompt || defaultAudioPrompt },
           {
             inlineData: {
               mimeType: req.file.mimetype || 'audio/mp3',
@@ -202,7 +236,9 @@ const handleGenerateFromAudio = async (req, res) => {
       }
     ];
 
-    const response = await generateContentWithFallback(ai, model, contents);
+    const response = await generateContentWithFallback(ai, model, contents, {
+      systemInstruction: `Kamu adalah WanderWise AI, asisten travel cerdas Traveloka-grade.\n${KNOWLEDGE_BASE_GUIDELINES}`
+    });
     res.status(200).json({ result: response.text });
   } catch (error) {
     console.error('Error generating from audio:', error);
@@ -225,11 +261,12 @@ const handleGenerateFromDocument = async (req, res) => {
     const base64Doc = req.file.buffer.toString('base64');
     const ai = getGenAI(req);
 
+    const defaultDocPrompt = 'Analisis dokumen itinerary/tiket perjalanan ini dan berikan ringkasan jadwal, verifikasi lokasi detail, rincian biaya, serta komparasi harga platform digital jika ada alternatif yang lebih hemat:';
     const contents = [
       {
         role: 'user',
         parts: [
-          { text: prompt || 'Analisis dokumen itinerary/tiket perjalanan ini dan berikan ringkasan jadwal serta tips:' },
+          { text: prompt || defaultDocPrompt },
           {
             inlineData: {
               mimeType: req.file.mimetype || 'application/pdf',
@@ -240,7 +277,9 @@ const handleGenerateFromDocument = async (req, res) => {
       }
     ];
 
-    const response = await generateContentWithFallback(ai, model, contents);
+    const response = await generateContentWithFallback(ai, model, contents, {
+      systemInstruction: `Kamu adalah WanderWise AI, asisten travel cerdas Traveloka-grade.\n${KNOWLEDGE_BASE_GUIDELINES}`
+    });
     res.status(200).json({ result: response.text });
   } catch (error) {
     console.error('Error generating from document:', error);
@@ -264,10 +303,10 @@ app.post('/api/chat', async (req, res) => {
 
     const ai = getGenAI(req);
 
-    // Format instruksi sistem berdasarkan persona dan tone
+    // Format instruksi sistem berdasarkan persona, tone, dan Knowledge Base standar Traveloka
     const personaInstruction = PERSONA_PROMPTS[persona] || PERSONA_PROMPTS.backpacker;
     const toneInstruction = TONE_GUIDES[tone] || TONE_GUIDES.santai;
-    const systemInstruction = `${personaInstruction}\nPanduan Gaya Bahasa: ${toneInstruction}\nFormatkan output menggunakan Markdown terstruktur rapi dengan emoji perjalanan yang relevan.`;
+    const systemInstruction = `${personaInstruction}\n\nPanduan Gaya Bahasa: ${toneInstruction}\n\n${KNOWLEDGE_BASE_GUIDELINES}\n\nFormatkan output menggunakan Markdown terstruktur rapi dengan emoji perjalanan yang relevan.`;
 
     // Format riwayat chat untuk Gemini API
     const contents = [];
