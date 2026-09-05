@@ -112,17 +112,21 @@ document.addEventListener("DOMContentLoaded", () => {
   aiService.setModel(state.model);
   updateApiKeyBadge();
 
-  // Render Parameters & Sessions
-  renderPersonaOptions();
-  renderToneOptions();
-  renderModelSelect();
-  renderMemorySelect();
-  renderSessions();
-  renderMessages();
-  updateHeaderAndChips();
+  // Attach Event Listeners FIRST so user interactions and buttons are immediately responsive
+  try {
+    attachEventListeners();
+  } catch (err) {
+    console.error("Gagal memasang event listeners:", err);
+  }
 
-  // Attach Event Listeners
-  attachEventListeners();
+  // Render Parameters & Sessions safely
+  try { renderPersonaOptions(); } catch (e) { console.error("renderPersonaOptions:", e); }
+  try { renderToneOptions(); } catch (e) { console.error("renderToneOptions:", e); }
+  try { renderModelSelect(); } catch (e) { console.error("renderModelSelect:", e); }
+  try { renderMemorySelect(); } catch (e) { console.error("renderMemorySelect:", e); }
+  try { renderSessions(); } catch (e) { console.error("renderSessions:", e); }
+  try { renderMessages(); } catch (e) { console.error("renderMessages:", e); }
+  try { updateHeaderAndChips(); } catch (e) { console.error("updateHeaderAndChips:", e); }
 
   // =========================================================================
   // Rendering Functions
@@ -790,42 +794,54 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
-    DOM.closeParamsBtn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      toggleParamsDrawer(false); // ALWAYS CLOSE
-    });
+    if (DOM.closeParamsBtn) {
+      DOM.closeParamsBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        toggleParamsDrawer(false); // ALWAYS CLOSE
+      });
+    }
 
-    DOM.paramsToggleBtn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      toggleParamsDrawer();
-    });
+    if (DOM.paramsToggleBtn) {
+      DOM.paramsToggleBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        toggleParamsDrawer();
+      });
+    }
 
-    DOM.sidebarToggleBtn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      toggleSidebar();
-    });
+    if (DOM.sidebarToggleBtn) {
+      DOM.sidebarToggleBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        toggleSidebar();
+      });
+    }
 
-    DOM.openSettingsBtn.addEventListener("click", () => {
-      DOM.apiKeyInput.value = aiService.apiKey;
-      DOM.settingsModal.classList.add("open");
-      DOM.apiKeyInput.focus();
-    });
+    if (DOM.openSettingsBtn) {
+      DOM.openSettingsBtn.addEventListener("click", () => {
+        if (DOM.apiKeyInput) DOM.apiKeyInput.value = aiService.apiKey;
+        if (DOM.settingsModal) DOM.settingsModal.classList.add("open");
+        if (DOM.apiKeyInput) DOM.apiKeyInput.focus();
+      });
+    }
 
-    const closeModal = () => DOM.settingsModal.classList.remove("open");
-    DOM.closeSettingsBtn.addEventListener("click", closeModal);
-    DOM.cancelSettingsBtn.addEventListener("click", closeModal);
+    const closeModal = () => {
+      if (DOM.settingsModal) DOM.settingsModal.classList.remove("open");
+    };
+    if (DOM.closeSettingsBtn) DOM.closeSettingsBtn.addEventListener("click", closeModal);
+    if (DOM.cancelSettingsBtn) DOM.cancelSettingsBtn.addEventListener("click", closeModal);
 
-    DOM.saveSettingsBtn.addEventListener("click", () => {
-      const key = DOM.apiKeyInput.value.trim();
-      aiService.setApiKey(key);
-      updateApiKeyBadge();
-      closeModal();
-      soundFx.playClick();
-      showToast(key ? "API Key berhasil disimpan!" : "API Key dihapus (menggunakan mode Mock)");
-    });
+    if (DOM.saveSettingsBtn) {
+      DOM.saveSettingsBtn.addEventListener("click", () => {
+        const key = DOM.apiKeyInput ? DOM.apiKeyInput.value.trim() : "";
+        aiService.setApiKey(key);
+        updateApiKeyBadge();
+        closeModal();
+        soundFx.playClick();
+        showToast(key ? "API Key berhasil disimpan!" : "API Key dihapus (menggunakan mode Mock)");
+      });
+    }
 
     window.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && DOM.settingsModal.classList.contains("open")) {
+      if (e.key === "Escape" && DOM.settingsModal && DOM.settingsModal.classList.contains("open")) {
         closeModal();
       }
     });
