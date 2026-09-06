@@ -463,11 +463,11 @@ ${itineraryPoints.join("\n")}
 
 | Komponen Perjalanan | Platform Resmi (KAI / ASDP / Loket) | Traveloka (Live Filter) | Tiket.com (Live Filter) | Mitra Lain (Agoda / Klook) | Tautan Langsung Berfilter |
 | :--- | :---: | :---: | :---: | :---: | :--- |
-| **Kereta Api (Madiun - Ketapang Banyuwangi)** | Rp 88.000 (KAI Sri Tanjung) | **Rp 88.000** | Rp 88.000 | - | [Cek Traveloka Kereta](https://www.traveloka.com/id-id/kereta-api/search?st=MADIUN.CR-MN&dt=KETAPANG.CR-KTG&dd=06-09-2026&pa=2&ca=1) • [Cek Tiket.com Kereta](https://www.tiket.com/id-id/kereta-api/cari?d=MN&a=KTG&date=2026-09-06&adult=2&infant=0) |
+| **Kereta Api (Madiun - Ketapang Banyuwangi)** | Rp 88.000 (KAI Sri Tanjung) | **Rp 88.000** | Rp 88.000 | - | [Cek Traveloka Kereta](https://www.traveloka.com/id-id/kereta-api/rute/madiun.banyuwangi) • [Cek Tiket.com Kereta](https://www.tiket.com/id-id/kereta-api/jurusan/banyuwangi) |
 | **Kapal Ferry ASDP (Ketapang - Gilimanuk Bali)** | Rp 10.500/org (Ferizy ASDP) | - | - | - | [Cek ASDP Ferizy](https://www.ferizy.com) |
-| **Sewa Mobil Bali + Sopir (12 Jam)** | Rp 600.000 (Rental Lokal Bali) | **Rp 550.000** | Rp 575.000 | **Rp 540.000** (Klook Charter) | [Cek Traveloka Sewa Mobil Bali + Sopir](https://www.traveloka.com/id-id/car-rental/search?sd=06-09-2026&st=07-30&ed=06-09-2026&et=23-59&driverType=WITH_DRIVER&city=Bali) • [Cek Tiket.com Sewa Mobil Bali](https://www.tiket.com/id-id/sewa-mobil) |
-| **Hotel Keluarga di Bali (1 Malam, 2 Dws + 1 Anak)** | Rp 450.000 (Walk-in) | **Rp 350.000** | Rp 360.000 | **Rp 330.000** (Agoda) | [Cek Agoda Hotel Bali Keluarga](https://www.agoda.com/id-id/search?city=17193&rooms=1&adults=2&children=1) • [Cek Booking.com Bali](https://www.booking.com/searchresults.id.html?ss=Bali&group_adults=2&group_children=1) |
-| **Tiket Wisata & Rekreasi Bali** | Rp 50.000/org (Loket OTS) | **Rp 45.000** (Xperience) | Rp 46.000 (To-Do) | **Rp 42.000** (Klook) | [Cek Traveloka Xperience Bali](https://www.traveloka.com/id-id/activities/search?q=Bali) • [Cek Tiket.com To-Do](https://www.tiket.com/id-id/to-do) • [Cek Klook Bali](https://www.klook.com/id/search/result/?query=Bali) |
+| **Sewa Mobil Bali + Sopir (12 Jam)** | Rp 600.000 (Rental Lokal Bali) | **Rp 550.000** | Rp 575.000 | **Rp 540.000** (Klook Charter) | [Cek Traveloka Sewa Mobil Bali](https://www.traveloka.com/id-id/car-rental/region/bali) • [Cek Tiket.com Sewa Mobil](https://www.tiket.com/id-id/sewa-mobil) |
+| **Hotel Keluarga di Bali (1 Malam, 2 Dws + 1 Anak)** | Rp 450.000 (Walk-in) | **Rp 350.000** | Rp 360.000 | **Rp 330.000** (Agoda) | [Cek Booking.com Hotel Bali](https://www.booking.com/region/id/bali.id.html) • [Cek Agoda Hotel Bali](https://www.agoda.com/id-id/city/bali-id.html) |
+| **Tiket Wisata & Rekreasi Bali** | Rp 50.000/org (Loket OTS) | **Rp 45.000** (Xperience) | Rp 46.000 (To-Do) | **Rp 42.000** (Klook) | [Cek Tiket.com To-Do](https://www.tiket.com/id-id/to-do) • [Cek Traveloka Aktivitas](https://www.traveloka.com/id-id/activities) • [Cek Klook Bali](https://www.klook.com/id/city/19-bali-things-to-do/) |
 
 ---
 
@@ -488,7 +488,7 @@ Berdasarkan seluruh perbandingan rute, kenyamanan keluarga (2 dewasa + 1 anak us
 3. 🚗 **Sewa Kendaraan & Sopir Terbaik di Bali:**
    - **Rekomendasi:** Sewa Mobil Toyota Avanza + Sopir Lokal Bali (Durasi 12 Jam).
    - **Biaya:** Rp 550.000/hari di Traveloka Car Rental (All-In Mobil + Driver).
-   - **Tautan Live:** [Cek Traveloka Sewa Mobil Bali + Sopir](https://www.traveloka.com/id-id/car-rental/search?sd=06-09-2026&st=07-30&ed=06-09-2026&et=23-59&driverType=WITH_DRIVER&city=Bali)
+   - **Tautan Live:** [Cek Traveloka Sewa Mobil Bali](https://www.traveloka.com/id-id/car-rental/region/bali) • [Cek Tiket.com Sewa Mobil](https://www.tiket.com/id-id/sewa-mobil)
 
 4. 🧮 **Rekapitulasi Total Anggaran Bersih (Simulasi 2H1M Keluarga 3 Orang):**
    - Transportasi PP (KA Sri Tanjung + Ferry ASDP PP): **Rp 591.000**
@@ -1070,11 +1070,11 @@ Untuk menghindari kebingungan saat mengecek langsung di aplikasi:
 
 | Layanan / Rincian Kebutuhan | Platform Resmi (KAI / Loket OTS) | Traveloka | Tiket.com | Mitra Lain (Agoda / Rental Lokal) | Tautan Verifikasi Live & Tips |
 | :--- | :---: | :---: | :---: | :---: | :--- |
-| **Tiket Kereta Api Madiun - Malang PP (3 Orang - Tarif Reguler)** | **Rp 960.000** (Access by KAI) | **Rp 960.000** (Diskon Kupon s.d Rp 30.000) | **Rp 960.000** (Blibli Tiket Rewards) | **Rp 960.000** (Loket Stasiun Fisik) | [🔗 Cek Jadwal di KAI](https://www.kai.id) • [🔗 Cek di Traveloka](https://www.traveloka.com/id-id/kereta-api) • Subclass Ekonomi C/P. |
+| **Tiket Kereta Api Madiun - Malang PP (3 Orang - Tarif Reguler)** | **Rp 960.000** (Access by KAI) | **Rp 960.000** (Diskon Kupon s.d Rp 30.000) | **Rp 960.000** (Blibli Tiket Rewards) | **Rp 960.000** (Loket Stasiun Fisik) | [🔗 Cek Jadwal di KAI](https://www.kai.id) • [🔗 Cek di Traveloka](https://www.traveloka.com/id-id/kereta-api/rute/madiun-malang-mn-ml) • [🔗 Cek Tiket.com](https://www.tiket.com/id-id/kereta-api/jurusan/malang) |
 | **Tiket Kereta Madiun - Malang PP (3 Orang - Tarif Khusus Go Show)** | **Rp 570.000** (Access by KAI 2 Jam sblm) | - (Hanya di KAI) | - (Hanya di KAI) | **Rp 570.000** (Loket Stasiun Go Show) | [🔗 Info Tarif Khusus KAI](https://www.kai.id) • Berlaku pembelian 2 jam sebelum keberangkatan via Access by KAI. |
-| **Sewa Mobil Avanza + Sopir + BBM (12 Jam Malang/Batu - All In)** | **Rp 650.000** (Operator Rental Lokal) | **Rp 625.000** (Traveloka Rental + BBM) | **Rp 630.000** (Tiket Sewa Mobil + BBM) | **Rp 640.000** (Mitra Lokal Terverifikasi) | [🔗 Cek Rental Traveloka](https://www.traveloka.com/id-id/car-rental) • [🔗 Cek Tiket.com Sewa Mobil](https://www.tiket.com/id-id/sewa-mobil) • Paket All-In hemat tanpa pusing bensin. |
-| **Tiket Masuk Selecta Batu (3 Orang - Tiket Reguler Masuk & Renang)** | **Rp 150.000** (Loket OTS Rp 50.000/tiket) | **Rp 135.000** (Traveloka Xperience Rp 45.000/tiket) | **Rp 135.000** (Tiket.com To-Do Rp 45.000/tiket) | **Rp 150.000** (selectawisata.id) | [🔗 Website Resmi Selecta](https://selectawisata.id) • [🔗 Tiket di Traveloka](https://www.traveloka.com/id-id/activities) • [🔗 Tiket.com To-Do](https://www.tiket.com/id-id/to-do) |
-| **Hotel Bintang 3 Nyaman di Kota Batu (1 Malam)** | **Rp 550.000** (Resepsionis Walk-in) | **Rp 440.000** (Traveloka PayLater Promo) | **Rp 455.000** (Tiket OTW Diskon) | **Rp 425.000** (Agoda VIP Flash Sale) | [🔗 Hotel di Traveloka](https://www.traveloka.com/id-id/hotel) • [🔗 Hotel di Agoda](https://www.agoda.com/id-id/) |
+| **Sewa Mobil Avanza + Sopir + BBM (12 Jam Malang/Batu - All In)** | **Rp 650.000** (Operator Rental Lokal) | **Rp 625.000** (Traveloka Rental + BBM) | **Rp 630.000** (Tiket Sewa Mobil + BBM) | **Rp 640.000** (Mitra Lokal Terverifikasi) | [🔗 Cek Rental Traveloka Malang](https://www.traveloka.com/id-id/car-rental/city/malang) • [🔗 Cek Tiket.com Sewa Mobil](https://www.tiket.com/id-id/sewa-mobil) |
+| **Tiket Masuk Selecta Batu (3 Orang - Tiket Reguler Masuk & Renang)** | **Rp 150.000** (Loket OTS Rp 50.000/tiket) | **Rp 135.000** (Traveloka Xperience Rp 45.000/tiket) | **Rp 135.000** (Tiket.com To-Do Rp 45.000/tiket) | **Rp 150.000** (selectawisata.id) | [🔗 Website Resmi Selecta](https://selectawisata.id) • [🔗 Tiket.com To-Do](https://www.tiket.com/id-id/to-do) • [🔗 Tiket di Traveloka](https://www.traveloka.com/id-id/activities) |
+| **Hotel Bintang 3 Nyaman di Kota Batu (1 Malam)** | **Rp 550.000** (Resepsionis Walk-in) | **Rp 440.000** (Traveloka PayLater Promo) | **Rp 455.000** (Tiket OTW Diskon) | **Rp 425.000** (Agoda VIP Flash Sale) | [🔗 Hotel di Booking.com Malang](https://www.booking.com/city/id/malang.id.html) • [🔗 Hotel di Traveloka](https://www.traveloka.com/id-id/hotel) • [🔗 Hotel di Agoda](https://www.agoda.com/id-id/city/malang-id.html) |
 
 💡 **Panduan Mengamankan Harga Terbaik (${persona.name}):**
 1. **Tiket Kereta:** Jika tanggal perjalanan sudah pasti, pesan tiket reguler sejak jauh hari di **Traveloka** atau **Access by KAI** agar tidak kehabisan kursi. Jika perjalanan fleksibel dan mendadak, Anda bisa mencoba fitur *Tarif Khusus* 2 jam sebelum jadwal kereta di stasiun.
