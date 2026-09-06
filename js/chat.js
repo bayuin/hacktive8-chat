@@ -14,7 +14,10 @@ class ChatManager {
     try {
       const stored = localStorage.getItem(CONFIG.storageKeys.sessions) || localStorage.getItem("wanderwise_chat_sessions");
       if (stored) {
-        this.sessions = JSON.parse(stored);
+        const sanitized = stored.replace(/WanderWise AI/gi, "SuperB Travel Assistant").replace(/WanderWise/gi, "SuperB Travel");
+        this.sessions = JSON.parse(sanitized);
+        localStorage.setItem(CONFIG.storageKeys.sessions, sanitized);
+        localStorage.removeItem("wanderwise_chat_sessions");
       }
     } catch (e) {
       console.warn("Gagal memuat rencana perjalanan dari localStorage:", e);
@@ -22,6 +25,7 @@ class ChatManager {
     }
 
     const lastActiveId = localStorage.getItem(CONFIG.storageKeys.activeSessionId) || localStorage.getItem("wanderwise_active_session_id");
+    localStorage.removeItem("wanderwise_active_session_id");
     if (lastActiveId && this.sessions.some(s => s.id === lastActiveId)) {
       this.activeSessionId = lastActiveId;
     } else if (this.sessions.length > 0) {
