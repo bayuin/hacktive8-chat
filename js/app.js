@@ -26,9 +26,24 @@ document.addEventListener("DOMContentLoaded", () => {
     attachedFile: null
   };
 
-  // Configure marked with highlight.js
+  // Configure marked with highlight.js & external link security
   if (window.marked) {
+    const renderer = new marked.Renderer();
+    renderer.link = function (href, title, text) {
+      let linkHref = href;
+      let linkTitle = title;
+      let linkText = text;
+      if (typeof href === "object" && href !== null) {
+        linkHref = href.href;
+        linkTitle = href.title;
+        linkText = href.text;
+      }
+      const titleAttr = linkTitle ? ` title="${escapeHTML(linkTitle)}"` : "";
+      return `<a href="${linkHref}" target="_blank" rel="noopener noreferrer"${titleAttr}>${linkText}</a>`;
+    };
+
     marked.setOptions({
+      renderer: renderer,
       highlight: function (code, lang) {
         if (window.hljs) {
           const validLanguage = hljs.getLanguage(lang) ? lang : "plaintext";
@@ -497,6 +512,12 @@ document.addEventListener("DOMContentLoaded", () => {
     enhanceCodeBlocks(row);
     enhanceTables(row);
 
+    // Ensure all hyperlinks in the message open in a fresh tab without referrer leakage
+    row.querySelectorAll("a").forEach(a => {
+      a.setAttribute("target", "_blank");
+      a.setAttribute("rel", "noopener noreferrer");
+    });
+
     DOM.messagesContainer.appendChild(row);
 
     if (shouldScroll) {
@@ -510,7 +531,12 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!content) return "";
     if (window.marked) {
       try {
-        return marked.parse(content);
+        let html = marked.parse(content);
+        // Guarantee target="_blank" and rel="noopener noreferrer" on all <a> tags
+        return html.replace(/<a\s+(?:[^>]*?\s+)?href="([^"]*)"([^>]*)>/gi, (match, href, rest) => {
+          const cleanRest = rest.replace(/target="[^"]*"/gi, "").replace(/rel="[^"]*"/gi, "").trim();
+          return `<a href="${href}" target="_blank" rel="noopener noreferrer"${cleanRest ? " " + cleanRest : ""}>`;
+        });
       } catch (e) {
         console.error("Markdown parse error:", e);
       }
@@ -1026,6 +1052,18 @@ document.addEventListener("DOMContentLoaded", () => {
   // =========================================================================
 
   function attachEventListeners() {
+    // Delegated link click handler: guarantees every external travel link opens in a fresh tab with isolated referrer
+    if (DOM.messagesContainer) {
+      DOM.messagesContainer.addEventListener("click", (e) => {
+        const link = e.target.closest("a");
+        if (link && link.href) {
+          e.preventDefault();
+          e.stopPropagation();
+          window.open(link.href, "_blank", "noopener,noreferrer");
+        }
+      });
+    }
+
     DOM.sendBtn.addEventListener("click", handleSendMessage);
     DOM.stopBtn.addEventListener("click", () => {
       aiService.abort();

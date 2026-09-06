@@ -11,8 +11,8 @@
 - **Never Assume or Estimate Prices**: Ground all pricing recommendations using real-time live search directly across multiple official platforms (KAI, Traveloka, Tiket.com, Agoda, Klook, and official attraction portals).
 - **Mandatory Deep Filtered Parameter Links (No Naked/Generic Links)**: Every verification link provided **MUST** contain specific query parameters matching user-specified conditions (origin, destination, date, adult/child passenger counts, or car rental with driver). Naked homepage links without search parameters (such as `traveloka.com` or `tiket.com`) are strictly prohibited.
   - **Traveloka Car Rental Link Schema**:
-    `https://www.traveloka.com/id-id/car-rental/search?sd={D-M-YYYY}&st=7-30&ed={D-M-YYYY}&et=23-59&driverType=WITH_DRIVER&city={CITY}&fromLocation=TVLK.102746.PPR_ROUTE.REGION.Wilayah.{CITY}.%27%27.`
-    * Example for Bali: `https://www.traveloka.com/id-id/car-rental/search?sd=6-9-2026&st=7-30&ed=6-9-2026&et=23-59&driverType=WITH_DRIVER&city=Bali&fromLocation=TVLK.102746.PPR_ROUTE.REGION.Wilayah.Bali.%27%27.`
+    `https://www.traveloka.com/id-id/car-rental/search?sd={DD-MM-YYYY}&st=07-30&ed={DD-MM-YYYY}&et=23-59&driverType=WITH_DRIVER&city={CITY}`
+    * Example for Bali: `https://www.traveloka.com/id-id/car-rental/search?sd=06-09-2026&st=07-30&ed=06-09-2026&et=23-59&driverType=WITH_DRIVER&city=Bali`
 
 ## 2. Mandatory Rule: End-to-End Route Integrity (Never Stop at Transit Hubs)
 - **Final Destination Reach**: When a traveler requests a journey to a specific final destination (e.g. **Bali** from Madiun or other cities in Java), the itinerary, transportation, hotel accommodation, and car rental **MUST REACH THE FINAL DESTINATION (BALI)**.

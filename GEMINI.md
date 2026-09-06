@@ -12,8 +12,8 @@
 - **Pencarian Real-Time Langsung ke Platform Sumber**: Gunakan penelusuran web live langsung ke platform penyedia resmi (KAI, Traveloka, Tiket.com, Agoda, Klook, website resmi destinasi).
 - **Tautan Verifikasi Live Berfilter Spesifik (Dilarang Link Polos Tanpa Parameter)**: Setiap tautan yang disajikan **WAJIB** menyertakan parameter filter lengkap sesuai kondisi request pengguna (asal, tujuan, tanggal, jumlah orang dewasa/anak, atau tipe sewa mobil dengan sopir). Dilarang keras memberikan link beranda polos tanpa parameter filter.
   - **Skema Link Traveloka Car Rental Resmi**:
-    `https://www.traveloka.com/id-id/car-rental/search?sd={D-M-YYYY}&st=7-30&ed={D-M-YYYY}&et=23-59&driverType=WITH_DRIVER&city={KOTA}&fromLocation=TVLK.102746.PPR_ROUTE.REGION.Wilayah.{KOTA}.%27%27.`
-    * Contoh Nyata Bali: `https://www.traveloka.com/id-id/car-rental/search?sd=6-9-2026&st=7-30&ed=6-9-2026&et=23-59&driverType=WITH_DRIVER&city=Bali&fromLocation=TVLK.102746.PPR_ROUTE.REGION.Wilayah.Bali.%27%27.`
+    `https://www.traveloka.com/id-id/car-rental/search?sd={DD-MM-YYYY}&st=07-30&ed={DD-MM-YYYY}&et=23-59&driverType=WITH_DRIVER&city={KOTA}`
+    * Contoh Nyata Bali: `https://www.traveloka.com/id-id/car-rental/search?sd=06-09-2026&st=07-30&ed=06-09-2026&et=23-59&driverType=WITH_DRIVER&city=Bali`
 
 ## 2. Aturan Mutlak: Integritas Rute & Akomodasi Sampai Destinasi Akhir (Dilarang Putus di Kota Transit)
 - **Tuntas ke Destinasi Akhir**: Apabila pengguna meminta perjalanan ke suatu destinasi akhir (misal: ingin liburan ke **Bali** dari Madiun atau kota lain di Jawa), seluruh rute transportasi, akomodasi penginapan/hotel, dan sewa kendaraan **WAJIB MENCAPAI KOTA DESTINASI AKHIR (BALI)**!
