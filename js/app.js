@@ -469,7 +469,7 @@ document.addEventListener("DOMContentLoaded", () => {
           ${!isUser && msg.persona ? `<span style="color: var(--accent-cyan);">• ${msg.persona}</span>` : ""}
           <span>${timeStr}</span>
         </div>
-        <div class="message-content">
+        <div class="message-content message ${isUser ? 'user' : 'bot'}">
           ${attachmentHTML}
           ${formattedContent}
         </div>
