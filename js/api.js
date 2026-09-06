@@ -1,5 +1,5 @@
 /**
- * WanderWise AI - Travel API Service & Interactive Mock Engine
+ * SuperB Travel Assistant - Travel API Service & Interactive Mock Engine
  * Connects to Google Gemini API (v1beta) and provides high-fidelity Travel Itinerary Mock Engine
  */
 
@@ -739,7 +739,7 @@ Silakan ajukan pertanyaan seputar rencana liburan atau destinasi wisata impian A
       greeting = `Halo travelers! Siap liburan seru nih bareng **${persona.name}**! Yuk kita rancang perjalanan tak terlupakan:`;
       closing = `\n\nTips santai: Jangan lupa bawa sunscreen dan powerbank ya sob. Kalau ada yang mau diganti atau disesuaikan rutenya, tinggal bilang aja! 🌴🎒`;
     } else if (toneKey === "formal") {
-      greeting = `Selamat datang di layanan konsultasi perjalanan **WanderWise Travel Concierge**. Berdasarkan preferensi Anda, berikut kami susun perencanaan perjalanan komprehensif dari sudut pandang **${persona.name}**:`;
+      greeting = `Selamat datang di layanan konsultasi perjalanan **SuperB Travel Concierge**. Berdasarkan preferensi Anda, berikut kami susun perencanaan perjalanan komprehensif dari sudut pandang **${persona.name}**:`;
       closing = `\n\nDemikian rancangan perjalanan yang kami rekomendasikan. Tim concierge kami siap melakukan kustomisasi jadwal sesuai kebutuhan eksklusif Anda.`;
     } else if (toneKey === "concise") {
       greeting = `⚡ **Rangkuman Cepat Rencana Perjalanan:**`;

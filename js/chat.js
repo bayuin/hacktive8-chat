@@ -1,5 +1,5 @@
 /**
- * WanderWise AI - Chat State & Itinerary Storage Manager
+ * SuperB Travel Assistant - Chat State & Itinerary Storage Manager
  * Handles multi-session travel itineraries, local storage persistence, and export to Markdown/JSON
  */
 
@@ -12,7 +12,7 @@ class ChatManager {
 
   init() {
     try {
-      const stored = localStorage.getItem(CONFIG.storageKeys.sessions);
+      const stored = localStorage.getItem(CONFIG.storageKeys.sessions) || localStorage.getItem("wanderwise_chat_sessions");
       if (stored) {
         this.sessions = JSON.parse(stored);
       }
@@ -21,7 +21,7 @@ class ChatManager {
       this.sessions = [];
     }
 
-    const lastActiveId = localStorage.getItem(CONFIG.storageKeys.activeSessionId);
+    const lastActiveId = localStorage.getItem(CONFIG.storageKeys.activeSessionId) || localStorage.getItem("wanderwise_active_session_id");
     if (lastActiveId && this.sessions.some(s => s.id === lastActiveId)) {
       this.activeSessionId = lastActiveId;
     } else if (this.sessions.length > 0) {
@@ -157,7 +157,7 @@ class ChatManager {
         session: session
       };
       const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: "application/json" });
-      this.downloadBlob(blob, `wanderwise-itinerary-${session.title.toLowerCase().replace(/[^a-z0-9]/g, "-")}.json`);
+      this.downloadBlob(blob, `superb-itinerary-${session.title.toLowerCase().replace(/[^a-z0-9]/g, "-")}.json`);
       return;
     }
 
@@ -181,7 +181,7 @@ class ChatManager {
     });
 
     const blob = new Blob([md], { type: "text/markdown;charset=utf-8;" });
-    this.downloadBlob(blob, `wanderwise-itinerary-${session.title.toLowerCase().replace(/[^a-z0-9]/g, "-")}.md`);
+    this.downloadBlob(blob, `superb-itinerary-${session.title.toLowerCase().replace(/[^a-z0-9]/g, "-")}.md`);
   }
 
   downloadBlob(blob, filename) {

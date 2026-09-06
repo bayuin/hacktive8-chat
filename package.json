@@ -1,7 +1,7 @@
 {
-  "name": "hacktiv8-smart-travel-assistant",
+  "name": "superb-travel-assistant",
   "version": "1.0.0",
-  "description": "WanderWise AI - Smart Travel Assistant & Perencana Liburan Berbasis AI (Hacktiv8 Final Project)",
+  "description": "SuperB Travel Assistant - Perencana Liburan Cerdas & AI Trip Guide Berbasis AI (Hacktiv8 Final Project)",
   "main": "server/index.js",
   "scripts": {
     "start": "node server/index.js",

@@ -1,5 +1,5 @@
 /**
- * WanderWise AI - Application Controller
+ * SuperB Travel Assistant - Application Controller
  * Coordinates UI events, parameter switching, message streaming, audio, and state
  */
 

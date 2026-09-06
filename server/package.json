@@ -1,7 +1,7 @@
 {
-  "name": "server",
+  "name": "superb-travel-assistant-server",
   "version": "1.0.0",
-  "description": "WanderWise AI - Backend REST API Express with @google/genai",
+  "description": "SuperB Travel Assistant - Backend REST API Express with @google/genai",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",

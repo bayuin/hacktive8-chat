@@ -1,4 +1,4 @@
-# ✈️ WanderWise AI - Smart Travel Assistant & Itinerary Planner
+# ✈️ SuperB Travel Assistant - Perencana Liburan Cerdas & AI Trip Guide
 
 > **Hacktiv8 Final Project**  
 > **Course**: *AI Productivity and AI API Integration for Developers*  
@@ -8,22 +8,22 @@
 
 ## 📌 1. Gambaran Proyek (Project Overview)
 
-**WanderWise AI** adalah aplikasi chatbot cerdas berbasis Artificial Intelligence (LLM) yang dirancang untuk mempermudah siapa pun merencanakan liburan impian secara personal, cepat, dan terperinci. Memanfaatkan kemampuan pemrosesan bahasa alami (*Natural Language Processing*), WanderWise AI mampu menyusun *day-by-day itinerary*, mengkalkulasi estimasi anggaran (*budget breakdown*) dalam mata uang Rupiah (IDR), merekomendasikan kuliner otentik, membagikan tips keselamatan alam bebas, hingga memberikan panduan etika budaya lokal.
+**SuperB Travel Assistant** adalah aplikasi chatbot cerdas berbasis Artificial Intelligence (LLM) yang dirancang untuk mempermudah siapa pun merencanakan liburan impian secara personal, cepat, dan terperinci. Memanfaatkan kemampuan pemrosesan bahasa alami (*Natural Language Processing*), SuperB Travel Assistant mampu menyusun *day-by-day itinerary*, mengkalkulasi estimasi anggaran (*budget breakdown*) dalam mata uang Rupiah (IDR), merekomendasikan kuliner otentik, membagikan tips keselamatan alam bebas, hingga memberikan panduan etika budaya lokal.
 
-Aplikasi ini mengintegrasikan **Google Gemini API** (`gemini-1.5-flash`, `gemini-1.5-pro`, `gemini-2.0-flash`) secara langsung dengan rekayasa prompt sistem (*system instruction*) yang dinamis. Aplikasi juga dilengkapi dengan **Interactive Demo Travel Engine (Mock Fallback)**, sehingga penilai atau instruktur Hacktiv8 dapat langsung menguji coba seluruh prompt tanpa kewajiban memiliki atau memasukkan API Key.
+Aplikasi ini mengintegrasikan **Google Gemini API** (`gemini-2.0-flash`, `gemini-3.5-flash-lite`, `gemini-3.6-flash`, `gemini-3.7-flash`, `gemini-3.8-flash`) secara langsung dengan rekayasa prompt sistem (*system instruction*) yang dinamis. Aplikasi juga dilengkapi dengan **Interactive Demo Travel Engine (Mock Fallback)**, sehingga penilai atau instruktur Hacktiv8 dapat langsung menguji coba seluruh prompt tanpa kewajiban memiliki atau memasukkan API Key.
 
 ---
 
 ## 📸 2. Tangkapan Layar Antarmuka (UI Screenshots)
 
 ### Tampilan Utama - Dark Mode (Main Workspace & Travel Conversation)
-![WanderWise AI Main Interface Dark](screenshots/wanderwise_ui_main.jpg)
+![SuperB Travel Assistant Main Interface Dark](screenshots/superb_ui_main.jpg)
 
 ### Tampilan Utama - Light Mode (Clean Daylight Resort Aesthetic)
-![WanderWise AI Main Interface Light](screenshots/wanderwise_ui_light.jpg)
+![SuperB Travel Assistant Main Interface Light](screenshots/superb_ui_light.jpg)
 
 ### Panel Parameter Kreatif (Creative Travel Parameters Drawer)
-![WanderWise AI Creative Parameters](screenshots/wanderwise_ui_params.jpg)
+![SuperB Travel Assistant Creative Parameters](screenshots/superb_ui_params.jpg)
 
 ---
 
@@ -92,9 +92,9 @@ c:\Freelance\Hacktive8\
 │   ├── chat.js                          # State manager multi-session perjalanan & ekspor berkas
 │   └── app.js                           # UI Controller, drawer parameter, dan rendering streaming
 ├── screenshots/
-│   ├── wanderwise_ui_main.jpg           # Screenshot tampilan utama Dark Mode
-│   ├── wanderwise_ui_light.jpg          # Screenshot tampilan utama Light Mode
-│   └── wanderwise_ui_params.jpg         # Screenshot panel pengaturan parameter kreatif
+│   ├── superb_ui_main.jpg               # Screenshot tampilan utama Dark Mode
+│   ├── superb_ui_light.jpg              # Screenshot tampilan utama Light Mode
+│   └── superb_ui_params.jpg             # Screenshot panel pengaturan parameter kreatif
 ├── index.html                           # Antarmuka frontend semantik HTML5
 ├── package.json                         # Root launcher scripts (npm start, npm run dev)
 ├── README.md                            # Dokumentasi teknis komprehensif
@@ -136,7 +136,7 @@ npm start
 Server akan aktif di:
 ```
 =======================================================
-🚀 WanderWise AI Express Server berjalan!
+🚀 SuperB Travel Assistant Express Server berjalan!
 📍 URL: http://localhost:3000
 🔑 Gemini API Key: Terpasang
 📦 Model Default: gemini-2.0-flash
@@ -159,7 +159,7 @@ REST API dibangun menggunakan **Express.js** dengan integrasi SDK generasi terba
      ```json
      {
        "status": "online",
-       "service": "WanderWise AI REST API (Express + @google/genai)",
+       "service": "SuperB Travel Assistant REST API (Express + @google/genai)",
        "hasApiKey": true,
        "defaultModel": "gemini-2.0-flash"
      }

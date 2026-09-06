@@ -7,16 +7,16 @@ const CONFIG = {
   appName: "SuperB Travel Assistant",
   appVersion: "1.0.0",
   storageKeys: {
-    apiKey: "wanderwise_gemini_api_key",
-    model: "wanderwise_model",
-    persona: "wanderwise_persona",
-    tone: "wanderwise_tone",
-    temperature: "wanderwise_temperature",
-    memoryTurns: "wanderwise_memory_turns",
-    soundEnabled: "wanderwise_sound_enabled",
-    sessions: "wanderwise_chat_sessions",
-    activeSessionId: "wanderwise_active_session_id",
-    theme: "wanderwise_theme"
+    apiKey: "superb_gemini_api_key",
+    model: "superb_model",
+    persona: "superb_persona",
+    tone: "superb_tone",
+    temperature: "superb_temperature",
+    memoryTurns: "superb_memory_turns",
+    soundEnabled: "superb_sound_enabled",
+    sessions: "superb_chat_sessions",
+    activeSessionId: "superb_active_session_id",
+    theme: "superb_theme"
   },
   models: [
     {
